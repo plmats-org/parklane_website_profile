@@ -4,6 +4,7 @@ import Footer from "../components/footer";
 import Hero from "../components/hero";
 import Logistics from "../components/logistics";
 import Navbar from "../components/navbar";
+import Partners from "../components/partners";
 import Services from "../components/services";
 import WhyPLM from "../components/whyPln";
 
@@ -17,6 +18,7 @@ export default function Home() {
       <Services />
       <WhyPLM />
       <Logistics />
+      <Partners/>
       <Contact />
       <Footer />
     </main>

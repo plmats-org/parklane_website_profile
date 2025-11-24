@@ -15,10 +15,11 @@ const Services = () => {
       description: 'Premium construction equipment and materials sourced globally. From generators to heavy machinery, we provide comprehensive solutions for all your project needs.',
       images: [
         'https://www.tractafric-equipment.com/tae_images/6532845cc68aaVJU.jpg',
-        'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=85',
-        'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?w=800&q=85',
+        'https://images.unsplash.com/photo-1595464144526-5fb181b74625?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1637241612956-b7309005288b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1754818700642-8cf121ff76e6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
       ],
-      details: ['Power Generators', 'Construction Equipment', 'Building Materials', 'Industrial Tools'],
+      details: ['Power Generators', 'Construction Equipment', 'Building Materials', 'Industrial Tools', 'Medical Equipment supply'],
     },
     {
       title: 'Diesel Supply',
@@ -49,6 +50,16 @@ const Services = () => {
         'https://images.pexels.com/photos/23540605/pexels-photo-23540605.jpeg',
       ],
       details: ['Industrial Coal', 'Energy Coal', 'Bulk Transport', 'Quality Certified'],
+    },
+        {
+      title: 'Clinker Supply',
+      description: 'Efficient clinker supply chain management for industrial energy needs. Sourced from verified mines and delivered with precision logistics for uninterrupted operations.',
+      images: [
+        'https://infrabound.com/wp-content/uploads/2025/04/Cement-and-Clinker-Export.jpg',
+        'https://minhhanhglobal.com/wp-content/uploads/2024/10/clinker-480.jpg.webp',
+        'https://karbincement.com/wp-content/uploads/2025/09/ChatGPT-Image-Sep-6-2025-01_08_34-PM.webp'
+      ],
+      details: ['Industrial Clinker', 'Bulk Transport'],
     },
   ];
 
