@@ -28,7 +28,7 @@ const Logistics = () => {
       icon: '🚢',
       title: 'Sea Freight',
       description: 'Cost-effective bulk shipping with comprehensive tracking and port-to-port delivery worldwide.',
-      image: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=85',
+      image: `gen.jpeg`,
       features: ['FCL & LCL', 'Bulk Shipping', 'Port-to-Port', 'Customs Brokerage'],
     },
   ];

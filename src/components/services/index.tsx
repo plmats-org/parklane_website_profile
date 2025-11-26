@@ -15,7 +15,7 @@ const Services = () => {
       description: 'Premium construction equipment and materials sourced globally. From generators to heavy machinery, we provide comprehensive solutions for all your project needs.',
       images: [
         'https://www.tractafric-equipment.com/tae_images/6532845cc68aaVJU.jpg',
-        'https://images.unsplash.com/photo-1595464144526-5fb181b74625?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        `hospital.jpeg`,
         'https://images.unsplash.com/photo-1637241612956-b7309005288b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         'https://images.unsplash.com/photo-1754818700642-8cf121ff76e6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
       ],
@@ -25,19 +25,18 @@ const Services = () => {
       title: 'Diesel Supply',
       description: 'Reliable fuel delivery services for industrial and commercial operations. We ensure consistent, high-quality diesel supply with flexible scheduling and competitive pricing.',
       images: [
-        'https://images.pexels.com/photos/34612258/pexels-photo-34612258.jpeg',
-        'https://yournrg.co.uk/media/vi1fwcgx/homepage-commercial-products.png',
+        `diesel-supply.jpeg`,
+        `cit.jpeg`,
         'https://sc04.alicdn.com/kf/H8d7c3c359eb84db6885055772b35f3b8T.png',
       ],
-      details: ['Bulk Diesel Delivery', 'Storage Solutions', 'Fleet Fueling', 'Emergency Supply'],
+      details: ['Bulk Diesel Delivery', 'Storage Solutions', 'Fleet Fueling'],
     },
     {
       title: 'Cement Supply',
       description: 'Quality cement and building materials from certified manufacturers. We provide comprehensive cement solutions for projects of all scales with guaranteed quality standards.',
       images: [
-        'https://images.pexels.com/photos/12032967/pexels-photo-12032967.jpeg',
-        'https://images.pexels.com/photos/129544/pexels-photo-129544.jpeg',
-        'https://www.financialafrik.com/wp-content/uploads/2021/01/Photo-camion-de-livrant-le-ciment-au-mali.jpg',
+        `cement.jpeg`,
+        `sac-cement.jpeg`,
       ],
       details: ['Portland Cement', 'Ready-Mix Concrete', 'Specialty Cement', 'Bulk Orders'],
     },
@@ -45,7 +44,7 @@ const Services = () => {
       title: 'Coal Supply',
       description: 'Efficient coal supply chain management for industrial energy needs. Sourced from verified mines and delivered with precision logistics for uninterrupted operations.',
       images: [
-        'https://www.orfonline.org/public/uploads/posts/image/Coal-Shortage.jpg',
+        `coal-truc.jpeg`,
         'https://images.pexels.com/photos/10421760/pexels-photo-10421760.jpeg',
         'https://images.pexels.com/photos/23540605/pexels-photo-23540605.jpeg',
       ],
@@ -56,7 +55,7 @@ const Services = () => {
       description: 'Efficient clinker supply chain management for industrial energy needs. Sourced from verified mines and delivered with precision logistics for uninterrupted operations.',
       images: [
         'https://infrabound.com/wp-content/uploads/2025/04/Cement-and-Clinker-Export.jpg',
-        'https://minhhanhglobal.com/wp-content/uploads/2024/10/clinker-480.jpg.webp',
+        `clinker.jpeg`,
         'https://karbincement.com/wp-content/uploads/2025/09/ChatGPT-Image-Sep-6-2025-01_08_34-PM.webp'
       ],
       details: ['Industrial Clinker', 'Bulk Transport'],

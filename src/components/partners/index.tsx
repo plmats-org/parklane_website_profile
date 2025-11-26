@@ -129,7 +129,7 @@ const Partners = () => {
                   {/* Partner Info */}
                   <div className="p-8">
                     <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-primary-600 transition-colors">
-                      Soils Control International & Evergreen Soils Control Inc
+                      Road Construction , Paving & Soil Stabilization
                     </h3>
                     <p className="text-slate-600 text-sm leading-relaxed mb-4">
                       Leading providers of Top Seal products - superior
