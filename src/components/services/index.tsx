@@ -15,7 +15,7 @@ const Services = () => {
       description: 'Premium construction equipment and materials sourced globally. From generators to heavy machinery, we provide comprehensive solutions for all your project needs.',
       images: [
         'https://www.tractafric-equipment.com/tae_images/6532845cc68aaVJU.jpg',
-        `hospital.jpeg`,
+        `plmh.jpeg`,
         'https://images.unsplash.com/photo-1637241612956-b7309005288b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         'https://images.unsplash.com/photo-1754818700642-8cf121ff76e6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
       ],
@@ -33,12 +33,12 @@ const Services = () => {
     },
     {
       title: 'Cement Supply',
-      description: 'Quality cement and building materials from certified manufacturers. We provide comprehensive cement solutions for projects of all scales with guaranteed quality standards.',
+      description: 'Quality cement and building materials from certified manufacturers including:',
       images: [
         `cement.jpeg`,
-        `sac-cement.jpeg`,
+        `cmt.jpeg`,
       ],
-      details: ['Portland Cement', 'Ready-Mix Concrete', 'Specialty Cement', 'Bulk Orders'],
+      details: ['Ready-Mixed concrete', 'Bulk supply of 32.5N cement', 'Bulk supply of 42.5N cement', 'Bulk supply of 52.5N cement', 'Bulk supply of 50kg truck loads of dry cement ⁠', 'Bulk orders'],
     },
     {
       title: 'Coal Supply',
