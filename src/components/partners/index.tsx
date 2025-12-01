@@ -120,7 +120,7 @@ const Partners = () => {
               >
                 <div className="relative h-auto bg-white  overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-200 hover:border-primary-300">
                   {/* Partner Logo/Image */}
-                  <div className="relative h-[360px] overflow-hidden">
+                  <div className="relative h-[300px] overflow-hidden">
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                       style={{

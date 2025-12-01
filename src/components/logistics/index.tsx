@@ -18,10 +18,6 @@ const Logistics = () => {
       description: 'Comprehensive ocean freight customs clearance services ensuring smooth port operations and full compliance with international trade regulations.',
     },
     {
-      title: 'Air Freight',
-      description: 'Express air cargo solutions with dedicated handling for time-sensitive shipments, providing speed and reliability for your business needs.',
-    },
-    {
       title: 'Consolidation',
       description: 'FDL services including China seafreight container consolidation, optimizing cargo space and reducing shipping costs for bulk orders.',
     },

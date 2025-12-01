@@ -23,7 +23,7 @@ const Services = () => {
       title: 'General Procurement Services',
       shortDescription: 'End-to-end corporate and government procurement solutions',
       fullDescription: 'Comprehensive procurement services including vendor qualification, international sourcing, and bulk purchasing. We handle everything from complex government contracts to corporate supply agreements.',
-      image: `gn.png`,
+      image: `gen.jpeg`,
       details: [
         'Corporate procurement & sourcing',
         'Government procurement support',
@@ -38,7 +38,7 @@ const Services = () => {
       title: 'Medical & Health Sector',
       shortDescription: 'Complete medical equipment and supplies',
       fullDescription: 'Turnkey medical supply chain management from PPE to hospital equipment. We provide everything needed to equip and maintain healthcare facilities of any size.',
-      image: `hpt.png`,
+      image: `hospital.jpeg`,
       details: [
         'Personal protective equipment (PPE)',
         'Hospital equipment & consumables',
@@ -54,8 +54,9 @@ const Services = () => {
       title: 'Construction Supplies',
       shortDescription: 'Premium building materials and site consumables',
       fullDescription: 'Complete range of construction materials from cement and steel to finishing materials. Quality-assured supplies for projects of any scale.',
-      image: `gns.png`,
+      image: `clinker.jpeg`,
       details: [
+        'Clinker',
         'Cement, aggregates, sand & binding materials',
         'Rebar, steel, plates, beams, channels',
         'Plumbing and electrical materials',
@@ -114,11 +115,12 @@ const Services = () => {
       title: 'Energy & Infrastructure',
       shortDescription: 'Specialized supplies for major projects',
       fullDescription: 'Specialized procurement for energy, mining, and infrastructure projects. We supply everything from pipeline materials to road construction consumables.',
-      image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2070&auto=format&fit=crop',
+      image: `coal-truc.jpeg`,
       details: [
+        'Coal',
         'Pipeline materials & fuel handling equipment',
         'Mining: blast materials, drilling supplies',
-        'Road construction consumables',
+        'Road construction / consumables',
         'Bridge components',
         'Water & sanitation materials',
         'Street lighting & electrification hardware',
