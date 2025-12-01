@@ -10,20 +10,20 @@ const WhyPLM = () => {
 
   const reasons = [
     {
-      title: 'Global Sourcing Network',
-      description: 'Access to verified OEM manufacturers across continents, ensuring competitive pricing and authentic quality materials for every project.',
+      title: 'Who we are',
+      description: 'PLM is a leading general procurement and supply company delivering high-quality products, equipment, and logistics solutions across Africa and globally. With a strong network of manufacturers, international suppliers, and logistics partners, PLM provides end-to-end, reliable, and cost-effective procurement services to governments, companies, NGOs, and major infrastructure contractors.',
     },
     {
-      title: 'Direct OEM Relationships',
-      description: 'We eliminate middlemen by working directly with manufacturers, guaranteeing product authenticity and reducing procurement costs significantly.',
+      title: 'Our Mission',
+      description: 'To simplify global sourcing by providing reliable procurement, world-class logistics, and consistent quality across all sectors — from medical to construction, energy, and general supplies.',
     },
     {
-      title: 'Rigorous Quality Standards',
-      description: 'Every supplier undergoes stringent vetting and continuous performance monitoring to maintain international quality benchmarks.',
+      title: 'Our Vision',
+      description: 'To be one of Africa’s most trusted integrated procurement and supply companies, known for transparency, speed, and ability to deliver even the most complex supply requirements.',
     },
     {
-      title: 'Cost-Effective Solutions',
-      description: 'Transparent pricing with no hidden fees. Our lean supply chain delivers maximum value while maintaining uncompromised quality standards.',
+      title: 'Our Strengths',
+      description: 'Global supplier partnerships - Strong presence in Africa - Deep understanding of government and corporate procurement - Ability to deliver at speed, anywhere - Full logistics ecosystem (sea, land, air & special charter) - Multi-sector procurement expertise - Flexible and scalable supply programs',
     },
     {
       title: 'Reliable Delivery',
@@ -86,6 +86,12 @@ const WhyPLM = () => {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="mb-16 lg:mb-20">
+               <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-0.5 bg-gradient-to-r from-primary-500 to-primary-600"></div>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600 font-semibold tracking-wider uppercase text-sm">
+                  Mission & Vision
+                </span>
+              </div>
             <h2 className="text-4xl sm:text-5xl cursor-pointer lg:text-6xl font-bold text-white mb-6">
               Why choose{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 via-primary-500 to-primary-500">

@@ -54,18 +54,22 @@ const Partners = () => {
     <>
       <section
         id="partners"
-        className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-50 to-white overflow-hidden"
+      className="relative py-20 lg:py-32 bg-black overflow-hidden"
       >
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, #a68b56 1px, transparent 0)`,
-              backgroundSize: "40px 40px",
-            }}
-          />
+       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+        <div className="text-[20rem] lg:text-[30rem] font-bold text-white/60 select-none">
+          PLM
         </div>
+      </div>
+
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `linear-gradient(rgba(251, 191, 36, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(251, 191, 36, 0.1) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px',
+        }} />
+      </div>
 
         {/* Decorative Elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-amber-100/20 to-transparent rounded-full blur-3xl"></div>
@@ -86,7 +90,7 @@ const Partners = () => {
                 </span>
               </div>
               <div className="grid lg:grid-cols-2 gap-8 items-end">
-                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   Trusted by <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600">
                     Industry Leaders
