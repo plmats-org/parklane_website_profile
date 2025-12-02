@@ -36,6 +36,10 @@ export const metadata: Metadata = {
     locale: "en_US",
     siteName: "Parklane Materials Ltd",
   },
+   icons: {
+    icon: "/plm.png",
+    shortcut: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
