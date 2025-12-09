@@ -30,7 +30,7 @@
  *         name: role
  *         schema:
  *           type: string
- *           enum: [super_admin, admin, agent]
+ *           enum: [super_admin, admin]
  *         description: Filter by user role
  *       - in: query
  *         name: status
@@ -100,8 +100,7 @@
  *     summary: Create new user with auto-generated password (Admin only)
  *     description: |
  *       Creates a new user with a randomly generated secure password.
- *       - Super admins can create admins or agents
- *       - Admins can only create agents
+ *       - Super admins can create admins
  *       - The generated password is returned in the response and must be shared with the new user
  *     tags: [Users]
  *     security:
@@ -130,8 +129,8 @@
  *                 example: john.doe@parklane.com
  *               role:
  *                 type: string
- *                 enum: [super_admin, admin, agent]
- *                 example: agent
+ *                 enum: [super_admin, admin]
+ *                 example: admin
  *               phone:
  *                 type: string
  *                 example: +243123456789
@@ -247,8 +246,8 @@
  *                 example: Doe
  *               role:
  *                 type: string
- *                 enum: [super_admin, admin, agent]
- *                 example: agent
+ *                 enum: [super_admin, admin]
+ *                 example: admin
  *               phone:
  *                 type: string
  *                 example: +243123456789

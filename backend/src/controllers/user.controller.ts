@@ -12,11 +12,7 @@ import {
 } from "../utils/response";
 import { sendEmail } from "../utils/mail";
 
-export const getAllUsers = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const getAllUsers = async (req: AuthRequest, res: Response) => {
   try {
     const {
       page = 1,
@@ -59,11 +55,7 @@ export const getAllUsers = async (
   }
 };
 
-export const getUserById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getUserById = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.params.id).select("-password").lean();
 
@@ -77,21 +69,13 @@ export const getUserById = async (
   }
 };
 
-export const createUser = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const createUser = async (req: AuthRequest, res: Response) => {
   try {
     const { first_name, last_name, email, role, phone } = req.body;
     const creator = req.user!;
 
     if (creator.role === "admin" && role !== "agent") {
       throw new ApiError(403, "Admins can only create agents");
-    }
-
-    if (creator.role === "agent") {
-      throw new ApiError(403, "Agents cannot create users");
     }
 
     const existingUser = await User.findOne({ email }).select("_id").lean();
@@ -159,11 +143,7 @@ export const createUser = async (
   }
 };
 
-export const updateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateUser = async (req: Request, res: Response) => {
   try {
     const { first_name, last_name, role, phone, status } = req.body;
 
@@ -189,11 +169,7 @@ export const updateUser = async (
   }
 };
 
-export const deactivateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deactivateUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -212,11 +188,7 @@ export const deactivateUser = async (
   }
 };
 
-export const activateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const activateUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -233,28 +205,18 @@ export const activateUser = async (
   }
 };
 
-export const deleteUser = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const currentUser = req.user!;
 
     if (currentUser.role !== "super_admin") {
-      throw new ApiError(
-        403,
-        "Only super administrators can delete users"
-      );
+      throw new ApiError(403, "Only super administrators can delete users");
     }
 
     // Prevent self-deletion
     if (currentUser.id === id) {
-      throw new ApiError(
-        400,
-        "You cannot delete your own account"
-      );
+      throw new ApiError(400, "You cannot delete your own account");
     }
 
     const user = await User.findById(id);

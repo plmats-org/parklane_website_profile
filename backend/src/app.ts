@@ -17,16 +17,9 @@ import {
   setSecurityHeaders,
   validateContentType,
 } from "./middlewares/security.middleware";
-// import { performanceMonitor } from "./middlewares/performance.middleware";
 import mongoose from "mongoose";
 
 const app: Application = express();
-
-// Trust proxy - important for Render.com
-// app.set("trust proxy", 1);
-
-// Performance monitoring
-// app.use(performanceMonitor);
 
 // Request logging middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -83,23 +83,6 @@ export const setSecurityHeaders = (
   next();
 };
 
-// Validate request origin
-export const validateOrigin = (allowedOrigins: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const origin = req.headers.origin;
-
-    if (!origin) {
-      return next();
-    }
-
-    if (!allowedOrigins.includes(origin)) {
-      throw new ApiError(403, "Origin not allowed");
-    }
-
-    next();
-  };
-};
-
 // Validate Content-Type for POST/PUT/PATCH
 export const validateContentType = (
   req: Request,

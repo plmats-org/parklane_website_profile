@@ -125,11 +125,7 @@ export const getMe = async (
   }
 };
 
-export const updateProfile = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateProfile = async (req: AuthRequest, res: Response) => {
   try {
     const { first_name, last_name, phone } = req.body;
 
@@ -159,11 +155,7 @@ export const updateProfile = async (
   }
 };
 
-export const changePassword = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const changePassword = async (req: AuthRequest, res: Response) => {
   try {
     const { currentPassword, newPassword } = req.body;
 
@@ -186,11 +178,7 @@ export const changePassword = async (
   }
 };
 
-export const forgotPassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
@@ -250,11 +238,7 @@ export const forgotPassword = async (
   }
 };
 
-export const resetPassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const resetPassword = async (req: Request, res: Response) => {
   try {
     const { token, newPassword } = req.body;
 

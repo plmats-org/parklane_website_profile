@@ -65,7 +65,7 @@
  *                           type: string
  *                         role:
  *                           type: string
- *                           enum: [super_admin, admin, agent]
+ *                           enum: [super_admin, admin]
  *                         status:
  *                           type: string
  *                           enum: [active, inactive]
@@ -115,7 +115,7 @@
  *                           type: string
  *                         role:
  *                           type: string
- *                           enum: [super_admin, admin, agent]
+ *                           enum: [super_admin, admin]
  *                         phone:
  *                           type: string
  *                         status:

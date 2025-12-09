@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export type UserRole = "super_admin" | "admin" | "agent";
+export type UserRole = "super_admin" | "admin";
 export type UserStatus = "active" | "inactive";
 
 export interface IUser extends Document {
@@ -10,7 +10,7 @@ export interface IUser extends Document {
   email: string;
   status: "active" | "inactive";
   password: string;
-  role: "super_admin" | "admin" | "agent";
+  role: "super_admin" | "admin";
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -26,7 +26,7 @@ export interface IUserResponse {
   phone: string;
   email: string;
   status: "active" | "inactive";
-  role: "super_admin" | "admin" | "agent";
+  role: "super_admin" | "admin";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,7 +35,7 @@ export interface IUserQuery {
   page?: number;
   limit?: number;
   search?: string;
-  role?: "super_admin" | "admin" | "agent";
+  role?: "super_admin" | "admin";
   status?: "active" | "inactive";
   sortBy?: string;
   sortOrder?: "asc" | "desc";
