@@ -1,0 +1,56 @@
+services:
+  - type: web
+    name: parklane-backend
+    runtime: node
+    region: oregon
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 1d
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+
+      - key: SUPERADMIN_FIRST_NAME
+        value: John
+      - key: SUPERADMIN_LAST_NAME
+        value: Doe
+      - key: SUPERADMIN_EMAIL
+        sync: false
+      - key: SUPERADMIN_PHONE
+        value: +243000000000
+      - key: SUPERADMIN_PASSWORD
+        sync: false
+      # Security Configuration
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: SENTRY_TRACES_SAMPLE_RATE
+        value: 1.0
+
+      - key: RUN_INLINE_WORKER
+        sync: false
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_FROM_EMAIL
+        sync: false
+      - key: BREVO_FROM_NAME
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+    autoDeploy: true
+    branch: main
