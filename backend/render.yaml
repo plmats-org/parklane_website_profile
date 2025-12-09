@@ -41,8 +41,6 @@ services:
       - key: SENTRY_TRACES_SAMPLE_RATE
         value: 1.0
 
-      - key: RUN_INLINE_WORKER
-        sync: false
       - key: BREVO_API_KEY
         sync: false
       - key: BREVO_FROM_EMAIL
