@@ -73,7 +73,7 @@ app.use(
       // In production, allow configured origins + render.com domain
       const allowedOrigins = [
         ...config.allowedOrigins,
-        "https://parklane-be.onrender.com", // Allow Swagger UI on Render
+        "https://parklane-website-profile.onrender.com/", // Allow Swagger UI on Render
       ];
 
       if (allowedOrigins.includes(origin)) {

@@ -16,7 +16,7 @@ export const swaggerDefinition = {
       description: "Development server",
     },
     {
-      url: "https://parklane-be.onrender.com/api",
+      url: "https://parklane-website-profile.onrender.com/api",
       description: "Production server",
     },
   ],
