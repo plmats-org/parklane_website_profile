@@ -6,7 +6,7 @@ import Icons from '../icons';
 const PLM_HERO_CONTENT = {
   title: 'Procurement, Supply & Logistics',
   subtitle: 'Leading general procurement and supply company delivering high-quality products, equipment, and logistics solutions across Africa and globally.',
-  cta: 'Request Quote',
+  cta: 'Contact Us',
 image: `ware.jpg`,};
 
 const Hero = () => {
