@@ -1,11 +1,20 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
-import type { CertificationsCompliance, VendorDocument } from '../types/vendor.types';
-import { ISO_CERTIFICATIONS, INDUSTRY_CERTIFICATIONS } from '../../lib/constants';
-import { CloudArrowUpIcon, DocumentCheckIcon } from '@heroicons/react/24/outline';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
+import type {
+  CertificationsCompliance,
+  VendorDocument,
+} from "../types/vendor.types";
+import {
+  ISO_CERTIFICATIONS,
+  INDUSTRY_CERTIFICATIONS,
+} from "../../lib/constants";
+import {
+  CloudArrowUpIcon,
+  DocumentCheckIcon,
+} from "@heroicons/react/24/outline";
 
 interface CertificationsStepProps {
   data: any;
@@ -13,27 +22,34 @@ interface CertificationsStepProps {
   onBack: () => void;
 }
 
-export default function CertificationsStep({ data, onNext, onBack }: CertificationsStepProps) {
-  const [certificationDocuments, setCertificationDocuments] = useState<VendorDocument[]>(
-    data.certifications?.certificationDocuments || []
-  );
+export default function CertificationsStep({
+  data,
+  onNext,
+  onBack,
+}: CertificationsStepProps) {
+  const [certificationDocuments, setCertificationDocuments] = useState<
+    VendorDocument[]
+  >(data.certifications?.certificationDocuments || []);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<CertificationsCompliance, 'certificationDocuments'>>({
+  } = useForm<Omit<CertificationsCompliance, "certificationDocuments">>({
     defaultValues: data.certifications || {},
   });
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, docType: string) => {
+  const handleFileUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    docType: string
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       const newDoc: VendorDocument = {
         id: Date.now().toString(),
         name: file.name,
         type: docType,
-        category: 'certification',
+        category: "certification",
         file: file,
         required: false,
         uploadedAt: new Date(),
@@ -46,7 +62,9 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
     setCertificationDocuments((prev) => prev.filter((doc) => doc.id !== id));
   };
 
-  const onSubmit = (formData: Omit<CertificationsCompliance, 'certificationDocuments'>) => {
+  const onSubmit = (
+    formData: Omit<CertificationsCompliance, "certificationDocuments">
+  ) => {
     onNext({
       certifications: {
         ...formData,
@@ -58,9 +76,12 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-slate-900 mb-3">Certifications & Compliance</h2>
+        <h2 className="text-3xl font-bold text-slate-900 mb-3">
+          Certifications & Compliance
+        </h2>
         <p className="text-slate-600">
-          Provide information about your certifications, quality systems, and compliance.
+          Provide information about your certifications, quality systems, and
+          compliance.
         </p>
       </div>
 
@@ -72,11 +93,14 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
           </label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
             {ISO_CERTIFICATIONS.map((cert) => (
-              <label key={cert} className="flex items-start space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors">
+              <label
+                key={cert}
+                className="flex items-start space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors"
+              >
                 <input
                   type="checkbox"
                   value={cert}
-                  {...register('isoCertifications')}
+                  {...register("isoCertifications")}
                   className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
                 />
                 <span className="text-sm text-slate-700">{cert}</span>
@@ -92,11 +116,14 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
           </label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
             {INDUSTRY_CERTIFICATIONS.map((cert) => (
-              <label key={cert} className="flex items-start space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors">
+              <label
+                key={cert}
+                className="flex items-start space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors"
+              >
                 <input
                   type="checkbox"
                   value={cert}
-                  {...register('industrySpecificCertifications')}
+                  {...register("industrySpecificCertifications")}
                   className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
                 />
                 <span className="text-sm text-slate-700">{cert}</span>
@@ -111,15 +138,21 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
             Quality Control Systems *
           </label>
           <textarea
-            {...register('qualityControlSystems', { required: 'Quality control information is required' })}
+            {...register("qualityControlSystems", {
+              required: "Quality control information is required",
+            })}
             rows={4}
             placeholder="Describe your quality control processes, testing procedures, inspection methods, etc."
             className={`block w-full px-3 py-3.5 border ${
-              errors.qualityControlSystems ? 'border-red-300' : 'border-slate-300'
+              errors.qualityControlSystems
+                ? "border-red-300"
+                : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
           {errors.qualityControlSystems && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.qualityControlSystems.message}</p>
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.qualityControlSystems.message}
+            </p>
           )}
         </div>
 
@@ -129,12 +162,14 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
             Environmental & Safety Compliance
           </label>
           <textarea
-            {...register('environmentalSafetyCompliance')}
+            {...register("environmentalSafetyCompliance")}
             rows={3}
             placeholder="List your environmental and safety compliance standards, policies, and practices..."
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
           />
-          <p className="mt-1.5 text-xs text-slate-500">Separate multiple items with commas or line breaks</p>
+          <p className="mt-1.5 text-xs text-slate-500">
+            Separate multiple items with commas or line breaks
+          </p>
         </div>
 
         {/* Regulatory Approvals */}
@@ -143,12 +178,14 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
             Regulatory Approvals
           </label>
           <textarea
-            {...register('regulatoryApprovals')}
+            {...register("regulatoryApprovals")}
             rows={3}
             placeholder="List any regulatory approvals, licenses, or permits you hold..."
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
           />
-          <p className="mt-1.5 text-xs text-slate-500">Separate multiple items with commas or line breaks</p>
+          <p className="mt-1.5 text-xs text-slate-500">
+            Separate multiple items with commas or line breaks
+          </p>
         </div>
 
         {/* Export/Import Licenses */}
@@ -157,12 +194,14 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
             Export/Import Licenses
           </label>
           <textarea
-            {...register('exportImportLicenses')}
+            {...register("exportImportLicenses")}
             rows={3}
             placeholder="List your export/import licenses and relevant trade authorizations..."
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
           />
-          <p className="mt-1.5 text-xs text-slate-500">Separate multiple items with commas or line breaks</p>
+          <p className="mt-1.5 text-xs text-slate-500">
+            Separate multiple items with commas or line breaks
+          </p>
         </div>
 
         {/* Upload Certification Documents */}
@@ -174,7 +213,8 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
                 Certification Documents
               </h3>
               <p className="text-sm text-slate-600 mt-1">
-                Upload copies of your certifications (PDF, JPG, PNG - Max 5MB each)
+                Upload copies of your certifications (PDF, JPG, PNG - Max 5MB
+                each)
               </p>
             </div>
             <label className="cursor-pointer">
@@ -182,7 +222,7 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
                 type="file"
                 className="hidden"
                 accept=".pdf,.jpg,.jpeg,.png"
-                onChange={(e) => handleFileUpload(e, 'certification')}
+                onChange={(e) => handleFileUpload(e, "certification")}
               />
               <div className="flex items-center gap-2 px-4 py-2 bg-primary-400 hover:bg-primary-500 text-white rounded-lg transition-colors">
                 <CloudArrowUpIcon className="h-5 w-5" />
@@ -202,7 +242,9 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
                   <div className="flex items-center gap-3">
                     <DocumentCheckIcon className="h-5 w-5 text-emerald-600" />
                     <div>
-                      <p className="text-sm font-medium text-slate-900">{doc.name}</p>
+                      <p className="text-sm font-medium text-slate-900">
+                        {doc.name}
+                      </p>
                       <p className="text-xs text-slate-500">
                         Uploaded {doc.uploadedAt?.toLocaleDateString()}
                       </p>
@@ -225,8 +267,9 @@ export default function CertificationsStep({ data, onNext, onBack }: Certificati
       {/* Info Box */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
         <p className="text-sm text-amber-800">
-          <strong>Important:</strong> Please upload clear, legible copies of all certifications you've
-          indicated. These documents will be reviewed as part of your vendor approval process.
+          <strong>Important:</strong> Please upload clear, legible copies of all
+          certifications you've indicated. These documents will be reviewed as
+          part of your vendor approval process.
         </p>
       </div>
 
