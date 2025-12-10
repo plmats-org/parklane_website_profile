@@ -7,7 +7,7 @@ import type {
   ReferencesPastPerformance,
   MajorClient,
   VendorDocument,
-} from "../types/vendor.types";
+} from "../../types/vendor.types";
 import { YES_NO_OPTIONS } from "../../lib/constants";
 import {
   PlusIcon,

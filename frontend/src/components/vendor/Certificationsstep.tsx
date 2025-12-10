@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import type {
   CertificationsCompliance,
   VendorDocument,
-} from "../types/vendor.types";
+} from "../../types/vendor.types";
 import {
   ISO_CERTIFICATIONS,
   INDUSTRY_CERTIFICATIONS,

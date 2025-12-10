@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import type { CompanyProfileCapabilities } from '../types/vendor.types';
+import type { CompanyProfileCapabilities } from '../../types/vendor.types';
 import { BUSINESS_TYPES, INDUSTRIES, COUNTRIES, CUSTOMIZATION_OPTIONS } from '../../lib/constants';
 
 interface CompanyProfileStepProps {

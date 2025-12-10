@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import type { VendorFormData } from '../../components/types/vendor.types';
+import type { VendorFormData } from '../../types/vendor.types';
 import { REGISTRATION_STEPS } from '../../lib/constants';
 import { 
   CompanyInformationStep,

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import type {
   AdditionalInformation,
   VendorDocument,
-} from "../types/vendor.types";
+} from "../../types/vendor.types";
 import { YES_NO_OPTIONS } from "../../lib/constants";
 import {
   CloudArrowUpIcon,

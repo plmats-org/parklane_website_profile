@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import type { ProductTechnicalInfo, VendorDocument } from '../types/vendor.types';
+import type { ProductTechnicalInfo, VendorDocument } from '../../types/vendor.types';
 import { CloudArrowUpIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 
 interface ProductTechnicalStepProps {

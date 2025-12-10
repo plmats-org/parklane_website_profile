@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import type { CompanyInformation } from '../types/vendor.types';
+import type { CompanyInformation } from '../../types/vendor.types';
 import { COUNTRIES } from '../../lib/constants';
 import { BuildingOfficeIcon, EnvelopeIcon, PhoneIcon, UserIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 

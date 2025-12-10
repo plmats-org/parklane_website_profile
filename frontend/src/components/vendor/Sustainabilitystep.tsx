@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import type { SustainabilityESG, VendorDocument } from "../types/vendor.types";
+import type { SustainabilityESG, VendorDocument } from "../../types/vendor.types";
 import { YES_NO_OPTIONS } from "../../lib/constants";
 import {
   CloudArrowUpIcon,

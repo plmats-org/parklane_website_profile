@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import type { LogisticsFulfillment } from "../types/vendor.types";
+import type { LogisticsFulfillment } from "../../types/vendor.types";
 import {
   INCOTERMS,
   SHIPPING_METHODS,

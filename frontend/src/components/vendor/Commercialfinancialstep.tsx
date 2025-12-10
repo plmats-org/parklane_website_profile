@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import type {
   CommercialFinancialInfo,
   VendorDocument,
-} from "../types/vendor.types";
+} from "../../types/vendor.types";
 import { PAYMENT_TERMS, YES_NO_OPTIONS } from "../../lib/constants";
 import {
   BanknotesIcon,
