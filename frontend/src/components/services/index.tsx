@@ -364,7 +364,7 @@ const Services = () => {
                       onClick={() => setSelectedService(null)}
                       className="inline-flex items-center gap-2 px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                     >
-                      <span>Request Quote</span>
+                      <span>Contact Us</span>
                       <ArrowRight size={18} />
                     </a>
                   </div>
