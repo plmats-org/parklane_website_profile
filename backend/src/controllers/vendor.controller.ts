@@ -46,6 +46,7 @@ export const getAllVendors = async (req: AuthRequest, res: Response) => {
       page = 1,
       limit = 10,
       search,
+      email,
       status,
       business_type,
       country,
@@ -56,10 +57,30 @@ export const getAllVendors = async (req: AuthRequest, res: Response) => {
 
     if (search) {
       filter.$or = [
-        { "company_information.registered_company_name": { $regex: search, $options: "i" } },
-        { "company_information.corporate_email": { $regex: search, $options: "i" } },
-        { "company_profile.company_overview": { $regex: search, $options: "i" } },
+        {
+          "company_information.registered_company_name": {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          "company_information.corporate_email": {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          "company_profile.company_overview": { $regex: search, $options: "i" },
+        },
       ];
+    }
+
+    // Filter by exact email
+    if (email) {
+      filter["company_information.corporate_email"] = {
+        $regex: `^${email}$`,
+        $options: "i",
+      };
     }
 
     if (status) {
@@ -73,7 +94,9 @@ export const getAllVendors = async (req: AuthRequest, res: Response) => {
     }
 
     if (country) {
-      filter["company_information.country_of_registration"] = Array.isArray(country)
+      filter["company_information.country_of_registration"] = Array.isArray(
+        country
+      )
         ? { $in: country }
         : country;
     }
@@ -84,7 +107,9 @@ export const getAllVendors = async (req: AuthRequest, res: Response) => {
       sort: sort as string,
     });
 
-    const vendors = result.data.map((v: any) => (v.toObject ? v.toObject() : v));
+    const vendors = result.data.map((v: any) =>
+      v.toObject ? v.toObject() : v
+    );
 
     return sendSuccess(res, {
       vendors,
@@ -112,84 +137,45 @@ export const getVendorById = async (req: Request, res: Response) => {
   }
 };
 
-export const getVendorByEmail = async (req: Request, res: Response) => {
-  try {
-    const { email } = req.query;
-
-    if (!email) {
-      throw new ApiError(400, "Email is required");
-    }
-
-    const vendor = await Vendor.findOne({
-      "company_information.corporate_email": email,
-      is_deleted: { $ne: true },
-    }).lean();
-
-    if (!vendor) {
-      throw new ApiError(404, "Vendor not found");
-    }
-
-    return sendSuccess(res, { vendor });
-  } catch (error) {
-    return sendError(res, error);
-  }
-};
-
-export const updateVendorStatus = async (req: AuthRequest, res: Response) => {
+export const updateVendor = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const { status, rejection_reason } = req.body;
-    const reviewer = req.user!;
+    const { status, rejection_reason, note } = req.body;
+    const admin = req.user!;
 
     const updateData: any = {
-      status,
       updated_at: new Date(),
-      reviewed_by: reviewer.id,
-      reviewed_at: new Date(),
     };
+
+    const messages: string[] = [];
+
+    if (status) {
+      updateData.status = status;
+      updateData.reviewed_by = admin.id;
+      updateData.reviewed_at = new Date();
+      messages.push(`Status updated to ${status}`);
+    }
 
     if (rejection_reason) {
       updateData.rejection_reason = rejection_reason;
     }
 
-    const vendor = await Vendor.findOneAndUpdate(
-      { _id: id, is_deleted: { $ne: true } },
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const updateOperation: any = { $set: updateData };
 
-    if (!vendor) {
-      throw new ApiError(404, "Vendor not found");
-    }
-
-    return sendSuccessWithMessage(
-      res,
-      `Vendor status updated to ${status}`,
-      { vendor: vendor.toObject() }
-    );
-  } catch (error) {
-    return sendError(res, error);
-  }
-};
-
-export const addVendorNote = async (req: AuthRequest, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { note } = req.body;
-    const admin = req.user!;
-
-    const vendor = await Vendor.findOneAndUpdate(
-      { _id: id, is_deleted: { $ne: true } },
-      {
-        $push: {
-          admin_notes: {
-            note,
-            created_by: admin.id,
-            created_at: new Date(),
-          },
+    if (note) {
+      updateOperation.$push = {
+        admin_notes: {
+          note,
+          created_by: admin.id,
+          created_at: new Date(),
         },
-        updated_at: new Date(),
-      },
+      };
+      messages.push("Note added");
+    }
+
+    const vendor = await Vendor.findOneAndUpdate(
+      { _id: id, is_deleted: { $ne: true } },
+      updateOperation,
       { new: true, runValidators: true }
     );
 
@@ -197,7 +183,10 @@ export const addVendorNote = async (req: AuthRequest, res: Response) => {
       throw new ApiError(404, "Vendor not found");
     }
 
-    return sendSuccessWithMessage(res, "Note added successfully", { vendor: vendor.toObject() });
+    const message =
+      messages.length > 0 ? messages.join(". ") : "Vendor updated successfully";
+
+    return sendSuccessWithMessage(res, message, { vendor: vendor.toObject() });
   } catch (error) {
     return sendError(res, error);
   }
@@ -241,11 +230,21 @@ export const getVendorStatistics = async (req: AuthRequest, res: Response) => {
             { $sort: { count: -1 } },
           ],
           byBusinessType: [
-            { $group: { _id: "$company_profile.business_type", count: { $sum: 1 } } },
+            {
+              $group: {
+                _id: "$company_profile.business_type",
+                count: { $sum: 1 },
+              },
+            },
             { $sort: { count: -1 } },
           ],
           byCountry: [
-            { $group: { _id: "$company_information.country_of_registration", count: { $sum: 1 } } },
+            {
+              $group: {
+                _id: "$company_information.country_of_registration",
+                count: { $sum: 1 },
+              },
+            },
             { $sort: { count: -1 } },
             { $limit: 10 },
           ],
@@ -255,7 +254,8 @@ export const getVendorStatistics = async (req: AuthRequest, res: Response) => {
             {
               $project: {
                 _id: 1,
-                registered_company_name: "$company_information.registered_company_name",
+                registered_company_name:
+                  "$company_information.registered_company_name",
                 status: 1,
                 submitted_at: 1,
               },
@@ -267,31 +267,6 @@ export const getVendorStatistics = async (req: AuthRequest, res: Response) => {
 
     return sendSuccess(res, {
       statistics: stats[0],
-    });
-  } catch (error) {
-    return sendError(res, error);
-  }
-};
-
-export const searchVendors = async (req: Request, res: Response) => {
-  try {
-    const { query, limit = 10 } = req.query;
-
-    if (!query || typeof query !== "string" || query.length < 2) {
-      throw new ApiError(400, "Search query must be at least 2 characters");
-    }
-
-    const vendors = await Vendor.find(
-      { $text: { $search: query }, is_deleted: { $ne: true } },
-      { score: { $meta: "textScore" } }
-    )
-      .sort({ score: { $meta: "textScore" } })
-      .limit(Number(limit))
-      .lean();
-
-    return sendSuccess(res, {
-      vendors,
-      count: vendors.length,
     });
   } catch (error) {
     return sendError(res, error);
@@ -315,7 +290,9 @@ export const exportVendors = async (req: AuthRequest, res: Response) => {
     }
 
     if (country) {
-      filter["company_information.country_of_registration"] = Array.isArray(country)
+      filter["company_information.country_of_registration"] = Array.isArray(
+        country
+      )
         ? { $in: country }
         : country;
     }
@@ -342,7 +319,10 @@ export const exportVendors = async (req: AuthRequest, res: Response) => {
       return res.send(csv);
     }
 
-    throw new ApiError(400, "Invalid export format. Supported formats: json, csv");
+    throw new ApiError(
+      400,
+      "Invalid export format. Supported formats: json, csv"
+    );
   } catch (error) {
     return sendError(res, error);
   }
@@ -386,7 +366,10 @@ function convertToCSV(vendors: any[]): string {
       row
         .map((cell) => {
           // Escape CSV cells that contain commas or quotes
-          if (typeof cell === "string" && (cell.includes(",") || cell.includes('"'))) {
+          if (
+            typeof cell === "string" &&
+            (cell.includes(",") || cell.includes('"'))
+          ) {
             return `"${cell.replace(/"/g, '""')}"`;
           }
           return cell;

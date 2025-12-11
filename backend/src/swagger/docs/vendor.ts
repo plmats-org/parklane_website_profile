@@ -266,6 +266,11 @@
  *         schema:
  *           type: string
  *           description: Search by company name, email, or overview
+ *       - name: email
+ *         in: query
+ *         schema:
+ *           type: string
+ *           description: Filter by exact email address
  *       - name: sort
  *         in: query
  *         schema:
@@ -367,10 +372,9 @@
  *       403:
  *         description: Forbidden - requires super_admin role
  *
- * /vendors/{id}/status:
  *   patch:
- *     summary: Update vendor status
- *     description: Update vendor approval status (admin only). Rejection reason is required when status is "rejected"
+ *     summary: Update vendor
+ *     description: Update vendor status and/or add admin notes. At least one of status or note must be provided.
  *     tags:
  *       - Vendors
  *     security:
@@ -387,71 +391,22 @@
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - status
  *             properties:
  *               status:
  *                 type: string
  *                 enum: [pending, approved, rejected, on_hold, suspended]
+ *                 description: New vendor status
  *               rejection_reason:
  *                 type: string
  *                 description: Required when status is "rejected"
  *                 example: "Missing required certifications"
- *               notes:
- *                 type: string
- *                 example: "Please provide ISO 9001 certification"
- *     responses:
- *       200:
- *         description: Vendor status updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                 data:
- *                   type: object
- *                   properties:
- *                     vendor:
- *                       $ref: '#/components/schemas/Vendor'
- *       400:
- *         description: Validation error
- *       404:
- *         description: Vendor not found
- *       401:
- *         description: Unauthorized
- *
- * /vendors/{id}/notes:
- *   patch:
- *     summary: Add admin note to vendor
- *     description: Add an internal admin note to a vendor record. Vendor data is read-only, but admins can track observations via notes.
- *     tags:
- *       - Vendors
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - note
- *             properties:
  *               note:
  *                 type: string
- *                 description: Admin note content
+ *                 description: Admin note to add
  *                 example: "Verified company registration documents"
  *     responses:
  *       200:
- *         description: Note added successfully
+ *         description: Vendor updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -462,76 +417,20 @@
  *                   example: "success"
  *                 message:
  *                   type: string
- *                   example: "Admin note added successfully"
+ *                   example: "Status updated to approved. Note added"
  *                 data:
  *                   type: object
  *                   properties:
  *                     vendor:
  *                       $ref: '#/components/schemas/Vendor'
  *       400:
- *         description: Validation error - note is required
+ *         description: Validation error - at least status or note required
  *       404:
  *         description: Vendor not found
  *       401:
  *         description: Unauthorized
  *       403:
  *         description: Forbidden - requires admin or super_admin role
- *
- * /vendors/search:
- *   get:
- *     summary: Search vendors
- *     description: Full-text search for vendors by company name, email, or description
- *     tags:
- *       - Vendors
- *     parameters:
- *       - name: query
- *         in: query
- *         required: true
- *         schema:
- *           type: string
- *           minLength: 2
- *         example: "ABC Trading"
- *       - name: limit
- *         in: query
- *         schema:
- *           type: number
- *           default: 10
- *     responses:
- *       200:
- *         description: Search results retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                 data:
- *                   type: object
- *                   properties:
- *                     vendors:
- *                       type: array
- *                       items:
- *                         $ref: '#/components/schemas/Vendor'
- *                     count:
- *                       type: number
- *
- * /vendors/email/{email}:
- *   get:
- *     summary: Get vendor by email
- *     tags:
- *       - Vendors
- *     parameters:
- *       - name: email
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Vendor retrieved successfully
- *       404:
- *         description: Vendor not found
  *
  * /vendors/stats/overview:
  *   get:

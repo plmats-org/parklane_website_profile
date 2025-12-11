@@ -8,7 +8,15 @@ const vendorDocumentSchema = new Schema(
     type: String,
     category: {
       type: String,
-      enum: ["incorporation", "certification", "product", "financial", "legal", "reference", "other"],
+      enum: [
+        "incorporation",
+        "certification",
+        "product",
+        "financial",
+        "legal",
+        "reference",
+        "other",
+      ],
     },
     url: String,
     uploaded_at: { type: Date, default: Date.now },
@@ -316,7 +324,7 @@ const vendorSchema = new Schema<IVendor>(
     status: {
       type: String,
       enum: {
-        values: ["pending", "approved", "rejected", "on_hold"],
+        values: ["pending", "approved", "rejected", "on_hold", "suspended"],
         message: "Invalid vendor status",
       },
       default: "pending",

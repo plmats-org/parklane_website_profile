@@ -5,7 +5,15 @@ const vendorDocumentSchema = Joi.object({
   name: Joi.string().required(),
   type: Joi.string().required(),
   category: Joi.string()
-    .valid("incorporation", "certification", "product", "financial", "legal", "reference", "other")
+    .valid(
+      "incorporation",
+      "certification",
+      "product",
+      "financial",
+      "legal",
+      "reference",
+      "other"
+    )
     .required(),
   url: Joi.string().uri().required(),
   uploaded_at: Joi.date().optional(),
@@ -27,7 +35,10 @@ const companyInformationSchema = Joi.object({
   registered_company_name: Joi.string().required().min(2).max(255),
   trading_name: Joi.string().optional().max(255),
   country_of_registration: Joi.string().required().min(2),
-  year_established: Joi.number().required().min(1900).max(new Date().getFullYear()),
+  year_established: Joi.number()
+    .required()
+    .min(1900)
+    .max(new Date().getFullYear()),
   company_registration_number: Joi.string().required().min(1).max(50),
   registered_business_address: Joi.string().required().min(5).max(500),
   operational_address: Joi.string().optional().max(500),
@@ -43,12 +54,16 @@ const companyProfileSchema = Joi.object({
   core_activities: Joi.string().required().min(10).max(2000),
   industries_served: Joi.array().items(Joi.string()).min(1).required(),
   products_services_offered: Joi.array().items(Joi.string()).min(1).required(),
-  business_type: Joi.string().valid("manufacturer", "distributor", "agent", "hybrid").required(),
+  business_type: Joi.string()
+    .valid("manufacturer", "distributor", "agent", "hybrid")
+    .required(),
   countries_regions_supplied: Joi.array().items(Joi.string()).min(1).required(),
   production_service_capacity: Joi.string().required().min(5).max(1000),
   minimum_order_quantities: Joi.string().required().min(1).max(500),
   lead_times: Joi.string().required().min(1).max(500),
-  customization_capability: Joi.string().valid("yes", "no", "limited").required(),
+  customization_capability: Joi.string()
+    .valid("yes", "no", "limited")
+    .required(),
   customization_details: Joi.string().optional().max(1000),
 });
 
@@ -64,13 +79,17 @@ const certificationsSchema = Joi.object({
 
 const productTechnicalSchema = Joi.object({
   product_catalog: Joi.array().items(vendorDocumentSchema).optional(),
-  specifications_data_sheets: Joi.array().items(vendorDocumentSchema).optional(),
+  specifications_data_sheets: Joi.array()
+    .items(vendorDocumentSchema)
+    .optional(),
   hs_codes: Joi.array().items(Joi.string()).optional(),
   msds: Joi.array().items(vendorDocumentSchema).optional(),
   warranty_terms: Joi.string().optional().max(1000),
   defective_goods_policy: Joi.string().optional().max(1000),
   packaging_standards: Joi.string().optional().max(1000),
-  raw_material_certifications: Joi.array().items(vendorDocumentSchema).optional(),
+  raw_material_certifications: Joi.array()
+    .items(vendorDocumentSchema)
+    .optional(),
 });
 
 const commercialFinancialSchema = Joi.object({
@@ -84,7 +103,9 @@ const commercialFinancialSchema = Joi.object({
   bank_branch_name: Joi.string().optional().max(255),
   swift_code: Joi.string().optional().max(20),
   iban: Joi.string().optional().max(50),
-  financial_stability_documents: Joi.array().items(vendorDocumentSchema).optional(),
+  financial_stability_documents: Joi.array()
+    .items(vendorDocumentSchema)
+    .optional(),
   volume_discounts_available: Joi.string().valid("yes", "no").optional(),
   volume_discount_details: Joi.string().optional().max(1000),
   long_term_pricing_agreements: Joi.string().valid("yes", "no").optional(),
@@ -94,7 +115,9 @@ const logisticsSchema = Joi.object({
   country_of_origin: Joi.array().items(Joi.string()).optional(),
   incoterms_used: Joi.array().items(Joi.string()).optional(),
   shipping_methods: Joi.array().items(Joi.string()).optional(),
-  international_documentation_capability: Joi.string().valid("yes", "no").optional(),
+  international_documentation_capability: Joi.string()
+    .valid("yes", "no")
+    .optional(),
   standard_lead_times: Joi.string().optional().max(500),
   urgent_delivery_capability: Joi.string().valid("yes", "no").optional(),
   urgent_delivery_details: Joi.string().optional().max(1000),
@@ -136,9 +159,13 @@ const referencesSchema = Joi.object({
 const additionalSchema = Joi.object({
   exclusive_partnerships_interest: Joi.string().valid("yes", "no").optional(),
   exclusive_partnerships_details: Joi.string().optional().max(1000),
-  jv_distribution_collaboration_interest: Joi.string().valid("yes", "no").optional(),
+  jv_distribution_collaboration_interest: Joi.string()
+    .valid("yes", "no")
+    .optional(),
   jv_collaboration_details: Joi.string().optional().max(1000),
-  preferred_supplier_program_interest: Joi.string().valid("yes", "no").optional(),
+  preferred_supplier_program_interest: Joi.string()
+    .valid("yes", "no")
+    .optional(),
   additional_documents: Joi.array().items(vendorDocumentSchema).optional(),
   additional_comments: Joi.string().optional().max(2000),
 });
@@ -156,10 +183,10 @@ export const createVendor = Joi.object({
   additional: additionalSchema.optional(),
 });
 
-export const updateVendorStatus = Joi.object({
+export const updateVendor = Joi.object({
   status: Joi.string()
-    .valid("pending", "approved", "rejected", "on_hold")
-    .required(),
+    .valid("pending", "approved", "rejected", "on_hold", "suspended")
+    .optional(),
   rejection_reason: Joi.string()
     .optional()
     .max(1000)
@@ -168,22 +195,20 @@ export const updateVendorStatus = Joi.object({
       then: Joi.string().required().max(1000),
       otherwise: Joi.string().optional().max(1000),
     }),
-});
-
-export const addAdminNote = Joi.object({
-  note: Joi.string().required().min(1).max(2000),
-});
+  note: Joi.string().optional().min(1).max(2000),
+})
 
 export const queryVendors = Joi.object({
   page: Joi.number().optional().min(1),
   limit: Joi.number().optional().min(1).max(100),
   status: Joi.string()
-    .valid("pending", "approved", "rejected", "on_hold")
+    .valid("pending", "approved", "rejected", "on_hold", "suspended")
     .optional(),
   business_type: Joi.string()
     .valid("manufacturer", "distributor", "agent", "hybrid")
     .optional(),
   country: Joi.string().optional(),
   search: Joi.string().optional().max(255),
+  email: Joi.string().email().optional(),
   sort: Joi.string().optional(),
 });

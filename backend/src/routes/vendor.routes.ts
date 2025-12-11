@@ -6,14 +6,12 @@ import * as vendorValidation from "../validations/vendor.validation";
 
 const router = Router();
 
-// Public routes - anyone can submit a vendor registration
 router.post(
   "/",
   validate(vendorValidation.createVendor),
   vendorController.createVendor
 );
 
-router.get("/search", vendorController.searchVendors);
 router.get("/:id", vendorController.getVendorById);
 
 // Protected routes - requires authentication
@@ -31,33 +29,19 @@ router.get(
   vendorController.getVendorStatistics
 );
 
-// Status update - only status can be changed (Read-Only Update Prevention)
-router.patch(
-  "/:id/status",
-  authorize("super_admin", "admin"),
-  validate(vendorValidation.updateVendorStatus),
-  vendorController.updateVendorStatus
-);
-
-// Add note without modifying vendor data
-router.post(
-  "/:id/notes",
-  authorize("super_admin", "admin"),
-  validate(vendorValidation.addAdminNote),
-  vendorController.addVendorNote
-);
-
-// Soft delete with data retention
-router.delete(
-  "/:id",
-  authorize("super_admin"),
-  vendorController.deleteVendor
-);
-
 router.get(
   "/export/data",
   authorize("super_admin", "admin"),
   vendorController.exportVendors
 );
+
+router.patch(
+  "/:id",
+  authorize("super_admin", "admin"),
+  validate(vendorValidation.updateVendor),
+  vendorController.updateVendor
+);
+
+router.delete("/:id", authorize("super_admin"), vendorController.deleteVendor);
 
 export default router;

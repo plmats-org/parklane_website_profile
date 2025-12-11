@@ -159,7 +159,7 @@ export interface IVendor extends Document {
   sustainability: SustainabilityESG;
   references: ReferencesPastPerformance;
   additional: AdditionalInformation;
-  status: "pending" | "approved" | "rejected" | "on_hold";
+  status: "pending" | "approved" | "rejected" | "on_hold" | "suspended";
   submitted_at: Date;
   updated_at: Date;
   reviewed_by?: string;
@@ -179,7 +179,7 @@ export interface AdminNote {
 }
 
 export interface VendorFilters {
-  status?: ("pending" | "approved" | "rejected" | "on_hold")[];
+  status?: ("pending" | "approved" | "rejected" | "on_hold" | "suspended")[];
   business_type?: ("manufacturer" | "distributor" | "agent" | "hybrid")[];
   country?: string[];
   search?: string;
