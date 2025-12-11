@@ -1,5 +1,5 @@
 export interface ApiResponse<T = any> {
-  status: 'success' | 'error';
+  status: "success" | "error";
   message: string;
   data?: T;
   statusCode?: number;
@@ -16,7 +16,7 @@ export interface PaginationMeta {
 }
 
 export interface PaginatedResponse<T> {
-  status: 'success';
+  status: "success";
   data: T[];
   pagination: PaginationMeta;
 }
@@ -28,10 +28,10 @@ export interface ValidationError {
 }
 
 export interface HealthCheckResponse {
-  status: 'success';
+  status: "success";
   message: string;
   timestamp: string;
   uptime: number;
   environment: string;
-  database: 'connected' | 'disconnected';
+  database: "connected" | "disconnected";
 }

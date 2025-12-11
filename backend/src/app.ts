@@ -26,11 +26,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
 
   // Log when response finishes
-  res.on('finish', () => {
+  res.on("finish", () => {
     const duration = Date.now() - start;
     const timestamp = new Date().toISOString();
-    const statusColor = res.statusCode >= 400 ? '\x1b[31m' : '\x1b[32m';
-    const reset = '\x1b[0m';
+    const statusColor = res.statusCode >= 400 ? "\x1b[31m" : "\x1b[32m";
+    const reset = "\x1b[0m";
 
     console.log(
       `[${timestamp}] ${req.method} ${req.originalUrl} ${statusColor}${res.statusCode}${reset} ${duration}ms`
@@ -101,7 +101,6 @@ app.use(preventParameterPollution);
 app.use(setSecurityHeaders);
 
 app.use(validateContentType);
-
 
 app.get("/health", (req: Request, res: Response) => {
   const healthcheck = {

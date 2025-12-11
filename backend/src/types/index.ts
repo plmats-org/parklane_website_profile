@@ -1,6 +1,7 @@
 export * from "./user.types";
 export * from "./auth.types";
 export * from "./response.types";
+export * from "./vendor.types";
 
 // Environment types
 export interface EnvConfig {
