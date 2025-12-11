@@ -1,37 +1,48 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import type { Vendor } from '../../types/vendor.types';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import type { Vendor } from "../../types/vendor.types";
 
 interface VendorDetailsProps {
   vendor: Vendor;
-  onStatusUpdate?: (status: 'approved' | 'rejected' | 'suspended', notes?: string) => void;
+  onStatusUpdate?: (
+    status: "approved" | "rejected" | "suspended",
+    notes?: string
+  ) => void;
   isUpdating?: boolean;
 }
 
-export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: VendorDetailsProps) {
-  const [notes, setNotes] = useState('');
+export default function VendorDetails({
+  vendor,
+  onStatusUpdate,
+  isUpdating,
+}: VendorDetailsProps) {
+  const [notes, setNotes] = useState("");
   const [showStatusModal, setShowStatusModal] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<'approved' | 'rejected' | 'suspended' | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<
+    "approved" | "rejected" | "suspended" | null
+  >(null);
 
   const handleStatusChange = () => {
     if (selectedStatus && onStatusUpdate) {
       onStatusUpdate(selectedStatus, notes);
       setShowStatusModal(false);
-      setNotes('');
+      setNotes("");
       setSelectedStatus(null);
     }
   };
 
   const getStatusColor = (status: string) => {
     const colors = {
-      pending: 'bg-amber-100 text-amber-700 border-amber-200',
-      approved: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-      rejected: 'bg-red-100 text-red-700 border-red-200',
-      suspended: 'bg-slate-100 text-slate-700 border-slate-200',
+      pending: "bg-amber-100 text-amber-700 border-amber-200",
+      approved: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      rejected: "bg-red-100 text-red-700 border-red-200",
+      suspended: "bg-slate-100 text-slate-700 border-slate-200",
     };
-    return colors[status as keyof typeof colors] || 'bg-slate-100 text-slate-700';
+    return (
+      colors[status as keyof typeof colors] || "bg-slate-100 text-slate-700"
+    );
   };
 
   const renderSection = (title: string, content: any) => {
@@ -44,21 +55,32 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
         </h3>
         <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Object.entries(content).map(([key, value]: [string, any]) => {
-            if (!value || key.includes('Document') || key.includes('document') || Array.isArray(value) && value.length === 0) return null;
+            if (
+              !value ||
+              key.includes("Document") ||
+              key.includes("document") ||
+              (Array.isArray(value) && value.length === 0)
+            )
+              return null;
 
             return (
               <div key={key}>
                 <dt className="text-sm font-medium text-slate-600 mb-1">
-                  {key.replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase())}
+                  {key
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()
+                    .replace(/^./, (str) => str.toUpperCase())}
                 </dt>
                 <dd className="text-sm text-slate-900">
                   {Array.isArray(value)
-                    ? value.join(', ')
-                    : typeof value === 'boolean'
-                    ? value ? 'Yes' : 'No'
-                    : typeof value === 'object' && value !== null
+                    ? value.join(", ")
+                    : typeof value === "boolean"
+                    ? value
+                      ? "Yes"
+                      : "No"
+                    : typeof value === "object" && value !== null
                     ? JSON.stringify(value)
-                    : value?.toString() || 'N/A'}
+                    : value?.toString() || "N/A"}
                 </dd>
               </div>
             );
@@ -80,11 +102,17 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
             <div className="flex items-center gap-3 text-sm text-slate-600">
               <span className="font-mono">{vendor.id}</span>
               <span>•</span>
-              <span>Submitted: {new Date(vendor.submittedAt).toLocaleDateString()}</span>
+              <span>
+                Submitted: {new Date(vendor.submittedAt).toLocaleDateString()}
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className={`inline-flex px-4 py-2 text-sm font-medium rounded-lg border ${getStatusColor(vendor.status)}`}>
+            <span
+              className={`inline-flex px-4 py-2 text-sm font-medium rounded-lg border ${getStatusColor(
+                vendor.status
+              )}`}
+            >
               {vendor.status.charAt(0).toUpperCase() + vendor.status.slice(1)}
             </span>
           </div>
@@ -92,13 +120,13 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
       </div>
 
       {/* Status Actions */}
-      {vendor.status === 'pending' && onStatusUpdate && (
+      {vendor.status === "pending" && onStatusUpdate && (
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           <h3 className="font-semibold text-slate-900 mb-4">Update Status</h3>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => {
-                setSelectedStatus('approved');
+                setSelectedStatus("approved");
                 setShowStatusModal(true);
               }}
               className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
@@ -107,7 +135,7 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
             </button>
             <button
               onClick={() => {
-                setSelectedStatus('rejected');
+                setSelectedStatus("rejected");
                 setShowStatusModal(true);
               }}
               className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
@@ -116,7 +144,7 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
             </button>
             <button
               onClick={() => {
-                setSelectedStatus('suspended');
+                setSelectedStatus("suspended");
                 setShowStatusModal(true);
               }}
               className="px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg transition-colors"
@@ -128,42 +156,45 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
       )}
 
       {/* Vendor Information Sections */}
-      {renderSection('Company Information', vendor.companyInformation)}
-      {renderSection('Company Profile', vendor.companyProfile)}
-      {renderSection('Certifications', vendor.certifications)}
-      {renderSection('Product & Technical', vendor.productTechnical)}
-      {renderSection('Commercial & Financial', vendor.commercialFinancial)}
-      {renderSection('Logistics', vendor.logistics)}
-      {renderSection('Legal & Risk', vendor.legalRisk)}
-      {renderSection('Sustainability', vendor.sustainability)}
-      {renderSection('Additional Information', vendor.additional)}
+      {renderSection("Company Information", vendor.companyInformation)}
+      {renderSection("Company Profile", vendor.companyProfile)}
+      {renderSection("Certifications", vendor.certifications)}
+      {renderSection("Product & Technical", vendor.productTechnical)}
+      {renderSection("Commercial & Financial", vendor.commercialFinancial)}
+      {renderSection("Logistics", vendor.logistics)}
+      {renderSection("Legal & Risk", vendor.legalRisk)}
+      {renderSection("Sustainability", vendor.sustainability)}
+      {renderSection("Additional Information", vendor.additional)}
 
       {/* References */}
-      {vendor.references?.majorClientsList && vendor.references.majorClientsList.length > 0 && (
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h3 className="font-semibold text-lg text-slate-900 mb-4 pb-3 border-b border-slate-200">
-            References
-          </h3>
-          <div className="space-y-3">
-            {vendor.references.majorClientsList
-              .filter((client: any) => client.clientName)
-              .map((client: any, index: number) => (
-                <div key={index} className="bg-slate-50 p-4 rounded-lg">
-                  <p className="font-medium text-slate-900">{client.clientName}</p>
-                  <p className="text-sm text-slate-600 mt-1">
-                    {client.country} • {client.durationOfRelationship}
-                  </p>
-                  {client.contactPerson && (
-                    <p className="text-sm text-slate-600 mt-1">
-                      Contact: {client.contactPerson}
-                      {client.contactEmail && ` (${client.contactEmail})`}
+      {vendor.references?.majorClientsList &&
+        vendor.references.majorClientsList.length > 0 && (
+          <div className="bg-white border border-slate-200 rounded-xl p-6">
+            <h3 className="font-semibold text-lg text-slate-900 mb-4 pb-3 border-b border-slate-200">
+              References
+            </h3>
+            <div className="space-y-3">
+              {vendor.references.majorClientsList
+                .filter((client: any) => client.clientName)
+                .map((client: any, index: number) => (
+                  <div key={index} className="bg-slate-50 p-4 rounded-lg">
+                    <p className="font-medium text-slate-900">
+                      {client.clientName}
                     </p>
-                  )}
-                </div>
-              ))}
+                    <p className="text-sm text-slate-600 mt-1">
+                      {client.country} • {client.durationOfRelationship}
+                    </p>
+                    {client.contactPerson && (
+                      <p className="text-sm text-slate-600 mt-1">
+                        Contact: {client.contactPerson}
+                        {client.contactEmail && ` (${client.contactEmail})`}
+                      </p>
+                    )}
+                  </div>
+                ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Review History */}
       {vendor.reviewedBy && (
@@ -173,11 +204,13 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
           </h3>
           <div className="space-y-2">
             <p className="text-sm text-slate-600">
-              <span className="font-medium">Reviewed by:</span> {vendor.reviewedBy}
+              <span className="font-medium">Reviewed by:</span>{" "}
+              {vendor.reviewedBy}
             </p>
             {vendor.reviewedAt && (
               <p className="text-sm text-slate-600">
-                <span className="font-medium">Reviewed on:</span> {new Date(vendor.reviewedAt).toLocaleString()}
+                <span className="font-medium">Reviewed on:</span>{" "}
+                {new Date(vendor.reviewedAt).toLocaleString()}
               </p>
             )}
             {vendor.reviewNotes && (
@@ -198,7 +231,12 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
             className="bg-white rounded-xl p-6 max-w-md w-full"
           >
             <h3 className="text-xl font-bold text-slate-900 mb-4">
-              {selectedStatus === 'approved' ? 'Approve' : selectedStatus === 'rejected' ? 'Reject' : 'Suspend'} Vendor
+              {selectedStatus === "approved"
+                ? "Approve"
+                : selectedStatus === "rejected"
+                ? "Reject"
+                : "Suspend"}{" "}
+              Vendor
             </h3>
             <p className="text-slate-600 mb-4">
               Are you sure you want to {selectedStatus} this vendor?
@@ -221,13 +259,13 @@ export default function VendorDetails({ vendor, onStatusUpdate, isUpdating }: Ve
                 disabled={isUpdating}
                 className="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50"
               >
-                {isUpdating ? 'Updating...' : 'Confirm'}
+                {isUpdating ? "Updating..." : "Confirm"}
               </button>
               <button
                 onClick={() => {
                   setShowStatusModal(false);
                   setSelectedStatus(null);
-                  setNotes('');
+                  setNotes("");
                 }}
                 disabled={isUpdating}
                 className="flex-1 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg transition-colors"

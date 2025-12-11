@@ -1,36 +1,36 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { useLogin } from '@/hooks/useVendor';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useLogin } from "../../hooks/useVendor";
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+export default function LoginScreen() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const loginMutation = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     const result = await loginMutation.mutateAsync({ email, password });
-    
+
     if (!result.success) {
-      setError(result.error || 'Login failed');
+      setError(result.error || "Login failed");
     }
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Image */}
+    <div className="min-h-screen flex ">
       <div className="hidden lg:block lg:w-1/2 relative bg-slate-900">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')",
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 to-slate-800/80"></div>
@@ -42,17 +42,17 @@ export default function LoginPage() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl font-bold text-white mb-4">
-              Vendor Management System
+              Manage Your Vendors Seamlessly
             </h1>
             <p className="text-lg text-slate-300">
-              Manage your vendor relationships, applications, and approvals all in one place.
+              Manage your vendor relationships, applications, and approvals all
+              in one place.
             </p>
           </motion.div>
         </div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 mx-auto">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -66,24 +66,24 @@ export default function LoginPage() {
                 <span className="text-white font-bold text-xl">PLM</span>
               </div>
               <div>
-                <div className="font-bold text-xl text-slate-900">Parklane Materials</div>
-                <div className="text-sm text-slate-600">Back Office</div>
+                <div className="font-bold text-xl text-slate-900">
+                  Parklane Materials
+                </div>
+                <div className="text-sm text-slate-600">
+                  Global Sourcing Excellence
+                </div>
               </div>
             </Link>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome back</h2>
-            <p className="text-slate-600">Sign in to your account to continue</p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">
+              Welcome back
+            </h2>
+            <p className="text-slate-600">
+              Sign in to your account to continue
+            </p>
           </div>
-
-          {/* Demo Credentials Info */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <p className="text-sm text-blue-800 font-medium mb-1">Demo Credentials:</p>
-            <p className="text-sm text-blue-700">Email: admin@plm.com</p>
-            <p className="text-sm text-blue-700">Password: admin123</p>
-          </div>
-
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -92,7 +92,10 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Email Address
               </label>
               <input
@@ -107,7 +110,10 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Password
               </label>
               <input
@@ -142,12 +148,15 @@ export default function LoginPage() {
               disabled={loginMutation.isPending}
               className="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loginMutation.isPending ? 'Signing in...' : 'Sign In'}
+              {loginMutation.isPending ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-slate-600 hover:text-slate-900">
+            <Link
+              href="/"
+              className="text-sm text-slate-600 hover:text-slate-900"
+            >
               ← Back to homepage
             </Link>
           </div>

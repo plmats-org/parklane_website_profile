@@ -9,7 +9,7 @@ interface VendorFiltersProps {
 }
 
 export default function VendorFilters({ onFilterChange }: VendorFiltersProps) {
-  const [filters, setFilters] = useState<VendorFilters>({});
+  const [filters, setFilters] = useState<VendorFilters>({} as any);
 
   const handleFilterChange = (key: keyof VendorFilters, value: any) => {
     const newFilters = { ...filters, [key]: value || undefined };
@@ -18,8 +18,8 @@ export default function VendorFilters({ onFilterChange }: VendorFiltersProps) {
   };
 
   const handleClear = () => {
-    setFilters({});
-    onFilterChange({});
+    setFilters({} as any);
+    onFilterChange({} as any);
   };
 
   const hasActiveFilters = Object.values(filters).some((v) => v);

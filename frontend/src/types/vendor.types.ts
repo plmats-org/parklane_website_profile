@@ -163,6 +163,7 @@ export interface VendorFormData {
 }
 
 export interface Vendor extends VendorFormData {
+  reviewNotes: any;
   id: string;
   status: 'pending' | 'approved' | 'rejected' | 'suspended';
   submittedAt: Date;
@@ -222,6 +223,7 @@ export interface PaginatedResponse<T> {
 }
 
 export interface VendorFilters {
+  search: string;
   status?: Vendor['status'][];
   businessType?: CompanyProfileCapabilities['businessType'][];
   country?: string[];

@@ -100,7 +100,7 @@ export default function Navbar() {
               className="hidden lg:block space-x-3"
             >
               <Link
-                href="/login"
+                href="/backoffice/login"
                 className="inline-flex text-sm items-center justify-center px-4 py-2 bg-primary-400 hover:bg-primary-500 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
               >
                 Login

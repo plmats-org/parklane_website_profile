@@ -1,67 +1,106 @@
-import type { 
-  Vendor, 
-  VendorFormData, 
-  ApiResponse, 
+// API Service with dummy endpoints - Easy to replace with real API
+import type {
+  Vendor,
+  VendorFormData,
+  ApiResponse,
   PaginatedResponse,
   VendorFilters,
   LoginCredentials,
-  BackofficeUser 
-} from '../../types/vendor.types';
+  BackofficeUser,
+} from "../types/vendor.types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 
-// Simulated delay for realistic API behavior
-const delay = (ms: number = 1500) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number = 1500) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
-// Mock data generator
 const generateMockVendors = (count: number = 50): Vendor[] => {
-  const statuses: Array<'pending' | 'approved' | 'rejected' | 'suspended'> = ['pending', 'approved', 'rejected', 'suspended'];
-  const countries = ['Rwanda', 'Kenya', 'Uganda', 'Tanzania', 'UAE', 'China', 'India'];
-  const industries = ['Construction', 'Manufacturing', 'Healthcare', 'Agriculture', 'Technology'];
-  
+  const statuses: Array<"pending" | "approved" | "rejected" | "suspended"> = [
+    "pending",
+    "approved",
+    "rejected",
+    "suspended",
+  ];
+  const countries = [
+    "Rwanda",
+    "Kenya",
+    "Uganda",
+    "Tanzania",
+    "UAE",
+    "China",
+    "India",
+  ];
+  const industries = [
+    "Construction",
+    "Manufacturing",
+    "Healthcare",
+    "Agriculture",
+    "Technology",
+  ];
+
   return Array.from({ length: count }, (_, i) => ({
-    id: `VND${String(i + 1).padStart(4, '0')}`,
+    id: `VND${String(i + 1).padStart(4, "0")}`,
     status: statuses[Math.floor(Math.random() * statuses.length)],
-    submittedAt: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000),
-    lastUpdated: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
+    submittedAt: new Date(
+      Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000
+    ),
+    lastUpdated: new Date(
+      Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+    ),
     companyInformation: {
       registeredCompanyName: `Company ${i + 1} Ltd`,
       tradingName: i % 3 === 0 ? `Trading ${i + 1}` : undefined,
-      countryOfRegistration: countries[Math.floor(Math.random() * countries.length)],
+      countryOfRegistration:
+        countries[Math.floor(Math.random() * countries.length)],
       yearEstablished: 2000 + Math.floor(Math.random() * 24),
-      companyRegistrationNumber: `REG${String(i + 1).padStart(6, '0')}`,
+      companyRegistrationNumber: `REG${String(i + 1).padStart(6, "0")}`,
       registeredBusinessAddress: `${i + 1} Business St, District, City`,
-      operationalAddress: i % 2 === 0 ? `${i + 1} Operations Ave, City` : undefined,
+      operationalAddress:
+        i % 2 === 0 ? `${i + 1} Operations Ave, City` : undefined,
       website: `https://company${i + 1}.com`,
       corporateEmail: `info@company${i + 1}.com`,
       primaryContactPersonName: `Contact Person ${i + 1}`,
-      contactPersonTitle: 'General Manager',
+      contactPersonTitle: "General Manager",
       phoneNumbers: [`+25078812345${i % 10}`],
     },
     companyProfile: {
-      companyOverview: `Leading supplier in ${industries[Math.floor(Math.random() * industries.length)]} sector`,
-      coreActivities: 'Manufacturing and distribution',
-      industriesServed: [industries[Math.floor(Math.random() * industries.length)]],
-      productsServicesOffered: 'Various products and services',
-      businessType: ['manufacturer', 'distributor', 'agent', 'hybrid'][Math.floor(Math.random() * 4)] as any,
-      countriesRegionsSupplied: [countries[Math.floor(Math.random() * countries.length)]],
-      productionServiceCapacity: '10,000 units/month',
-      minimumOrderQuantities: '100 units',
-      leadTimes: '2-4 weeks',
-      customizationCapability: 'yes',
+      companyOverview: `Leading supplier in ${
+        industries[Math.floor(Math.random() * industries.length)]
+      } sector`,
+      coreActivities: "Manufacturing and distribution",
+      industriesServed: [
+        industries[Math.floor(Math.random() * industries.length)],
+      ],
+      productsServicesOffered: "Various products and services",
+      businessType: ["manufacturer", "distributor", "agent", "hybrid"][
+        Math.floor(Math.random() * 4)
+      ] as any,
+      countriesRegionsSupplied: [
+        countries[Math.floor(Math.random() * countries.length)],
+      ],
+      productionServiceCapacity: "10,000 units/month",
+      minimumOrderQuantities: "100 units",
+      leadTimes: "2-4 weeks",
+      customizationCapability: "yes",
     },
-    reviewedBy: i % 3 === 0 ? 'admin@plm.com' : undefined,
-    reviewedAt: i % 3 === 0 ? new Date(Date.now() - Math.random() * 15 * 24 * 60 * 60 * 1000) : undefined,
-    reviewNotes: i % 3 === 0 ? 'Application reviewed and processed' : undefined,
+    reviewedBy: i % 3 === 0 ? "admin@plm.com" : undefined,
+    reviewedAt:
+      i % 3 === 0
+        ? new Date(Date.now() - Math.random() * 15 * 24 * 60 * 60 * 1000)
+        : undefined,
+    reviewNotes: i % 3 === 0 ? "Application reviewed and processed" : undefined,
   }));
 };
 
 // Vendor Service
 export const vendorService = {
   // Submit vendor registration
-  async submitRegistration(data: VendorFormData): Promise<ApiResponse<{ id: string; referenceNumber: string }>> {
+  async submitRegistration(
+    data: VendorFormData
+  ): Promise<ApiResponse<{ id: string; referenceNumber: string }>> {
     await delay();
-    
+
     try {
       // TODO: Replace with actual API call
       // const response = await fetch(`${API_BASE_URL}/vendors/register`, {
@@ -78,12 +117,12 @@ export const vendorService = {
           id: `VND${Date.now()}`,
           referenceNumber: `VR-${Date.now().toString().slice(-8)}`,
         },
-        message: 'Vendor registration submitted successfully',
+        message: "Vendor registration submitted successfully",
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to submit registration',
+        error: "Failed to submit registration",
       };
     }
   },
@@ -115,18 +154,25 @@ export const vendorService = {
 
       // Apply filters
       if (filters?.status) {
-        mockVendors = mockVendors.filter(v => v.status === filters.status);
+        mockVendors = mockVendors.filter((v) => v.status === filters.status);
       }
       if (filters?.search) {
         const searchLower = filters.search.toLowerCase();
-        mockVendors = mockVendors.filter(v =>
-          v.companyInformation.registeredCompanyName.toLowerCase().includes(searchLower) ||
-          v.companyInformation.corporateEmail.toLowerCase().includes(searchLower) ||
-          v.id.toLowerCase().includes(searchLower)
+        mockVendors = mockVendors.filter(
+          (v) =>
+            v.companyInformation.registeredCompanyName
+              .toLowerCase()
+              .includes(searchLower) ||
+            v.companyInformation.corporateEmail
+              .toLowerCase()
+              .includes(searchLower) ||
+            v.id.toLowerCase().includes(searchLower)
         );
       }
       if (filters?.country) {
-        mockVendors = mockVendors.filter(v => v.companyInformation.countryOfRegistration === filters.country);
+        mockVendors = mockVendors.filter(
+          (v) => v.companyInformation.countryOfRegistration === filters.country
+        );
       }
 
       const total = mockVendors.length;
@@ -148,7 +194,7 @@ export const vendorService = {
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to fetch vendors',
+        error: "Failed to fetch vendors",
       };
     }
   },
@@ -164,7 +210,7 @@ export const vendorService = {
 
       // Mock response
       const vendors = generateMockVendors();
-      const vendor = vendors.find(v => v.id === id);
+      const vendor = vendors.find((v) => v.id === id);
 
       if (vendor) {
         return {
@@ -174,13 +220,13 @@ export const vendorService = {
       } else {
         return {
           success: false,
-          error: 'Vendor not found',
+          error: "Vendor not found",
         };
       }
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to fetch vendor details',
+        error: "Failed to fetch vendor details",
       };
     }
   },
@@ -188,7 +234,7 @@ export const vendorService = {
   // Update vendor status
   async updateVendorStatus(
     id: string,
-    status: 'approved' | 'rejected' | 'suspended',
+    status: "approved" | "rejected" | "suspended",
     notes?: string
   ): Promise<ApiResponse<Vendor>> {
     await delay();
@@ -211,7 +257,7 @@ export const vendorService = {
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to update vendor status',
+        error: "Failed to update vendor status",
       };
     }
   },
@@ -230,12 +276,12 @@ export const vendorService = {
       // Mock response
       return {
         success: true,
-        message: 'Vendor deleted successfully',
+        message: "Vendor deleted successfully",
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to delete vendor',
+        error: "Failed to delete vendor",
       };
     }
   },
@@ -244,7 +290,9 @@ export const vendorService = {
 // Auth Service
 export const authService = {
   // Login
-  async login(credentials: LoginCredentials): Promise<ApiResponse<{ user: BackofficeUser; token: string }>> {
+  async login(
+    credentials: LoginCredentials
+  ): Promise<ApiResponse<{ user: BackofficeUser; token: string }>> {
     await delay();
 
     try {
@@ -257,20 +305,23 @@ export const authService = {
       // return await response.json();
 
       // Mock response - Demo credentials: admin@plm.com / admin123
-      if (credentials.email === 'admin@plm.com' && credentials.password === 'admin123') {
+      if (
+        credentials.email === "admin@plm.com" &&
+        credentials.password === "admin123"
+      ) {
         const user: BackofficeUser = {
-          id: 'USR001',
-          email: 'admin@plm.com',
-          name: 'Admin User',
-          role: 'admin',
+          id: "USR001",
+          email: "admin@plm.com",
+          name: "Admin User",
+          role: "admin",
         };
 
-        const token = 'mock_jwt_token_' + Date.now();
-        
+        const token = "mock_jwt_token_" + Date.now();
+
         // Store in localStorage
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('plm_auth_token', token);
-          localStorage.setItem('plm_user', JSON.stringify(user));
+        if (typeof window !== "undefined") {
+          localStorage.setItem("plm_auth_token", token);
+          localStorage.setItem("plm_user", JSON.stringify(user));
         }
 
         return {
@@ -280,29 +331,29 @@ export const authService = {
       } else {
         return {
           success: false,
-          error: 'Invalid email or password',
+          error: "Invalid email or password",
         };
       }
     } catch (error) {
       return {
         success: false,
-        error: 'Login failed',
+        error: "Login failed",
       };
     }
   },
 
   // Logout
   async logout(): Promise<void> {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('plm_auth_token');
-      localStorage.removeItem('plm_user');
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("plm_auth_token");
+      localStorage.removeItem("plm_user");
     }
   },
 
   // Get current user
   getCurrentUser(): BackofficeUser | null {
-    if (typeof window !== 'undefined') {
-      const userStr = localStorage.getItem('plm_user');
+    if (typeof window !== "undefined") {
+      const userStr = localStorage.getItem("plm_user");
       return userStr ? JSON.parse(userStr) : null;
     }
     return null;
@@ -310,8 +361,8 @@ export const authService = {
 
   // Check if authenticated
   isAuthenticated(): boolean {
-    if (typeof window !== 'undefined') {
-      return !!localStorage.getItem('plm_auth_token');
+    if (typeof window !== "undefined") {
+      return !!localStorage.getItem("plm_auth_token");
     }
     return false;
   },
@@ -332,12 +383,12 @@ export const authService = {
       // Mock response
       return {
         success: true,
-        message: 'Password reset instructions sent to your email',
+        message: "Password reset instructions sent to your email",
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to send reset instructions',
+        error: "Failed to send reset instructions",
       };
     }
   },
