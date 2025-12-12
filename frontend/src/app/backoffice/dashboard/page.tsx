@@ -1,6 +1,6 @@
 "use client";
 
-import DashboardScreen from "@/src/components/backoffice/DashboardScreen";
+import DashboardScreen from "@/components/backoffice/DashboardScreen";
 
 export default function Login() {
   return (

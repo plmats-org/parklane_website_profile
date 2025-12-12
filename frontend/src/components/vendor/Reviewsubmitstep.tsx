@@ -28,13 +28,13 @@ export default function ReviewSubmitStep({
         </h3>
         <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           {Object.entries(content).map(([key, value]: [string, any]) => {
-            if (!value || key.includes("Document") || key.includes("document"))
+            if (!value || key.includes("document") || key.includes("Document"))
               return null;
 
             return (
               <div key={key}>
                 <dt className="text-slate-600 font-medium mb-1">
-                  {key.replace(/([A-Z])/g, " $1").trim()}
+                  {key.replace(/_/g, " ").replace(/([A-Z])/g, " $1").trim()}
                 </dt>
                 <dd className="text-slate-900">
                   {Array.isArray(value)
@@ -54,15 +54,15 @@ export default function ReviewSubmitStep({
   };
 
   const totalDocuments = [
-    ...(data.certifications?.certificationDocuments || []),
-    ...(data.productTechnical?.productCatalog || []),
-    ...(data.productTechnical?.specificationsDataSheets || []),
-    ...(data.productTechnical?.msds || []),
-    ...(data.productTechnical?.rawMaterialCertifications || []),
-    ...(data.commercialFinancial?.financialStabilityDocuments || []),
-    ...(data.references?.referenceLetters || []),
-    ...(data.references?.caseStudies || []),
-    ...(data.additional?.additionalDocuments || []),
+    ...(data.certifications?.certification_documents || []),
+    ...(data.product_technical?.product_catalog || []),
+    ...(data.product_technical?.specifications_data_sheets || []),
+    ...(data.product_technical?.msds || []),
+    ...(data.product_technical?.raw_material_certifications || []),
+    ...(data.commercial_financial?.financial_stability_documents || []),
+    ...(data.references?.reference_letters || []),
+    ...(data.references?.case_studies || []),
+    ...(data.additional?.additional_documents || []),
   ];
 
   return (
@@ -81,21 +81,21 @@ export default function ReviewSubmitStep({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
           <div className="text-3xl font-bold text-blue-700">
-            {data.companyInformation?.countryOfRegistration || "N/A"}
+            {data.company_information?.country_of_registration || "N/A"}
           </div>
           <div className="text-sm text-blue-600 mt-1">Country</div>
         </div>
 
         <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-4 border border-emerald-200">
           <div className="text-3xl font-bold text-emerald-700">
-            {data.companyProfile?.industriesServed?.length || 0}
+            {data.company_profile?.industries_served?.length || 0}
           </div>
           <div className="text-sm text-emerald-600 mt-1">Industries</div>
         </div>
 
         <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-4 border border-amber-200">
           <div className="text-3xl font-bold text-amber-700">
-            {data.references?.majorClientsList?.filter((c: any) => c.clientName)
+            {data.references?.major_clients_list?.filter((c: any) => c.client_name)
               ?.length || 0}
           </div>
           <div className="text-sm text-amber-600 mt-1">Clients</div>
@@ -111,40 +111,40 @@ export default function ReviewSubmitStep({
 
       {/* Review Sections */}
       <div className="space-y-4">
-        {renderSection("Company Information", data.companyInformation, "🏢")}
-        {renderSection("Company Profile", data.companyProfile, "📊")}
+        {renderSection("Company Information", data.company_information, "🏢")}
+        {renderSection("Company Profile", data.company_profile, "📊")}
         {renderSection("Certifications", data.certifications, "✓")}
-        {renderSection("Product & Technical", data.productTechnical, "📦")}
+        {renderSection("Product & Technical", data.product_technical, "📦")}
         {renderSection(
           "Commercial & Financial",
-          data.commercialFinancial,
+          data.commercial_financial,
           "💰"
         )}
         {renderSection("Logistics", data.logistics, "🚚")}
-        {renderSection("Legal & Risk", data.legalRisk, "⚖️")}
+        {renderSection("Legal & Risk", data.legal_risk, "⚖️")}
         {renderSection("Sustainability", data.sustainability, "🌱")}
         {renderSection("Additional Information", data.additional, "📄")}
 
         {/* References Summary */}
-        {data.references?.majorClientsList && (
+        {data.references?.major_clients_list && (
           <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
             <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
               <span className="text-2xl">⭐</span>
               References
             </h3>
             <div className="space-y-3">
-              {data.references.majorClientsList
-                .filter((client: any) => client.clientName)
+              {data.references.major_clients_list
+                .filter((client: any) => client.client_name)
                 .map((client: any, index: number) => (
                   <div
                     key={index}
                     className="bg-white p-4 rounded-lg border border-slate-200"
                   >
                     <p className="font-medium text-slate-900">
-                      {client.clientName}
+                      {client.client_name}
                     </p>
                     <p className="text-sm text-slate-600">
-                      {client.country} • {client.durationOfRelationship}
+                      {client.country} • {client.duration_of_relationship}
                     </p>
                   </div>
                 ))}

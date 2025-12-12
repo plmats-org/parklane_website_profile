@@ -1,9 +1,19 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
-import type { CompanyProfileCapabilities } from '../../types/vendor.types';
-import { BUSINESS_TYPES, INDUSTRIES, COUNTRIES, CUSTOMIZATION_OPTIONS } from '../../lib/constants';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import type { CompanyProfile } from "../../types/vendor.types";
+import {
+  companyProfileSchema,
+  type CompanyProfileFormValues,
+} from "../../validations/vendor.schema";
+import {
+  BUSINESS_TYPES,
+  INDUSTRIES,
+  COUNTRIES,
+  CUSTOMIZATION_OPTIONS,
+} from "../../lib/constants";
 
 interface CompanyProfileStepProps {
   data: any;
@@ -11,28 +21,36 @@ interface CompanyProfileStepProps {
   onBack: () => void;
 }
 
-export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProfileStepProps) {
+export default function CompanyProfileStep({
+  data,
+  onNext,
+  onBack,
+}: CompanyProfileStepProps) {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<CompanyProfileCapabilities>({
-    defaultValues: data.companyProfile || {},
+  } = useForm<CompanyProfileFormValues>({
+    resolver: zodResolver(companyProfileSchema),
+    defaultValues: data.company_profile || {},
   });
 
-  const customizationCapability = watch('customizationCapability');
+  const customization_capability = watch("customization_capability");
 
-  const onSubmit = (formData: CompanyProfileCapabilities) => {
-    onNext({ companyProfile: formData });
+  const onSubmit = (formData: CompanyProfileFormValues) => {
+    onNext({ company_profile: formData });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-slate-900 mb-3">Company Profile & Capabilities</h2>
+        <h2 className="text-3xl font-bold text-slate-900 mb-3">
+          Company Profile & Capabilities
+        </h2>
         <p className="text-slate-600">
-          Tell us about your business operations, capabilities, and what you offer.
+          Tell us about your business operations, capabilities, and what you
+          offer.
         </p>
       </div>
 
@@ -43,15 +61,19 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
             Company Overview *
           </label>
           <textarea
-            {...register('companyOverview', { required: 'Company overview is required' })}
+            {...register("company_overview", {
+              required: "Company overview is required",
+            })}
             rows={4}
             placeholder="Provide a brief overview of your company, its history, mission, and key strengths..."
             className={`block w-full px-3 py-3.5 border ${
-              errors.companyOverview ? 'border-red-300' : 'border-slate-300'
+              errors.company_overview ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.companyOverview && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.companyOverview.message}</p>
+          {errors.company_overview && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.company_overview.message}
+            </p>
           )}
         </div>
 
@@ -61,15 +83,19 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
             Core Activities *
           </label>
           <textarea
-            {...register('coreActivities', { required: 'Core activities are required' })}
+            {...register("core_activities", {
+              required: "Core activities are required",
+            })}
             rows={3}
             placeholder="Describe your main business activities and operations..."
             className={`block w-full px-3 py-3.5 border ${
-              errors.coreActivities ? 'border-red-300' : 'border-slate-300'
+              errors.core_activities ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.coreActivities && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.coreActivities.message}</p>
+          {errors.core_activities && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.core_activities.message}
+            </p>
           )}
         </div>
 
@@ -80,19 +106,26 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
           </label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto p-4 bg-slate-50 rounded-xl border border-slate-200">
             {INDUSTRIES.map((industry) => (
-              <label key={industry} className="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors">
+              <label
+                key={industry}
+                className="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors"
+              >
                 <input
                   type="checkbox"
                   value={industry}
-                  {...register('industriesServed', { required: 'Select at least one industry' })}
+                  {...register("industries_served", {
+                    required: "Select at least one industry",
+                  })}
                   className="rounded border-slate-300 text-primary-500 focus:ring-primary-500"
                 />
                 <span className="text-sm text-slate-700">{industry}</span>
               </label>
             ))}
           </div>
-          {errors.industriesServed && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.industriesServed.message}</p>
+          {errors.industries_served && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.industries_served.message}
+            </p>
           )}
         </div>
 
@@ -102,17 +135,25 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
             List of Products/Services Offered *
           </label>
           <textarea
-            {...register('productsServicesOffered', { required: 'Products/services list is required' })}
+            {...register("products_services_offered", {
+              required: "Products/services list is required",
+            })}
             rows={4}
             placeholder="List your main products or services (e.g., Industrial Equipment, Construction Materials, etc.)"
             className={`block w-full px-3 py-3.5 border ${
-              errors.productsServicesOffered ? 'border-red-300' : 'border-slate-300'
+              errors.products_services_offered
+                ? "border-red-300"
+                : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.productsServicesOffered && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.productsServicesOffered.message}</p>
+          {errors.products_services_offered && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.products_services_offered.message}
+            </p>
           )}
-          <p className="mt-1.5 text-xs text-slate-500">Separate multiple items with commas or line breaks</p>
+          <p className="mt-1.5 text-xs text-slate-500">
+            Separate multiple items with commas or line breaks
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,9 +163,11 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
               Business Type *
             </label>
             <select
-              {...register('businessType', { required: 'Business type is required' })}
+              {...register("business_type", {
+                required: "Business type is required",
+              })}
               className={`block w-full px-3 py-3.5 border ${
-                errors.businessType ? 'border-red-300' : 'border-slate-300'
+                errors.business_type ? "border-red-300" : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             >
               <option value="">Select business type</option>
@@ -134,8 +177,10 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
                 </option>
               ))}
             </select>
-            {errors.businessType && (
-              <p className="mt-1.5 text-sm text-red-600">{errors.businessType.message}</p>
+            {errors.business_type && (
+              <p className="mt-1.5 text-sm text-red-600">
+                {errors.business_type.message}
+              </p>
             )}
           </div>
 
@@ -145,9 +190,13 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
               Customization Capability *
             </label>
             <select
-              {...register('customizationCapability', { required: 'Please select customization capability' })}
+              {...register("customization_capability", {
+                required: "Please select customization capability",
+              })}
               className={`block w-full px-3 py-3.5 border ${
-                errors.customizationCapability ? 'border-red-300' : 'border-slate-300'
+                errors.customization_capability
+                  ? "border-red-300"
+                  : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             >
               <option value="">Select option</option>
@@ -157,20 +206,23 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
                 </option>
               ))}
             </select>
-            {errors.customizationCapability && (
-              <p className="mt-1.5 text-sm text-red-600">{errors.customizationCapability.message}</p>
+            {errors.customization_capability && (
+              <p className="mt-1.5 text-sm text-red-600">
+                {errors.customization_capability.message}
+              </p>
             )}
           </div>
         </div>
 
         {/* Customization Details (conditional) */}
-        {(customizationCapability === 'yes' || customizationCapability === 'limited') && (
+        {(customization_capability === "yes" ||
+          customization_capability === "limited") && (
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
               Customization Details
             </label>
             <textarea
-              {...register('customizationDetails')}
+              {...register("customization_details")}
               rows={3}
               placeholder="Describe what types of customization you can provide..."
               className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -185,19 +237,26 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto p-4 bg-slate-50 rounded-xl border border-slate-200">
             {COUNTRIES.map((country) => (
-              <label key={country} className="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors">
+              <label
+                key={country}
+                className="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded-lg transition-colors"
+              >
                 <input
                   type="checkbox"
                   value={country}
-                  {...register('countriesRegionsSupplied', { required: 'Select at least one country' })}
+                  {...register("countries_regions_supplied", {
+                    required: "Select at least one country",
+                  })}
                   className="rounded border-slate-300 text-primary-500 focus:ring-primary-500"
                 />
                 <span className="text-sm text-slate-700">{country}</span>
               </label>
             ))}
           </div>
-          {errors.countriesRegionsSupplied && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.countriesRegionsSupplied.message}</p>
+          {errors.countries_regions_supplied && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.countries_regions_supplied.message}
+            </p>
           )}
         </div>
 
@@ -208,15 +267,21 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
               Production/Service Capacity *
             </label>
             <input
-              {...register('productionServiceCapacity', { required: 'Capacity is required' })}
+              {...register("production_service_capacity", {
+                required: "Capacity is required",
+              })}
               type="text"
               placeholder="e.g., 10,000 units/month"
               className={`block w-full px-3 py-3.5 border ${
-                errors.productionServiceCapacity ? 'border-red-300' : 'border-slate-300'
+                errors.production_service_capacity
+                  ? "border-red-300"
+                  : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             />
-            {errors.productionServiceCapacity && (
-              <p className="mt-1.5 text-sm text-red-600">{errors.productionServiceCapacity.message}</p>
+            {errors.production_service_capacity && (
+              <p className="mt-1.5 text-sm text-red-600">
+                {errors.production_service_capacity.message}
+              </p>
             )}
           </div>
 
@@ -226,15 +291,21 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
               Minimum Order Quantities (MOQs) *
             </label>
             <input
-              {...register('minimumOrderQuantities', { required: 'MOQ is required' })}
+              {...register("minimum_order_quantities", {
+                required: "MOQ is required",
+              })}
               type="text"
               placeholder="e.g., 100 units or No minimum"
               className={`block w-full px-3 py-3.5 border ${
-                errors.minimumOrderQuantities ? 'border-red-300' : 'border-slate-300'
+                errors.minimum_order_quantities
+                  ? "border-red-300"
+                  : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             />
-            {errors.minimumOrderQuantities && (
-              <p className="mt-1.5 text-sm text-red-600">{errors.minimumOrderQuantities.message}</p>
+            {errors.minimum_order_quantities && (
+              <p className="mt-1.5 text-sm text-red-600">
+                {errors.minimum_order_quantities.message}
+              </p>
             )}
           </div>
 
@@ -244,15 +315,19 @@ export default function CompanyProfileStep({ data, onNext, onBack }: CompanyProf
               Standard Lead Times *
             </label>
             <input
-              {...register('leadTimes', { required: 'Lead times are required' })}
+              {...register("lead_times", {
+                required: "Lead times are required",
+              })}
               type="text"
               placeholder="e.g., 2-4 weeks for standard orders"
               className={`block w-full px-3 py-3.5 border ${
-                errors.leadTimes ? 'border-red-300' : 'border-slate-300'
+                errors.lead_times ? "border-red-300" : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             />
-            {errors.leadTimes && (
-              <p className="mt-1.5 text-sm text-red-600">{errors.leadTimes.message}</p>
+            {errors.lead_times && (
+              <p className="mt-1.5 text-sm text-red-600">
+                {errors.lead_times.message}
+              </p>
             )}
           </div>
         </div>

@@ -3,19 +3,21 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRequestPasswordReset } from "../../hooks/useVendor";
+import { useForgotPassword } from "@/hooks/useAuth";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const resetMutation = useRequestPasswordReset();
+  const resetMutation = useForgotPassword();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await resetMutation.mutateAsync(email);
-    if (result.success) {
+    try {
+      await resetMutation.mutateAsync(email);
       setSubmitted(true);
+    } catch {
+      // Error handled by mutation
     }
   };
 

@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import type { SustainabilityESG, VendorDocument } from "../../types/vendor.types";
+import type { Sustainability, VendorDocument } from "../../types/vendor.types";
+import {
+  sustainabilitySchema,
+  type SustainabilityFormValues,
+} from "../../validations/vendor.schema";
 import { YES_NO_OPTIONS } from "../../lib/constants";
 import {
   CloudArrowUpIcon,
@@ -24,10 +29,10 @@ export default function SustainabilityStep({
 }: SustainabilityStepProps) {
   const [environmentalDoc, setEnvironmentalDoc] =
     useState<VendorDocument | null>(
-      data.sustainability?.environmentalPolicyDocument || null
+      data.sustainability?.environmental_policy_document || null
     );
   const [laborRightsDoc, setLaborRightsDoc] = useState<VendorDocument | null>(
-    data.sustainability?.laborRightsDocument || null
+    data.sustainability?.labor_rights_document || null
   );
 
   const {
@@ -35,13 +40,14 @@ export default function SustainabilityStep({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<SustainabilityESG>({
+  } = useForm<SustainabilityFormValues>({
+    resolver: zodResolver(sustainabilitySchema),
     defaultValues: data.sustainability || {},
   });
 
-  const environmentalPolicies = watch("environmentalPolicies");
-  const ethicalSourcing = watch("ethicalSourcing");
-  const laborRightsCompliance = watch("laborRightsCompliance");
+  const environmentalPolicies = watch("environmental_policies");
+  const ethicalSourcing = watch("ethical_sourcing");
+  const laborRightsCompliance = watch("labor_rights_compliance");
 
   const handleFileUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -57,7 +63,7 @@ export default function SustainabilityStep({
         category: "certification",
         file: file,
         required: false,
-        uploadedAt: new Date(),
+        uploaded_at: new Date(),
       };
       setter(newDoc);
     }
@@ -69,12 +75,12 @@ export default function SustainabilityStep({
     setter(null);
   };
 
-  const onSubmit = (formData: SustainabilityESG) => {
+  const onSubmit = (formData: SustainabilityFormValues) => {
     onNext({
       sustainability: {
         ...formData,
-        environmentalPolicyDocument: environmentalDoc,
-        laborRightsDocument: laborRightsDoc,
+        environmental_policy_document: environmentalDoc,
+        labor_rights_document: laborRightsDoc,
       },
     });
   };
@@ -111,7 +117,11 @@ export default function SustainabilityStep({
                 {document.name}
               </p>
               <p className="text-xs text-slate-500">
-                {document.uploadedAt?.toLocaleDateString()}
+                {document.uploaded_at
+                  ? new Date(
+                      document.uploaded_at as string | Date
+                    ).toLocaleDateString()
+                  : ""}
               </p>
             </div>
           </div>
@@ -151,11 +161,11 @@ export default function SustainabilityStep({
             Do you have formal Environmental Policies? *
           </label>
           <select
-            {...register("environmentalPolicies", {
+            {...register("environmental_policies", {
               required: "Please select an option",
             })}
             className={`block w-full px-3 py-3.5 border ${
-              errors.environmentalPolicies ? "border-red-300" : "border-white"
+              errors.environmental_policies ? "border-red-300" : "border-white"
             } rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all bg-white`}
           >
             <option value="">Select option</option>
@@ -165,9 +175,9 @@ export default function SustainabilityStep({
               </option>
             ))}
           </select>
-          {errors.environmentalPolicies && (
+          {errors.environmental_policies && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.environmentalPolicies.message}
+              {errors.environmental_policies.message}
             </p>
           )}
 
@@ -186,18 +196,18 @@ export default function SustainabilityStep({
             Waste Management Practices *
           </label>
           <textarea
-            {...register("wasteManagement", {
+            {...register("waste_management", {
               required: "Waste management information is required",
             })}
             rows={4}
             placeholder="Describe your waste management practices, recycling programs, hazardous waste disposal methods, etc."
             className={`block w-full px-3 py-3.5 border ${
-              errors.wasteManagement ? "border-red-300" : "border-slate-300"
+              errors.waste_management ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.wasteManagement && (
+          {errors.waste_management && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.wasteManagement.message}
+              {errors.waste_management.message}
             </p>
           )}
         </div>
@@ -214,11 +224,11 @@ export default function SustainabilityStep({
                 Do you practice Ethical Sourcing? *
               </label>
               <select
-                {...register("ethicalSourcing", {
+                {...register("ethical_sourcing", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.ethicalSourcing ? "border-red-300" : "border-white"
+                  errors.ethical_sourcing ? "border-red-300" : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white`}
               >
                 <option value="">Select option</option>
@@ -228,9 +238,9 @@ export default function SustainabilityStep({
                   </option>
                 ))}
               </select>
-              {errors.ethicalSourcing && (
+              {errors.ethical_sourcing && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.ethicalSourcing.message}
+                  {errors.ethical_sourcing.message}
                 </p>
               )}
             </div>
@@ -241,7 +251,7 @@ export default function SustainabilityStep({
                   Ethical Sourcing Details
                 </label>
                 <input
-                  {...register("ethicalSourcingDetails")}
+                  {...register("ethical_sourcing_details")}
                   type="text"
                   placeholder="Describe your ethical sourcing practices"
                   className="block w-full px-3 py-3.5 border border-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
@@ -265,20 +275,20 @@ export default function SustainabilityStep({
             Social Responsibility Initiatives *
           </label>
           <textarea
-            {...register("socialResponsibility", {
+            {...register("social_responsibility", {
               required: "Social responsibility information is required",
             })}
             rows={4}
             placeholder="Describe your social responsibility programs, community engagement, charitable activities, employee welfare programs, etc."
             className={`block w-full px-3 py-3.5 border ${
-              errors.socialResponsibility
+              errors.social_responsibility
                 ? "border-red-300"
                 : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.socialResponsibility && (
+          {errors.social_responsibility && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.socialResponsibility.message}
+              {errors.social_responsibility.message}
             </p>
           )}
         </div>
@@ -293,11 +303,11 @@ export default function SustainabilityStep({
             Do you comply with International Labor Standards? *
           </label>
           <select
-            {...register("laborRightsCompliance", {
+            {...register("labor_rights_compliance", {
               required: "Please select an option",
             })}
             className={`block w-full px-3 py-3.5 border ${
-              errors.laborRightsCompliance ? "border-red-300" : "border-white"
+              errors.labor_rights_compliance ? "border-red-300" : "border-white"
             } rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all bg-white`}
           >
             <option value="">Select option</option>
@@ -307,9 +317,9 @@ export default function SustainabilityStep({
               </option>
             ))}
           </select>
-          {errors.laborRightsCompliance && (
+          {errors.labor_rights_compliance && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.laborRightsCompliance.message}
+              {errors.labor_rights_compliance.message}
             </p>
           )}
 

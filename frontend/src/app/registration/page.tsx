@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import type { VendorFormData } from '../../types/vendor.types';
-import { REGISTRATION_STEPS } from '../../lib/constants';
-import { 
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import type { VendorFormData } from "../../types/vendor.types";
+import { REGISTRATION_STEPS } from "../../lib/constants";
+import { useRegisterVendor } from "@/hooks";
+import {
   CompanyInformationStep,
   CompanyProfileStep,
   CertificationsStep,
@@ -19,48 +20,42 @@ import {
   AdditionalInfoStep,
   ReviewSubmitStep,
   Successscreen,
-} from '../../components/vendor';
-import Navbar from '@/src/components/navbar';
+} from "../../components/vendor";
+import Navbar from "@/components/navbar";
 
 export default function VendorRegistrationPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<Partial<VendorFormData>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const registerVendorMutation = useRegisterVendor();
 
   const handleNext = (stepData: any) => {
     setFormData((prev) => ({ ...prev, ...stepData }));
     if (currentStep < REGISTRATION_STEPS.length) {
       setCurrentStep((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const handleSubmit = async () => {
-    setIsSubmitting(true);
-    
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log('Submitting vendor registration:', formData);
+      await registerVendorMutation.mutateAsync(formData as VendorFormData);
       setIsSubmitted(true);
     } catch (error) {
-      console.error('Submission error:', error);
-      alert('There was an error submitting your application. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+      console.error("Submission error:", error);
     }
   };
 
   if (isSubmitted) {
-    return <Successscreen onReturnHome={() => router.push('/')} />;
+    return <Successscreen onReturnHome={() => router.push("/")} />;
   }
 
   const currentStepConfig = REGISTRATION_STEPS[currentStep - 1];
@@ -101,7 +96,7 @@ export default function VendorRegistrationPage() {
             data={formData}
             onBack={handleBack}
             onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
+            isSubmitting={registerVendorMutation.isPending}
           />
         );
       default:
@@ -113,14 +108,14 @@ export default function VendorRegistrationPage() {
 
   return (
     <div className="min-h-screen bg-white">
-              <Navbar />
-        
+      <Navbar />
 
       <div className="relative h-[50vh] bg-gradient-to-r from-slate-900 to-slate-800 overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1666018215790-867b14fe4822?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1666018215790-867b14fe4822?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 to-slate-800/20"></div>
@@ -137,7 +132,9 @@ export default function VendorRegistrationPage() {
               Vendor Registration
             </h1>
             <p className=" text-slate-300 max-w-2xl">
-              Join our network of trusted suppliers and partners. Complete the registration process to start doing business with Parklane Materials.
+              Join our network of trusted suppliers and partners. Complete the
+              registration process to start doing business with Parklane
+              Materials.
             </p>
           </motion.div>
         </div>
@@ -150,12 +147,18 @@ export default function VendorRegistrationPage() {
             {/* Step Info */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="text-sm text-slate-600">Step {currentStep} of {REGISTRATION_STEPS.length}</p>
-                <p className="text-xl font-semibold text-slate-900 mt-1">{currentStepConfig.title}</p>
+                <p className="text-sm text-slate-600">
+                  Step {currentStep} of {REGISTRATION_STEPS.length}
+                </p>
+                <p className="text-xl font-semibold text-slate-900 mt-1">
+                  {currentStepConfig.title}
+                </p>
               </div>
               <div className="text-right">
                 <p className="text-sm text-slate-600">Progress</p>
-                <p className="text-xl font-semibold text-primary-600 mt-1">{Math.round(progress)}%</p>
+                <p className="text-xl font-semibold text-primary-600 mt-1">
+                  {Math.round(progress)}%
+                </p>
               </div>
             </div>
 
@@ -163,13 +166,13 @@ export default function VendorRegistrationPage() {
             <div className="relative">
               {/* Background Line */}
               <div className="absolute top-5 left-0 right-0 h-1 bg-slate-200"></div>
-              
+
               {/* Progress Line */}
               <motion.div
                 className="absolute top-5 left-0 h-1 bg-primary-500"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
               ></motion.div>
 
               {/* Step Circles */}
@@ -184,16 +187,27 @@ export default function VendorRegistrationPage() {
                         initial={false}
                         animate={{
                           scale: isCurrent ? 1.1 : 1,
-                          backgroundColor: isCompleted || isCurrent ? '#a68b56' : '#e2e8f0',
+                          backgroundColor:
+                            isCompleted || isCurrent ? "#a68b56" : "#e2e8f0",
                         }}
                         transition={{ duration: 0.3 }}
                         className={`w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-md z-10 ${
-                          isCompleted || isCurrent ? 'text-white' : 'text-slate-600'
+                          isCompleted || isCurrent
+                            ? "text-white"
+                            : "text-slate-600"
                         }`}
                       >
                         {isCompleted ? (
-                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          <svg
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         ) : (
                           <span className="text-sm font-bold">{step.id}</span>

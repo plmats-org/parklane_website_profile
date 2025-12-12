@@ -1,8 +1,13 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import type { LogisticsFulfillment } from "../../types/vendor.types";
+import type { Logistics } from "../../types/vendor.types";
+import {
+  logisticsSchema,
+  type LogisticsFormValues,
+} from "../../validations/vendor.schema";
 import {
   INCOTERMS,
   SHIPPING_METHODS,
@@ -27,17 +32,18 @@ export default function LogisticsStep({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<LogisticsFulfillment>({
+  } = useForm<LogisticsFormValues>({
+    resolver: zodResolver(logisticsSchema),
     defaultValues: data.logistics || {},
   });
 
-  const urgentDeliveryCapability = watch("urgentDeliveryCapability");
-  const warehousingOptions = watch("warehousingOptions");
-  const internationalDocumentation = watch(
-    "internationalDocumentationCapability"
+  const urgent_delivery_capability = watch("urgent_delivery_capability");
+  const warehousing_options = watch("warehousing_options");
+  const international_documentation = watch(
+    "international_documentation_capability"
   );
 
-  const onSubmit = (formData: LogisticsFulfillment) => {
+  const onSubmit = (formData: Logistics) => {
     onNext({ logistics: formData });
   };
 
@@ -68,7 +74,7 @@ export default function LogisticsStep({
                 <input
                   type="checkbox"
                   value={country}
-                  {...register("countryOfOrigin", {
+                  {...register("country_of_origin", {
                     required: "Select at least one country of origin",
                   })}
                   className="rounded border-slate-300 text-primary-500 focus:ring-primary-500"
@@ -77,9 +83,9 @@ export default function LogisticsStep({
               </label>
             ))}
           </div>
-          {errors.countryOfOrigin && (
+          {errors.country_of_origin && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.countryOfOrigin.message}
+              {errors.country_of_origin.message}
             </p>
           )}
         </div>
@@ -98,7 +104,7 @@ export default function LogisticsStep({
                 <input
                   type="checkbox"
                   value={term}
-                  {...register("incotermsUsed", {
+                  {...register("incoterms_used", {
                     required: "Select at least one Incoterm",
                   })}
                   className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
@@ -107,9 +113,9 @@ export default function LogisticsStep({
               </label>
             ))}
           </div>
-          {errors.incotermsUsed && (
+          {errors.incoterms_used && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.incotermsUsed.message}
+              {errors.incoterms_used.message}
             </p>
           )}
         </div>
@@ -128,7 +134,7 @@ export default function LogisticsStep({
                 <input
                   type="checkbox"
                   value={method}
-                  {...register("shippingMethods", {
+                  {...register("shipping_methods", {
                     required: "Select at least one shipping method",
                   })}
                   className="rounded border-slate-300 text-primary-500 focus:ring-primary-500"
@@ -137,9 +143,9 @@ export default function LogisticsStep({
               </label>
             ))}
           </div>
-          {errors.shippingMethods && (
+          {errors.shipping_methods && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.shippingMethods.message}
+              {errors.shipping_methods.message}
             </p>
           )}
         </div>
@@ -152,11 +158,11 @@ export default function LogisticsStep({
                 International Documentation Capability? *
               </label>
               <select
-                {...register("internationalDocumentationCapability", {
+                {...register("international_documentation_capability", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.internationalDocumentationCapability
+                  errors.international_documentation_capability
                     ? "border-red-300"
                     : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
@@ -168,14 +174,14 @@ export default function LogisticsStep({
                   </option>
                 ))}
               </select>
-              {errors.internationalDocumentationCapability && (
+              {errors.international_documentation_capability && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.internationalDocumentationCapability.message}
+                  {errors.international_documentation_capability.message}
                 </p>
               )}
             </div>
 
-            {internationalDocumentation === "yes" && (
+            {international_documentation === "yes" && (
               <div className="flex items-center">
                 <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                   <p className="text-sm text-emerald-700">
@@ -196,18 +202,18 @@ export default function LogisticsStep({
             Standard Lead Times *
           </label>
           <input
-            {...register("standardLeadTimes", {
+            {...register("standard_lead_times", {
               required: "Lead times are required",
             })}
             type="text"
             placeholder="e.g., 2-4 weeks for sea freight, 3-5 days for air freight"
             className={`block w-full px-3 py-3.5 border ${
-              errors.standardLeadTimes ? "border-red-300" : "border-slate-300"
+              errors.standard_lead_times ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.standardLeadTimes && (
+          {errors.standard_lead_times && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.standardLeadTimes.message}
+              {errors.standard_lead_times.message}
             </p>
           )}
         </div>
@@ -219,11 +225,11 @@ export default function LogisticsStep({
               Urgent/Expedited Delivery Capability? *
             </label>
             <select
-              {...register("urgentDeliveryCapability", {
+              {...register("urgent_delivery_capability", {
                 required: "Please select an option",
               })}
               className={`block w-full px-3 py-3.5 border ${
-                errors.urgentDeliveryCapability
+                errors.urgent_delivery_capability
                   ? "border-red-300"
                   : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
@@ -235,20 +241,20 @@ export default function LogisticsStep({
                 </option>
               ))}
             </select>
-            {errors.urgentDeliveryCapability && (
+            {errors.urgent_delivery_capability && (
               <p className="mt-1.5 text-sm text-red-600">
-                {errors.urgentDeliveryCapability.message}
+                {errors.urgent_delivery_capability.message}
               </p>
             )}
           </div>
 
-          {urgentDeliveryCapability === "yes" && (
+          {urgent_delivery_capability === "yes" && (
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Urgent Delivery Details
               </label>
               <input
-                {...register("urgentDeliveryDetails")}
+                {...register("urgent_delivery_details")}
                 type="text"
                 placeholder="e.g., 24-48 hours express delivery available"
                 className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -264,11 +270,11 @@ export default function LogisticsStep({
               Warehousing Options Available? *
             </label>
             <select
-              {...register("warehousingOptions", {
+              {...register("warehousing_options", {
                 required: "Please select an option",
               })}
               className={`block w-full px-3 py-3.5 border ${
-                errors.warehousingOptions
+                errors.warehousing_options
                   ? "border-red-300"
                   : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
@@ -280,20 +286,20 @@ export default function LogisticsStep({
                 </option>
               ))}
             </select>
-            {errors.warehousingOptions && (
+            {errors.warehousing_options && (
               <p className="mt-1.5 text-sm text-red-600">
-                {errors.warehousingOptions.message}
+                {errors.warehousing_options.message}
               </p>
             )}
           </div>
 
-          {warehousingOptions === "yes" && (
+          {warehousing_options === "yes" && (
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Warehousing Details
               </label>
               <input
-                {...register("warehousingDetails")}
+                {...register("warehousing_details")}
                 type="text"
                 placeholder="e.g., Climate-controlled warehouse in Kigali, 5000 sqm"
                 className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"

@@ -1,10 +1,21 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
-import type { ProductTechnicalInfo, VendorDocument } from '../../types/vendor.types';
-import { CloudArrowUpIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import type {
+  ProductTechnical,
+  VendorDocument,
+} from "../../types/vendor.types";
+import {
+  productTechnicalSchema,
+  type ProductTechnicalFormValues,
+} from "../../validations/vendor.schema";
+import {
+  CloudArrowUpIcon,
+  DocumentTextIcon,
+} from "@heroicons/react/24/outline";
 
 interface ProductTechnicalStepProps {
   data: any;
@@ -12,24 +23,46 @@ interface ProductTechnicalStepProps {
   onBack: () => void;
 }
 
-export default function ProductTechnicalStep({ data, onNext, onBack }: ProductTechnicalStepProps) {
-  const [productCatalog, setProductCatalog] = useState<VendorDocument[]>(
-    data.productTechnical?.productCatalog || []
+export default function ProductTechnicalStep({
+  data,
+  onNext,
+  onBack,
+}: ProductTechnicalStepProps) {
+  const [product_catalog, setProductCatalog] = useState<VendorDocument[]>(
+    data.product_technical?.product_catalog || []
   );
-  const [specifications, setSpecifications] = useState<VendorDocument[]>(
-    data.productTechnical?.specificationsDataSheets || []
+  const [specifications_data_sheets, setSpecifications] = useState<
+    VendorDocument[]
+  >(data.product_technical?.specifications_data_sheets || []);
+  const [msds, setMsds] = useState<VendorDocument[]>(
+    data.product_technical?.msds || []
   );
-  const [msds, setMsds] = useState<VendorDocument[]>(data.productTechnical?.msds || []);
-  const [rawMaterialCerts, setRawMaterialCerts] = useState<VendorDocument[]>(
-    data.productTechnical?.rawMaterialCertifications || []
-  );
+  const [raw_material_certifications, setRawMaterialCerts] = useState<
+    VendorDocument[]
+  >(data.product_technical?.raw_material_certifications || []);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<ProductTechnicalInfo, 'productCatalog' | 'specificationsDataSheets' | 'msds' | 'rawMaterialCertifications'>>({
-    defaultValues: data.productTechnical || {},
+  } = useForm<
+    Omit<
+      ProductTechnicalFormValues,
+      | "product_catalog"
+      | "specifications_data_sheets"
+      | "msds"
+      | "raw_material_certifications"
+    >
+  >({
+    resolver: zodResolver(
+      productTechnicalSchema.omit({
+        product_catalog: true,
+        specifications_data_sheets: true,
+        msds: true,
+        raw_material_certifications: true,
+      })
+    ),
+    defaultValues: data.product_technical || {},
   });
 
   const handleFileUpload = (
@@ -43,10 +76,11 @@ export default function ProductTechnicalStep({ data, onNext, onBack }: ProductTe
         id: Date.now().toString(),
         name: file.name,
         type: category,
-        category: 'product',
+        category: "product",
         file: file,
-        required: category === 'product_catalog' || category === 'specifications',
-        uploadedAt: new Date(),
+        required:
+          category === "product_catalog" || category === "specifications",
+        uploaded_at: new Date(),
       };
       setter((prev) => [...prev, newDoc]);
     }
@@ -61,12 +95,12 @@ export default function ProductTechnicalStep({ data, onNext, onBack }: ProductTe
 
   const onSubmit = (formData: any) => {
     onNext({
-      productTechnical: {
+      product_technical: {
         ...formData,
-        productCatalog,
-        specificationsDataSheets: specifications,
+        product_catalog,
+        specifications_data_sheets,
         msds,
-        rawMaterialCertifications: rawMaterialCerts,
+        raw_material_certifications,
       },
     });
   };
@@ -112,9 +146,14 @@ export default function ProductTechnicalStep({ data, onNext, onBack }: ProductTe
               <div className="flex items-center gap-3">
                 <DocumentTextIcon className="h-5 w-5 text-emerald-600" />
                 <div>
-                  <p className="text-sm font-medium text-slate-900">{doc.name}</p>
+                  <p className="text-sm font-medium text-slate-900">
+                    {doc.name}
+                  </p>
                   <p className="text-xs text-slate-500">
-                    Uploaded {doc.uploadedAt?.toLocaleDateString()}
+                    Uploaded{" "}
+                    {doc.uploaded_at
+                      ? new Date(doc.uploaded_at as Date).toLocaleDateString()
+                      : ""}
                   </p>
                 </div>
               </div>
@@ -131,7 +170,9 @@ export default function ProductTechnicalStep({ data, onNext, onBack }: ProductTe
       )}
 
       {required && documents.length === 0 && (
-        <p className="text-sm text-amber-600 mt-2">⚠️ This document is required</p>
+        <p className="text-sm text-amber-600 mt-2">
+          ⚠️ This document is required
+        </p>
       )}
     </div>
   );
@@ -139,138 +180,136 @@ export default function ProductTechnicalStep({ data, onNext, onBack }: ProductTe
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-slate-900 mb-3">Product & Technical Information</h2>
+        <h2 className="text-3xl font-bold text-slate-900 mb-3">
+          Product & Technical Information
+        </h2>
         <p className="text-slate-600">
-          Provide detailed technical information and documentation about your products.
+          Provide detailed technical information and documentation about your
+          products.
         </p>
       </div>
 
       <div className="space-y-6">
-        {/* Product Catalog */}
         {renderDocumentSection(
-          'Product Catalog',
-          'Upload your complete product catalog (PDF, JPG, PNG - Max 5MB)',
-          productCatalog,
+          "Product Catalog",
+          "Upload your complete product catalog (PDF, JPG, PNG - Max 5MB)",
+          product_catalog,
           setProductCatalog,
-          'product_catalog',
+          "product_catalog",
           true
         )}
-
-        {/* Technical Specifications */}
         {renderDocumentSection(
-          'Technical Specifications & Data Sheets',
-          'Upload technical specifications and data sheets for your products',
-          specifications,
+          "Technical Specifications & Data Sheets",
+          "Upload technical specifications and data sheets for your products",
+          specifications_data_sheets,
           setSpecifications,
-          'specifications',
+          "specifications",
           true
         )}
 
-        {/* HS Codes */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
             HS Codes (Harmonized System Codes) *
           </label>
           <textarea
-            {...register('hsCodes', { required: 'HS Codes are required' })}
+            {...register("hs_codes", { required: "HS Codes are required" })}
             rows={3}
             placeholder="List HS codes for your main products (e.g., 8419.50, 8421.23)..."
             className={`block w-full px-3 py-3.5 border ${
-              errors.hsCodes ? 'border-red-300' : 'border-slate-300'
+              errors.hs_codes ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.hsCodes && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.hsCodes.message}</p>
+          {errors.hs_codes && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.hs_codes.message}
+            </p>
           )}
-          <p className="mt-1.5 text-xs text-slate-500">
-            Separate multiple codes with commas or line breaks
-          </p>
         </div>
 
-        {/* MSDS */}
         {renderDocumentSection(
-          'MSDS (Material Safety Data Sheets)',
-          'Upload MSDS documents if applicable to your products',
+          "MSDS (Material Safety Data Sheets)",
+          "Upload MSDS documents if applicable to your products",
           msds,
           setMsds,
-          'msds',
+          "msds",
           false
         )}
 
-        {/* Warranty Terms */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
             Warranty Terms *
           </label>
           <textarea
-            {...register('warrantyTerms', { required: 'Warranty terms are required' })}
+            {...register("warranty_terms", {
+              required: "Warranty terms are required",
+            })}
             rows={4}
             placeholder="Describe your warranty terms, coverage period, conditions, and claim procedures..."
             className={`block w-full px-3 py-3.5 border ${
-              errors.warrantyTerms ? 'border-red-300' : 'border-slate-300'
+              errors.warranty_terms ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.warrantyTerms && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.warrantyTerms.message}</p>
+          {errors.warranty_terms && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.warranty_terms.message}
+            </p>
           )}
         </div>
 
-        {/* Defective Goods Policy */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
             Defective Goods Policy *
           </label>
           <textarea
-            {...register('defectiveGoodsPolicy', { required: 'Defective goods policy is required' })}
+            {...register("defective_goods_policy", {
+              required: "Defective goods policy is required",
+            })}
             rows={4}
             placeholder="Explain your policy for handling defective goods, returns, replacements, and refunds..."
             className={`block w-full px-3 py-3.5 border ${
-              errors.defectiveGoodsPolicy ? 'border-red-300' : 'border-slate-300'
+              errors.defective_goods_policy
+                ? "border-red-300"
+                : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.defectiveGoodsPolicy && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.defectiveGoodsPolicy.message}</p>
+          {errors.defective_goods_policy && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.defective_goods_policy.message}
+            </p>
           )}
         </div>
 
-        {/* Packaging Standards */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
             Packaging Standards *
           </label>
           <textarea
-            {...register('packagingStandards', { required: 'Packaging standards are required' })}
+            {...register("packaging_standards", {
+              required: "Packaging standards are required",
+            })}
             rows={3}
             placeholder="Describe your packaging materials, methods, standards, and any special handling requirements..."
             className={`block w-full px-3 py-3.5 border ${
-              errors.packagingStandards ? 'border-red-300' : 'border-slate-300'
+              errors.packaging_standards ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.packagingStandards && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.packagingStandards.message}</p>
+          {errors.packaging_standards && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.packaging_standards.message}
+            </p>
           )}
         </div>
 
-        {/* Raw Material Certifications */}
         {renderDocumentSection(
-          'Raw Material Certifications',
-          'Upload certifications for raw materials used in your products (if applicable)',
-          rawMaterialCerts,
+          "Raw Material Certifications",
+          "Upload certifications for raw materials used in your products",
+          raw_material_certifications,
           setRawMaterialCerts,
-          'raw_material_certs',
+          "raw_material",
           false
         )}
       </div>
 
-      {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-        <p className="text-sm text-blue-800">
-          <strong>Tip:</strong> Comprehensive technical documentation helps speed up the approval
-          process and builds confidence with procurement teams.
-        </p>
-      </div>
-
-      {/* Navigation */}
       <div className="flex justify-between gap-4 pt-6 border-t border-slate-200">
         <motion.button
           whileHover={{ scale: 1.02 }}

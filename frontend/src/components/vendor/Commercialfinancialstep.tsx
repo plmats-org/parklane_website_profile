@@ -2,11 +2,16 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import type {
-  CommercialFinancialInfo,
+  CommercialFinancial,
   VendorDocument,
 } from "../../types/vendor.types";
+import {
+  commercialFinancialSchema,
+  type CommercialFinancialFormValues,
+} from "../../validations/vendor.schema";
 import { PAYMENT_TERMS, YES_NO_OPTIONS } from "../../lib/constants";
 import {
   BanknotesIcon,
@@ -26,22 +31,26 @@ export default function CommercialFinancialStep({
   onNext,
   onBack,
 }: CommercialFinancialStepProps) {
-  const [financialDocuments, setFinancialDocuments] = useState<
+  const [financial_stability_documents, setFinancialDocuments] = useState<
     VendorDocument[]
-  >(data.commercialFinancial?.financialStabilityDocuments || []);
+  >(data.commercial_financial?.financial_stability_documents || []);
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Omit<CommercialFinancialInfo, "financialStabilityDocuments">>({
-    defaultValues: data.commercialFinancial || {},
+  } = useForm<
+    Omit<CommercialFinancialFormValues, "financial_stability_documents">
+  >({
+    resolver: zodResolver(
+      commercialFinancialSchema.omit({ financial_stability_documents: true })
+    ),
+    defaultValues: data.commercial_financial || {},
   });
 
-  const creditTermsAvailable = watch("creditTermsAvailable");
-  const volumeDiscountsAvailable = watch("volumeDiscountsAvailable");
-  const longTermPricingAgreements = watch("longTermPricingAgreements");
+  const credit_terms_available = watch("credit_terms_available");
+  const volume_discounts_available = watch("volume_discounts_available");
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -53,7 +62,7 @@ export default function CommercialFinancialStep({
         category: "financial",
         file: file,
         required: false,
-        uploadedAt: new Date(),
+        uploaded_at: new Date(),
       };
       setFinancialDocuments((prev) => [...prev, newDoc]);
     }
@@ -65,9 +74,9 @@ export default function CommercialFinancialStep({
 
   const onSubmit = (formData: any) => {
     onNext({
-      commercialFinancial: {
+      commercial_financial: {
         ...formData,
-        financialStabilityDocuments: financialDocuments,
+        financial_stability_documents,
       },
     });
   };
@@ -85,29 +94,27 @@ export default function CommercialFinancialStep({
       </div>
 
       <div className="space-y-6">
-        {/* Pricing Structure */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
             Pricing Structure *
           </label>
           <textarea
-            {...register("pricingStructure", {
+            {...register("pricing_structure", {
               required: "Pricing structure is required",
             })}
             rows={4}
             placeholder="Describe your pricing model, currency, price lists, how prices are determined, update frequency, etc."
             className={`block w-full px-3 py-3.5 border ${
-              errors.pricingStructure ? "border-red-300" : "border-slate-300"
+              errors.pricing_structure ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.pricingStructure && (
+          {errors.pricing_structure && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.pricingStructure.message}
+              {errors.pricing_structure.message}
             </p>
           )}
         </div>
 
-        {/* Payment Terms */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
             Payment Terms * (Select all that apply)
@@ -121,7 +128,7 @@ export default function CommercialFinancialStep({
                 <input
                   type="checkbox"
                   value={term}
-                  {...register("paymentTerms", {
+                  {...register("payment_terms", {
                     required: "Select at least one payment term",
                   })}
                   className="rounded border-slate-300 text-primary-500 focus:ring-primary-500"
@@ -130,25 +137,24 @@ export default function CommercialFinancialStep({
               </label>
             ))}
           </div>
-          {errors.paymentTerms && (
+          {errors.payment_terms && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.paymentTerms.message}
+              {errors.payment_terms.message}
             </p>
           )}
         </div>
 
-        {/* Credit Terms */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
               Credit Terms Available? *
             </label>
             <select
-              {...register("creditTermsAvailable", {
+              {...register("credit_terms_available", {
                 required: "Please select an option",
               })}
               className={`block w-full px-3 py-3.5 border ${
-                errors.creditTermsAvailable
+                errors.credit_terms_available
                   ? "border-red-300"
                   : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
@@ -160,20 +166,20 @@ export default function CommercialFinancialStep({
                 </option>
               ))}
             </select>
-            {errors.creditTermsAvailable && (
+            {errors.credit_terms_available && (
               <p className="mt-1.5 text-sm text-red-600">
-                {errors.creditTermsAvailable.message}
+                {errors.credit_terms_available.message}
               </p>
             )}
           </div>
 
-          {creditTermsAvailable === "yes" && (
+          {credit_terms_available === "yes" && (
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Credit Terms Details
               </label>
               <input
-                {...register("creditTermsDetails")}
+                {...register("credit_terms_details")}
                 type="text"
                 placeholder="e.g., Net 30 for qualified buyers"
                 className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -182,7 +188,6 @@ export default function CommercialFinancialStep({
           )}
         </div>
 
-        {/* Banking Information */}
         <div className="bg-primary-50 rounded-xl p-6 border-2 border-primary-200">
           <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
             <BuildingLibraryIcon className="h-5 w-5 text-primary-600" />
@@ -190,27 +195,27 @@ export default function CommercialFinancialStep({
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Bank Name */}
             <div className="md:col-span-2">
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Bank Name *
               </label>
               <input
-                {...register("bankName", { required: "Bank name is required" })}
+                {...register("bank_name", {
+                  required: "Bank name is required",
+                })}
                 type="text"
                 placeholder="Bank of Kigali"
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.bankName ? "border-red-300" : "border-white"
+                  errors.bank_name ? "border-red-300" : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
               />
-              {errors.bankName && (
+              {errors.bank_name && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.bankName.message}
+                  {errors.bank_name.message}
                 </p>
               )}
             </div>
 
-            {/* Account Number */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Account Number *
@@ -220,121 +225,104 @@ export default function CommercialFinancialStep({
                   <BanknotesIcon className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
-                  {...register("bankAccountNumber", {
+                  {...register("bank_account_number", {
                     required: "Account number is required",
-                    pattern: {
-                      value: /^[0-9]{10,20}$/,
-                      message: "Invalid account number",
-                    },
                   })}
                   type="text"
                   placeholder="1234567890"
                   className={`block w-full pl-10 pr-3 py-3.5 border ${
-                    errors.bankAccountNumber ? "border-red-300" : "border-white"
+                    errors.bank_account_number
+                      ? "border-red-300"
+                      : "border-white"
                   } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
                 />
               </div>
-              {errors.bankAccountNumber && (
+              {errors.bank_account_number && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.bankAccountNumber.message}
+                  {errors.bank_account_number.message}
                 </p>
               )}
             </div>
 
-            {/* Account Name */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Account Name *
               </label>
               <input
-                {...register("bankAccountName", {
+                {...register("bank_account_name", {
                   required: "Account name is required",
                 })}
                 type="text"
                 placeholder="Company Name Ltd"
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.bankAccountName ? "border-red-300" : "border-white"
+                  errors.bank_account_name ? "border-red-300" : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
               />
-              {errors.bankAccountName && (
+              {errors.bank_account_name && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.bankAccountName.message}
+                  {errors.bank_account_name.message}
                 </p>
               )}
             </div>
 
-            {/* Branch Name */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Branch Name *
               </label>
               <input
-                {...register("bankBranchName", {
+                {...register("bank_branch_name", {
                   required: "Branch name is required",
                 })}
                 type="text"
                 placeholder="Kigali Main Branch"
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.bankBranchName ? "border-red-300" : "border-white"
+                  errors.bank_branch_name ? "border-red-300" : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
               />
-              {errors.bankBranchName && (
+              {errors.bank_branch_name && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.bankBranchName.message}
+                  {errors.bank_branch_name.message}
                 </p>
               )}
             </div>
 
-            {/* SWIFT Code */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 SWIFT/BIC Code
               </label>
               <input
-                {...register("swiftCode", {
-                  pattern: {
-                    value: /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/,
-                    message: "Invalid SWIFT code format",
-                  },
-                })}
+                {...register("swift_code")}
                 type="text"
                 placeholder="BKIGRWRW"
-                className="block w-full px-3 py-3.5 border border-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white uppercase"
+                className="block w-full px-3 py-3.5 border border-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white"
               />
-              {errors.swiftCode && (
-                <p className="mt-1.5 text-sm text-red-600">
-                  {errors.swiftCode.message}
-                </p>
-              )}
             </div>
 
-            {/* IBAN */}
-            <div className="md:col-span-2">
+            <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 IBAN (if applicable)
               </label>
               <input
                 {...register("iban")}
                 type="text"
-                placeholder="RW00 0000 0000 0000 0000 0000"
+                placeholder="RW00000000000000000000"
                 className="block w-full px-3 py-3.5 border border-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white"
               />
             </div>
           </div>
         </div>
 
-        {/* Volume Discounts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
               Volume Discounts Available? *
             </label>
             <select
-              {...register("volumeDiscountsAvailable", {
+              {...register("volume_discounts_available", {
                 required: "Please select an option",
               })}
               className={`block w-full px-3 py-3.5 border ${
-                errors.volumeDiscountsAvailable
+                errors.volume_discounts_available
                   ? "border-red-300"
                   : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
@@ -346,39 +334,38 @@ export default function CommercialFinancialStep({
                 </option>
               ))}
             </select>
-            {errors.volumeDiscountsAvailable && (
+            {errors.volume_discounts_available && (
               <p className="mt-1.5 text-sm text-red-600">
-                {errors.volumeDiscountsAvailable.message}
+                {errors.volume_discounts_available.message}
               </p>
             )}
           </div>
 
-          {volumeDiscountsAvailable === "yes" && (
+          {volume_discounts_available === "yes" && (
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Volume Discount Details
               </label>
               <input
-                {...register("volumeDiscountDetails")}
+                {...register("volume_discount_details")}
                 type="text"
-                placeholder="e.g., 5% for orders over 1000 units"
+                placeholder="e.g., 5% discount for orders over $10,000"
                 className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
               />
             </div>
           )}
         </div>
 
-        {/* Long-term Pricing Agreements */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
-            Open to Long-term Pricing Agreements? *
+            Long-Term Pricing Agreements? *
           </label>
           <select
-            {...register("longTermPricingAgreements", {
+            {...register("long_term_pricing_agreements", {
               required: "Please select an option",
             })}
             className={`block w-full px-3 py-3.5 border ${
-              errors.longTermPricingAgreements
+              errors.long_term_pricing_agreements
                 ? "border-red-300"
                 : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
@@ -390,14 +377,13 @@ export default function CommercialFinancialStep({
               </option>
             ))}
           </select>
-          {errors.longTermPricingAgreements && (
+          {errors.long_term_pricing_agreements && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.longTermPricingAgreements.message}
+              {errors.long_term_pricing_agreements.message}
             </p>
           )}
         </div>
 
-        {/* Financial Stability Documents */}
         <div className="bg-slate-50 rounded-xl p-6 border-2 border-dashed border-slate-300">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -406,8 +392,7 @@ export default function CommercialFinancialStep({
                 Financial Stability Documents
               </h3>
               <p className="text-sm text-slate-600 mt-1">
-                Upload bank statements, financial statements, or credit
-                references (Optional)
+                Upload financial statements, auditor reports, etc.
               </p>
             </div>
             <label className="cursor-pointer">
@@ -424,9 +409,9 @@ export default function CommercialFinancialStep({
             </label>
           </div>
 
-          {financialDocuments.length > 0 && (
+          {financial_stability_documents.length > 0 && (
             <div className="space-y-2">
-              {financialDocuments.map((doc) => (
+              {financial_stability_documents.map((doc) => (
                 <div
                   key={doc.id}
                   className="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200"
@@ -438,7 +423,12 @@ export default function CommercialFinancialStep({
                         {doc.name}
                       </p>
                       <p className="text-xs text-slate-500">
-                        Uploaded {doc.uploadedAt?.toLocaleDateString()}
+                        Uploaded{" "}
+                        {doc.uploaded_at
+                          ? new Date(
+                              doc.uploaded_at as Date
+                            ).toLocaleDateString()
+                          : ""}
                       </p>
                     </div>
                   </div>
@@ -456,15 +446,6 @@ export default function CommercialFinancialStep({
         </div>
       </div>
 
-      {/* Info Box */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-        <p className="text-sm text-amber-800">
-          <strong>Note:</strong> All banking information will be kept
-          confidential and used only for payment processing purposes.
-        </p>
-      </div>
-
-      {/* Navigation */}
       <div className="flex justify-between gap-4 pt-6 border-t border-slate-200">
         <motion.button
           whileHover={{ scale: 1.02 }}

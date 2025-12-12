@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import type {
-  CertificationsCompliance,
-  VendorDocument,
-} from "../../types/vendor.types";
+import type { Certifications, VendorDocument } from "../../types/vendor.types";
+import {
+  certificationsSchema,
+  type CertificationsFormValues,
+} from "../../validations/vendor.schema";
 import {
   ISO_CERTIFICATIONS,
   INDUSTRY_CERTIFICATIONS,
@@ -27,15 +29,18 @@ export default function CertificationsStep({
   onNext,
   onBack,
 }: CertificationsStepProps) {
-  const [certificationDocuments, setCertificationDocuments] = useState<
+  const [certification_documents, setCertificationDocuments] = useState<
     VendorDocument[]
-  >(data.certifications?.certificationDocuments || []);
+  >(data.certifications?.certification_documents || []);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<CertificationsCompliance, "certificationDocuments">>({
+  } = useForm<Omit<CertificationsFormValues, "certification_documents">>({
+    resolver: zodResolver(
+      certificationsSchema.omit({ certification_documents: true })
+    ),
     defaultValues: data.certifications || {},
   });
 
@@ -52,7 +57,7 @@ export default function CertificationsStep({
         category: "certification",
         file: file,
         required: false,
-        uploadedAt: new Date(),
+        uploaded_at: new Date(),
       };
       setCertificationDocuments((prev) => [...prev, newDoc]);
     }
@@ -63,12 +68,12 @@ export default function CertificationsStep({
   };
 
   const onSubmit = (
-    formData: Omit<CertificationsCompliance, "certificationDocuments">
+    formData: Omit<Certifications, "certification_documents">
   ) => {
     onNext({
       certifications: {
         ...formData,
-        certificationDocuments,
+        certification_documents,
       },
     });
   };
@@ -100,7 +105,7 @@ export default function CertificationsStep({
                 <input
                   type="checkbox"
                   value={cert}
-                  {...register("isoCertifications")}
+                  {...register("iso_certifications")}
                   className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
                 />
                 <span className="text-sm text-slate-700">{cert}</span>
@@ -123,7 +128,7 @@ export default function CertificationsStep({
                 <input
                   type="checkbox"
                   value={cert}
-                  {...register("industrySpecificCertifications")}
+                  {...register("industry_specific_certifications")}
                   className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
                 />
                 <span className="text-sm text-slate-700">{cert}</span>
@@ -138,20 +143,20 @@ export default function CertificationsStep({
             Quality Control Systems *
           </label>
           <textarea
-            {...register("qualityControlSystems", {
+            {...register("quality_control_systems", {
               required: "Quality control information is required",
             })}
             rows={4}
             placeholder="Describe your quality control processes, testing procedures, inspection methods, etc."
             className={`block w-full px-3 py-3.5 border ${
-              errors.qualityControlSystems
+              errors.quality_control_systems
                 ? "border-red-300"
                 : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.qualityControlSystems && (
+          {errors.quality_control_systems && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.qualityControlSystems.message}
+              {errors.quality_control_systems.message}
             </p>
           )}
         </div>
@@ -162,14 +167,11 @@ export default function CertificationsStep({
             Environmental & Safety Compliance
           </label>
           <textarea
-            {...register("environmentalSafetyCompliance")}
+            {...register("environmental_safety_compliance")}
             rows={3}
             placeholder="List your environmental and safety compliance standards, policies, and practices..."
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
           />
-          <p className="mt-1.5 text-xs text-slate-500">
-            Separate multiple items with commas or line breaks
-          </p>
         </div>
 
         {/* Regulatory Approvals */}
@@ -178,14 +180,11 @@ export default function CertificationsStep({
             Regulatory Approvals
           </label>
           <textarea
-            {...register("regulatoryApprovals")}
+            {...register("regulatory_approvals")}
             rows={3}
             placeholder="List any regulatory approvals, licenses, or permits you hold..."
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
           />
-          <p className="mt-1.5 text-xs text-slate-500">
-            Separate multiple items with commas or line breaks
-          </p>
         </div>
 
         {/* Export/Import Licenses */}
@@ -194,14 +193,11 @@ export default function CertificationsStep({
             Export/Import Licenses
           </label>
           <textarea
-            {...register("exportImportLicenses")}
+            {...register("export_import_licenses")}
             rows={3}
             placeholder="List your export/import licenses and relevant trade authorizations..."
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
           />
-          <p className="mt-1.5 text-xs text-slate-500">
-            Separate multiple items with commas or line breaks
-          </p>
         </div>
 
         {/* Upload Certification Documents */}
@@ -231,10 +227,9 @@ export default function CertificationsStep({
             </label>
           </div>
 
-          {/* Uploaded Documents List */}
-          {certificationDocuments.length > 0 && (
+          {certification_documents.length > 0 && (
             <div className="space-y-2">
-              {certificationDocuments.map((doc) => (
+              {certification_documents.map((doc) => (
                 <div
                   key={doc.id}
                   className="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200"
@@ -246,7 +241,12 @@ export default function CertificationsStep({
                         {doc.name}
                       </p>
                       <p className="text-xs text-slate-500">
-                        Uploaded {doc.uploadedAt?.toLocaleDateString()}
+                        Uploaded{" "}
+                        {doc.uploaded_at
+                          ? new Date(
+                              doc.uploaded_at as Date
+                            ).toLocaleDateString()
+                          : ""}
                       </p>
                     </div>
                   </div>
@@ -262,15 +262,6 @@ export default function CertificationsStep({
             </div>
           )}
         </div>
-      </div>
-
-      {/* Info Box */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-        <p className="text-sm text-amber-800">
-          <strong>Important:</strong> Please upload clear, legible copies of all
-          certifications you've indicated. These documents will be reviewed as
-          part of your vendor approval process.
-        </p>
       </div>
 
       {/* Navigation */}

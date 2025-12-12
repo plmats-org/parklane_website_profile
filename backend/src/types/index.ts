@@ -31,4 +31,9 @@ export interface EnvConfig {
   frontend: {
     url: string;
   };
+  cloudinary: {
+    cloudName: string;
+    apiKey: string;
+    apiSecret: string;
+  };
 }

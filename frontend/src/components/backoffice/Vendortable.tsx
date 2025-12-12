@@ -35,12 +35,16 @@ export default function VendorTable({
 
   const sortedVendors = [...vendors].sort((a, b) => {
     if (sortField === "submittedAt") {
-      const dateA = new Date(a.submittedAt).getTime();
-      const dateB = new Date(b.submittedAt).getTime();
+      const dateA = new Date(a.submitted_at).getTime();
+      const dateB = new Date(b.submitted_at).getTime();
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     } else {
-      const nameA = a.companyInformation.registeredCompanyName.toLowerCase();
-      const nameB = b.companyInformation.registeredCompanyName.toLowerCase();
+      const nameA = (
+        a.company_information?.registered_company_name || ""
+      ).toLowerCase();
+      const nameB = (
+        b.company_information?.registered_company_name || ""
+      ).toLowerCase();
       return sortOrder === "asc"
         ? nameA.localeCompare(nameB)
         : nameB.localeCompare(nameA);
@@ -123,7 +127,7 @@ export default function VendorTable({
           <tbody className="divide-y divide-slate-200">
             {sortedVendors.map((vendor, index) => (
               <motion.tr
-                key={vendor.id}
+                key={vendor.id || vendor._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -132,18 +136,19 @@ export default function VendorTable({
                 <td className="px-6 py-4">
                   <div>
                     <p className="font-medium text-slate-900">
-                      {vendor.companyInformation.registeredCompanyName}
+                      {vendor.company_information?.registered_company_name ||
+                        "Unknown Company"}
                     </p>
                     <p className="text-sm text-slate-500">
-                      {vendor.companyInformation.corporateEmail}
+                      {vendor.company_information?.corporate_email}
                     </p>
                   </div>
                 </td>
                 <td className="px-6 py-4 text-sm text-slate-600 font-mono">
-                  {vendor.id}
+                  {vendor.id || vendor._id}
                 </td>
                 <td className="px-6 py-4 text-sm text-slate-600">
-                  {vendor.companyInformation.countryOfRegistration}
+                  {vendor.company_information?.country_of_registration}
                 </td>
                 <td className="px-6 py-4">
                   <span
@@ -156,19 +161,21 @@ export default function VendorTable({
                   </span>
                 </td>
                 <td className="px-6 py-4 text-sm text-slate-600">
-                  {new Date(vendor.submittedAt).toLocaleDateString()}
+                  {new Date(
+                    vendor.submitted_at || vendor.created_at || new Date()
+                  ).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Link
-                      href={`/backoffice/vendors/${vendor.id}`}
+                      href={`/backoffice/vendors/${vendor.id || vendor._id}`}
                       className="px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
                     >
                       View
                     </Link>
                     {onDelete && (
                       <button
-                        onClick={() => onDelete(vendor.id)}
+                        onClick={() => onDelete(vendor.id || vendor._id)}
                         className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
                       >
                         Delete

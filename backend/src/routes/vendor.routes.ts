@@ -6,35 +6,41 @@ import * as vendorValidation from "../validations/vendor.validation";
 
 const router = Router();
 
+// Public routes (no auth required)
 router.post(
   "/",
   validate(vendorValidation.createVendor),
   vendorController.createVendor
 );
 
-router.get("/:id", vendorController.getVendorById);
-
 // Protected routes - requires authentication
 router.use(authenticate);
 
+// List all vendors
 router.get(
   "/",
   validate(vendorValidation.queryVendors),
   vendorController.getAllVendors
 );
 
+// Statistics endpoint (must come before /:id to avoid matching "statistics" as an ID)
 router.get(
-  "/stats/overview",
+  "/statistics",
   authorize("super_admin", "admin"),
   vendorController.getVendorStatistics
 );
 
+// Export endpoint (must come before /:id)
 router.get(
-  "/export/data",
+  "/export",
   authorize("super_admin", "admin"),
   vendorController.exportVendors
 );
 
+// Single vendor by ID (public read, but after auth middleware for consistency)
+router.get("/:id", vendorController.getVendorById);
+
+// Update vendor
 router.patch(
   "/:id",
   authorize("super_admin", "admin"),
@@ -42,6 +48,7 @@ router.patch(
   vendorController.updateVendor
 );
 
+// Delete vendor
 router.delete("/:id", authorize("super_admin"), vendorController.deleteVendor);
 
 export default router;
