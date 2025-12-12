@@ -64,9 +64,31 @@ export const vendorService = {
       : API_ENDPOINTS.VENDORS;
 
     const response = await apiClient.get<
-      ApiResponse<PaginatedResponse<Vendor>>
+      ApiResponse<{
+        vendors: Vendor[];
+        pagination: {
+          page: number;
+          limit: number;
+          total: number;
+          totalPages: number;
+        };
+      }>
     >(url);
-    return normalizeResponse(response);
+
+    // Transform API response to match PaginatedResponse structure
+    const transformedData: PaginatedResponse<Vendor> = {
+      data: response.data?.vendors || [],
+      total: response.data?.pagination?.total || 0,
+      page: response.data?.pagination?.page || 1,
+      pageSize: response.data?.pagination?.limit || 10,
+      totalPages: response.data?.pagination?.totalPages || 1,
+    };
+
+    return {
+      ...response,
+      success: response.status === "success",
+      data: transformedData,
+    };
   },
 
   /**
