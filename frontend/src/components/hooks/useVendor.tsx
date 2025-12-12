@@ -1,7 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { vendorService, authService } from "../../services/api.service";
-import type { VendorFilters, LoginCredentials } from "../../types/vendor.types";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
+import { vendorService } from "../../services/api.service";
+import type { VendorFilters } from "../../types/vendor.types";
 
 // Vendor Queries
 export const useVendors = (
@@ -12,7 +16,7 @@ export const useVendors = (
   return useQuery({
     queryKey: ["vendors", page, limit, filters],
     queryFn: () => vendorService.getVendors(page, limit, filters),
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -53,47 +57,5 @@ export const useDeleteVendor = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["vendors"] });
     },
-  });
-};
-
-// Auth Queries and Mutations
-export const useLogin = () => {
-  const router = useRouter();
-
-  return useMutation({
-    mutationFn: (credentials: LoginCredentials) =>
-      authService.login(credentials),
-    onSuccess: (response) => {
-      if (response.success) {
-        router.push("/backoffice/dashboard");
-      }
-    },
-  });
-};
-
-export const useLogout = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: () => authService.logout(),
-    onSuccess: () => {
-      queryClient.clear();
-      router.push("/backoffice/login");
-    },
-  });
-};
-
-export const useCurrentUser = () => {
-  return useQuery({
-    queryKey: ["currentUser"],
-    queryFn: () => authService.getCurrentUser(),
-    staleTime: Infinity,
-  });
-};
-
-export const useRequestPasswordReset = () => {
-  return useMutation({
-    mutationFn: (email: string) => authService.requestPasswordReset(email),
   });
 };

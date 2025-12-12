@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import type {
-  LegalRiskRequirements,
-  VendorDocument,
-} from "../../types/vendor.types";
+import type { LegalRisk, VendorDocument } from "../../types/vendor.types";
+import {
+  legalRiskSchema,
+  type LegalRiskFormValues,
+} from "../../validations/vendor.schema";
 import { YES_NO_OPTIONS } from "../../lib/constants";
 import {
   CloudArrowUpIcon,
@@ -26,13 +28,13 @@ export default function LegalRiskStep({
   onBack,
 }: LegalRiskStepProps) {
   const [antiBriberyDoc, setAntiBriberyDoc] = useState<VendorDocument | null>(
-    data.legalRisk?.antiBriberyPolicyDocument || null
+    data.legal_risk?.anti_bribery_policy_document || null
   );
   const [amlDoc, setAmlDoc] = useState<VendorDocument | null>(
-    data.legalRisk?.amlPolicyDocument || null
+    data.legal_risk?.aml_policy_document || null
   );
   const [insuranceDoc, setInsuranceDoc] = useState<VendorDocument | null>(
-    data.legalRisk?.insuranceDocument || null
+    data.legal_risk?.insurance_document || null
   );
 
   const {
@@ -40,13 +42,14 @@ export default function LegalRiskStep({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<LegalRiskRequirements>({
-    defaultValues: data.legalRisk || {},
+  } = useForm<LegalRiskFormValues>({
+    resolver: zodResolver(legalRiskSchema),
+    defaultValues: data.legal_risk || {},
   });
 
-  const antiBriberyCompliance = watch("antiBriberyCompliance");
-  const amlCompliance = watch("amlCompliance");
-  const productLiabilityInsurance = watch("productLiabilityInsurance");
+  const antiBriberyCompliance = watch("anti_bribery_compliance");
+  const amlCompliance = watch("aml_compliance");
+  const productLiabilityInsurance = watch("product_liability_insurance");
 
   const handleFileUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -62,7 +65,7 @@ export default function LegalRiskStep({
         category: "legal",
         file: file,
         required: false,
-        uploadedAt: new Date(),
+        uploaded_at: new Date(),
       };
       setter(newDoc);
     }
@@ -74,13 +77,13 @@ export default function LegalRiskStep({
     setter(null);
   };
 
-  const onSubmit = (formData: LegalRiskRequirements) => {
+  const onSubmit = (formData: LegalRiskFormValues) => {
     onNext({
-      legalRisk: {
+      legal_risk: {
         ...formData,
-        antiBriberyPolicyDocument: antiBriberyDoc,
-        amlPolicyDocument: amlDoc,
-        insuranceDocument: insuranceDoc,
+        anti_bribery_policy_document: antiBriberyDoc,
+        aml_policy_document: amlDoc,
+        insurance_document: insuranceDoc,
       },
     });
   };
@@ -121,7 +124,11 @@ export default function LegalRiskStep({
                 {document.name}
               </p>
               <p className="text-xs text-slate-500">
-                {document.uploadedAt?.toLocaleDateString()}
+                {document.uploaded_at
+                  ? new Date(
+                      document.uploaded_at as string | Date
+                    ).toLocaleDateString()
+                  : ""}
               </p>
             </div>
           </div>
@@ -166,11 +173,11 @@ export default function LegalRiskStep({
                 Do you have an Anti-Bribery & Corruption Policy? *
               </label>
               <select
-                {...register("antiBriberyCompliance", {
+                {...register("anti_bribery_compliance", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.antiBriberyCompliance
+                  errors.anti_bribery_compliance
                     ? "border-red-300"
                     : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
@@ -182,9 +189,9 @@ export default function LegalRiskStep({
                   </option>
                 ))}
               </select>
-              {errors.antiBriberyCompliance && (
+              {errors.anti_bribery_compliance && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.antiBriberyCompliance.message}
+                  {errors.anti_bribery_compliance.message}
                 </p>
               )}
             </div>
@@ -220,11 +227,11 @@ export default function LegalRiskStep({
                 Do you have AML Compliance procedures in place? *
               </label>
               <select
-                {...register("amlCompliance", {
+                {...register("aml_compliance", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.amlCompliance ? "border-red-300" : "border-white"
+                  errors.aml_compliance ? "border-red-300" : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
               >
                 <option value="">Select option</option>
@@ -234,9 +241,9 @@ export default function LegalRiskStep({
                   </option>
                 ))}
               </select>
-              {errors.amlCompliance && (
+              {errors.aml_compliance && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.amlCompliance.message}
+                  {errors.aml_compliance.message}
                 </p>
               )}
             </div>
@@ -260,7 +267,7 @@ export default function LegalRiskStep({
           <div className="flex items-start gap-3">
             <input
               type="checkbox"
-              {...register("sanctionsCheckConfirmation", {
+              {...register("sanctions_check_confirmation", {
                 required: "You must confirm this to proceed",
               })}
               className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
@@ -274,9 +281,9 @@ export default function LegalRiskStep({
                 are not subject to any international sanctions or trade
                 restrictions, and do not appear on any prohibited parties lists.
               </p>
-              {errors.sanctionsCheckConfirmation && (
+              {errors.sanctions_check_confirmation && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.sanctionsCheckConfirmation.message}
+                  {errors.sanctions_check_confirmation.message}
                 </p>
               )}
             </div>
@@ -300,11 +307,11 @@ export default function LegalRiskStep({
                 Do you have Product Liability Insurance? *
               </label>
               <select
-                {...register("productLiabilityInsurance", {
+                {...register("product_liability_insurance", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.productLiabilityInsurance
+                  errors.product_liability_insurance
                     ? "border-red-300"
                     : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
@@ -316,9 +323,9 @@ export default function LegalRiskStep({
                   </option>
                 ))}
               </select>
-              {errors.productLiabilityInsurance && (
+              {errors.product_liability_insurance && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.productLiabilityInsurance.message}
+                  {errors.product_liability_insurance.message}
                 </p>
               )}
             </div>
@@ -342,7 +349,7 @@ export default function LegalRiskStep({
           <div className="flex items-start gap-3">
             <input
               type="checkbox"
-              {...register("ndaAcceptance", {
+              {...register("nda_acceptance", {
                 required: "You must accept the NDA to proceed",
               })}
               className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
@@ -356,9 +363,9 @@ export default function LegalRiskStep({
                 Non-Disclosure Agreement to protect confidential business
                 information shared during the procurement process.
               </p>
-              {errors.ndaAcceptance && (
+              {errors.nda_acceptance && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.ndaAcceptance.message}
+                  {errors.nda_acceptance.message}
                 </p>
               )}
             </div>
@@ -370,7 +377,7 @@ export default function LegalRiskStep({
           <div className="flex items-start gap-3">
             <input
               type="checkbox"
-              {...register("supplierCodeOfConductApproval", {
+              {...register("supplier_code_of_conduct_approval", {
                 required: "You must accept the Code of Conduct to proceed",
               })}
               className="mt-1 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
@@ -385,9 +392,9 @@ export default function LegalRiskStep({
                 ethical business practices, labor standards, environmental
                 responsibility, and quality requirements.
               </p>
-              {errors.supplierCodeOfConductApproval && (
+              {errors.supplier_code_of_conduct_approval && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.supplierCodeOfConductApproval.message}
+                  {errors.supplier_code_of_conduct_approval.message}
                 </p>
               )}
             </div>

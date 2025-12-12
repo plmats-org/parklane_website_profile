@@ -1,10 +1,21 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
-import type { CompanyInformation } from '../../types/vendor.types';
-import { COUNTRIES } from '../../lib/constants';
-import { BuildingOfficeIcon, EnvelopeIcon, PhoneIcon, UserIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import type { CompanyInformation } from "../../types/vendor.types";
+import {
+  companyInformationSchema,
+  type CompanyInformationFormValues,
+} from "../../validations/vendor.schema";
+import { COUNTRIES } from "../../lib/constants";
+import {
+  BuildingOfficeIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  UserIcon,
+  GlobeAltIcon,
+} from "@heroicons/react/24/outline";
 
 interface CompanyInformationStepProps {
   data: any;
@@ -13,26 +24,33 @@ interface CompanyInformationStepProps {
   isFirstStep: boolean;
 }
 
-export default function CompanyInformationStep({ data, onNext, isFirstStep }: CompanyInformationStepProps) {
+export default function CompanyInformationStep({
+  data,
+  onNext,
+  isFirstStep,
+}: CompanyInformationStepProps) {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<CompanyInformation>({
-    defaultValues: data.companyInformation || {
-      phoneNumbers: [''],
+  } = useForm<CompanyInformationFormValues>({
+    resolver: zodResolver(companyInformationSchema),
+    defaultValues: data.company_information || {
+      phone_numbers: [""],
     },
   });
 
-  const onSubmit = (formData: CompanyInformation) => {
-    onNext({ companyInformation: formData });
+  const onSubmit = (formData: CompanyInformationFormValues) => {
+    onNext({ company_information: formData });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-slate-900 mb-3">Company Information</h2>
+        <h2 className="text-3xl font-bold text-slate-900 mb-3">
+          Company Information
+        </h2>
         <p className="text-slate-600">
           Provide your company's official registration and contact information.
         </p>
@@ -49,16 +67,22 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
               <BuildingOfficeIcon className="h-5 w-5 text-slate-400" />
             </div>
             <input
-              {...register('registeredCompanyName', { required: 'Company name is required' })}
+              {...register("registered_company_name", {
+                required: "Company name is required",
+              })}
               type="text"
               placeholder="ABC Trading Company Ltd"
               className={`block w-full pl-10 pr-3 py-3.5 border ${
-                errors.registeredCompanyName ? 'border-red-300' : 'border-slate-300'
+                errors.registered_company_name
+                  ? "border-red-300"
+                  : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             />
           </div>
-          {errors.registeredCompanyName && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.registeredCompanyName.message}</p>
+          {errors.registered_company_name && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.registered_company_name.message}
+            </p>
           )}
         </div>
 
@@ -68,7 +92,7 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
             Trading Name (if different)
           </label>
           <input
-            {...register('tradingName')}
+            {...register("trading_name")}
             type="text"
             placeholder="ABC Trade"
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -85,9 +109,13 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
               <GlobeAltIcon className="h-5 w-5 text-slate-400" />
             </div>
             <select
-              {...register('countryOfRegistration', { required: 'Country is required' })}
+              {...register("country_of_registration", {
+                required: "Country is required",
+              })}
               className={`block w-full pl-10 pr-3 py-3.5 border ${
-                errors.countryOfRegistration ? 'border-red-300' : 'border-slate-300'
+                errors.country_of_registration
+                  ? "border-red-300"
+                  : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             >
               <option value="">Select country</option>
@@ -98,8 +126,10 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
               ))}
             </select>
           </div>
-          {errors.countryOfRegistration && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.countryOfRegistration.message}</p>
+          {errors.country_of_registration && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.country_of_registration.message}
+            </p>
           )}
         </div>
 
@@ -109,20 +139,25 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
             Year Established *
           </label>
           <input
-            {...register('yearEstablished', {
-              required: 'Year is required',
+            {...register("year_established", {
+              required: "Year is required",
               valueAsNumber: true,
-              min: { value: 1900, message: 'Invalid year' },
-              max: { value: new Date().getFullYear(), message: 'Cannot be in the future' },
+              min: { value: 1900, message: "Invalid year" },
+              max: {
+                value: new Date().getFullYear(),
+                message: "Cannot be in the future",
+              },
             })}
             type="number"
             placeholder="2015"
             className={`block w-full px-3 py-3.5 border ${
-              errors.yearEstablished ? 'border-red-300' : 'border-slate-300'
+              errors.year_established ? "border-red-300" : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.yearEstablished && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.yearEstablished.message}</p>
+          {errors.year_established && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.year_established.message}
+            </p>
           )}
         </div>
 
@@ -132,15 +167,21 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
             Company Registration Number *
           </label>
           <input
-            {...register('companyRegistrationNumber', { required: 'Registration number is required' })}
+            {...register("company_registration_number", {
+              required: "Registration number is required",
+            })}
             type="text"
             placeholder="REG/2015/12345"
             className={`block w-full px-3 py-3.5 border ${
-              errors.companyRegistrationNumber ? 'border-red-300' : 'border-slate-300'
+              errors.company_registration_number
+                ? "border-red-300"
+                : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.companyRegistrationNumber && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.companyRegistrationNumber.message}</p>
+          {errors.company_registration_number && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.company_registration_number.message}
+            </p>
           )}
         </div>
 
@@ -150,15 +191,21 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
             Registered Business Address *
           </label>
           <textarea
-            {...register('registeredBusinessAddress', { required: 'Address is required' })}
+            {...register("registered_business_address", {
+              required: "Address is required",
+            })}
             rows={3}
             placeholder="123 Business Street, District, City"
             className={`block w-full px-3 py-3.5 border ${
-              errors.registeredBusinessAddress ? 'border-red-300' : 'border-slate-300'
+              errors.registered_business_address
+                ? "border-red-300"
+                : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.registeredBusinessAddress && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.registeredBusinessAddress.message}</p>
+          {errors.registered_business_address && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.registered_business_address.message}
+            </p>
           )}
         </div>
 
@@ -168,7 +215,7 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
             Operational Address (if different from registered)
           </label>
           <textarea
-            {...register('operationalAddress')}
+            {...register("operational_address")}
             rows={3}
             placeholder="456 Operations Avenue, District, City"
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -181,17 +228,22 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
             Website
           </label>
           <input
-            {...register('website', {
+            {...register("website", {
               pattern: {
-                value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/,
-                message: 'Invalid URL',
+                value:
+                  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/,
+                message: "Invalid URL",
               },
             })}
             type="url"
             placeholder="https://www.company.com"
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
           />
-          {errors.website && <p className="mt-1.5 text-sm text-red-600">{errors.website.message}</p>}
+          {errors.website && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.website.message}
+            </p>
+          )}
         </div>
 
         {/* Corporate Email */}
@@ -204,22 +256,24 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
               <EnvelopeIcon className="h-5 w-5 text-slate-400" />
             </div>
             <input
-              {...register('corporateEmail', {
-                required: 'Email is required',
+              {...register("corporate_email", {
+                required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address',
+                  message: "Invalid email address",
                 },
               })}
               type="email"
               placeholder="info@company.com"
               className={`block w-full pl-10 pr-3 py-3.5 border ${
-                errors.corporateEmail ? 'border-red-300' : 'border-slate-300'
+                errors.corporate_email ? "border-red-300" : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             />
           </div>
-          {errors.corporateEmail && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.corporateEmail.message}</p>
+          {errors.corporate_email && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.corporate_email.message}
+            </p>
           )}
         </div>
 
@@ -233,16 +287,22 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
               <UserIcon className="h-5 w-5 text-slate-400" />
             </div>
             <input
-              {...register('primaryContactPersonName', { required: 'Contact name is required' })}
+              {...register("primary_contact_person_name", {
+                required: "Contact name is required",
+              })}
               type="text"
               placeholder="John Doe"
               className={`block w-full pl-10 pr-3 py-3.5 border ${
-                errors.primaryContactPersonName ? 'border-red-300' : 'border-slate-300'
+                errors.primary_contact_person_name
+                  ? "border-red-300"
+                  : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             />
           </div>
-          {errors.primaryContactPersonName && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.primaryContactPersonName.message}</p>
+          {errors.primary_contact_person_name && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.primary_contact_person_name.message}
+            </p>
           )}
         </div>
 
@@ -252,15 +312,21 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
             Contact Person Title/Role *
           </label>
           <input
-            {...register('contactPersonTitle', { required: 'Title is required' })}
+            {...register("contact_person_title", {
+              required: "Title is required",
+            })}
             type="text"
             placeholder="General Manager"
             className={`block w-full px-3 py-3.5 border ${
-              errors.contactPersonTitle ? 'border-red-300' : 'border-slate-300'
+              errors.contact_person_title
+                ? "border-red-300"
+                : "border-slate-300"
             } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
           />
-          {errors.contactPersonTitle && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.contactPersonTitle.message}</p>
+          {errors.contact_person_title && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.contact_person_title.message}
+            </p>
           )}
         </div>
 
@@ -274,22 +340,26 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
               <PhoneIcon className="h-5 w-5 text-slate-400" />
             </div>
             <input
-              {...register('phoneNumbers.0', {
-                required: 'At least one phone number is required',
+              {...register("phone_numbers.0", {
+                required: "At least one phone number is required",
                 pattern: {
                   value: /^\+?[0-9]{10,15}$/,
-                  message: 'Invalid phone number format',
+                  message: "Invalid phone number format",
                 },
               })}
               type="tel"
               placeholder="+250788123456"
               className={`block w-full pl-10 pr-3 py-3.5 border ${
-                errors.phoneNumbers?.[0] ? 'border-red-300' : 'border-slate-300'
+                errors.phone_numbers?.[0]
+                  ? "border-red-300"
+                  : "border-slate-300"
               } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
             />
           </div>
-          {errors.phoneNumbers?.[0] && (
-            <p className="mt-1.5 text-sm text-red-600">{errors.phoneNumbers[0].message}</p>
+          {errors.phone_numbers?.[0] && (
+            <p className="mt-1.5 text-sm text-red-600">
+              {errors.phone_numbers[0].message}
+            </p>
           )}
         </div>
       </div>
@@ -297,8 +367,9 @@ export default function CompanyInformationStep({ data, onNext, isFirstStep }: Co
       {/* Info Box */}
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
         <p className="text-sm text-blue-800">
-          <strong>Note:</strong> Please ensure all information matches your official company registration
-          documents. This information will be verified during the approval process.
+          <strong>Note:</strong> Please ensure all information matches your
+          official company registration documents. This information will be
+          verified during the approval process.
         </p>
       </div>
 

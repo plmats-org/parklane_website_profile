@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useLogin } from "../../hooks/useVendor";
+import { useLogin } from "@/hooks/useAuth";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -16,10 +16,10 @@ export default function LoginScreen() {
     e.preventDefault();
     setError("");
 
-    const result = await loginMutation.mutateAsync({ email, password });
-
-    if (!result.success) {
-      setError(result.error || "Login failed");
+    try {
+      await loginMutation.mutateAsync({ email, password });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
     }
   };
 

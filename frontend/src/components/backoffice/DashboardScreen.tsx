@@ -1,98 +1,59 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { authService } from "../../services/api.service";
-import { useVendors, useLogout } from "../hooks/useVendor";
+import {
+  useAuth,
+  useRequireAuth,
+  useVendors,
+  useVendorStatistics,
+} from "@/hooks";
 import DashboardStats from "./Dashboardstats";
+import BackofficeNavbar from "./BackofficeNavbar";
 
 export default function DashboardScreen() {
-  const router = useRouter();
-  const logoutMutation = useLogout();
-  const { data: vendorsResponse, isLoading } = useVendors(1, 100);
+  const { user, isHydrated } = useAuth();
+  const { isLoading: authLoading } = useRequireAuth("/backoffice/login");
 
-  useEffect(() => {
-    if (!authService.isAuthenticated()) {
-      router.push("/backoffice/login");
-    }
-  }, [router]);
+  // Fetch vendor statistics
+  const { data: statistics, isLoading: statsLoading } = useVendorStatistics();
 
-  const currentUser = authService.getCurrentUser();
+  // Fetch recent vendors
+  const { data: vendorsData, isLoading: vendorsLoading } = useVendors({
+    page: 1,
+    limit: 5,
+    sort_by: "created_at",
+    sort_order: "desc",
+  });
 
-  const calculateStats = () => {
-    if (!vendorsResponse?.success) {
-      return { total: 0, pending: 0, approved: 0, rejected: 0 };
-    }
+  const isLoading = statsLoading || vendorsLoading;
 
-    const vendors = vendorsResponse.data.data;
-    return {
-      total: vendors.length,
-      pending: vendors.filter((v) => v.status === "pending").length,
-      approved: vendors.filter((v) => v.status === "approved").length,
-      rejected: vendors.filter((v) => v.status === "rejected").length,
-    };
+  const stats = {
+    total: statistics?.total || 0,
+    pending: statistics?.by_status?.pending || 0,
+    approved: statistics?.by_status?.approved || 0,
+    rejected: statistics?.by_status?.rejected || 0,
+    on_hold: statistics?.by_status?.on_hold || 0,
+    suspended: statistics?.by_status?.suspended || 0,
   };
 
-  const stats = calculateStats();
+  // Show loading state during hydration
+  if (!isHydrated || authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
 
-  const handleLogout = () => {
-    logoutMutation.mutate();
-  };
-
-  if (!currentUser) {
+  if (!user) {
     return null;
   }
 
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Navigation */}
-      <nav className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary-400 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">PLM</span>
-                </div>
-                <div>
-                  <div className="font-bold text-lg text-slate-900">
-                    Parklane Materials
-                  </div>
-                  <div className="text-xs text-slate-600">Back Office</div>
-                </div>
-              </Link>
-              <div className="hidden md:flex items-center space-x-4">
-                <Link
-                  href="/backoffice/dashboard"
-                  className="px-3 py-2 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/backoffice/vendors"
-                  className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                >
-                  Vendors
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-sm text-right hidden sm:block">
-                <p className="font-medium text-slate-900">{currentUser.name}</p>
-                <p className="text-slate-500">{currentUser.email}</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <BackofficeNavbar activePage="dashboard" />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -107,8 +68,8 @@ export default function DashboardScreen() {
               Dashboard
             </h1>
             <p className="text-slate-600">
-              Welcome back, {currentUser.name.split(" ")[0]}! Here's your vendor
-              overview.
+              Welcome back, {user.first_name || user.fullName?.split(" ")[0]}!
+              Here&apos;s your vendor overview.
             </p>
           </motion.div>
         </div>
@@ -182,23 +143,25 @@ export default function DashboardScreen() {
           <h3 className="font-semibold text-lg text-slate-900 mb-4">
             Recent Submissions
           </h3>
-          {isLoading ? (
+          {vendorsLoading ? (
             <div className="text-center py-8 text-slate-500">Loading...</div>
-          ) : vendorsResponse?.success &&
-            vendorsResponse.data.data.length > 0 ? (
+          ) : vendorsData?.data && vendorsData.data.length > 0 ? (
             <div className="space-y-3">
-              {vendorsResponse.data.data.slice(0, 5).map((vendor) => (
+              {vendorsData.data.map((vendor) => (
                 <Link
-                  key={vendor.id}
-                  href={`/backoffice/vendors/${vendor.id}`}
+                  key={vendor._id || vendor.id}
+                  href={`/backoffice/vendors/${vendor._id || vendor.id}`}
                   className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors"
                 >
                   <div>
                     <p className="font-medium text-slate-900">
-                      {vendor.companyInformation.registeredCompanyName}
+                      {vendor.company_information?.registered_company_name ||
+                        "Unknown Company"}
                     </p>
                     <p className="text-sm text-slate-500">
-                      {new Date(vendor.submittedAt).toLocaleDateString()}
+                      {new Date(
+                        vendor.created_at || vendor.submitted_at
+                      ).toLocaleDateString()}
                     </p>
                   </div>
                   <span
@@ -207,11 +170,17 @@ export default function DashboardScreen() {
                         ? "bg-amber-100 text-amber-700 border-amber-200"
                         : vendor.status === "approved"
                         ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                        : vendor.status === "on_hold"
+                        ? "bg-blue-100 text-blue-700 border-blue-200"
+                        : vendor.status === "suspended"
+                        ? "bg-purple-100 text-purple-700 border-purple-200"
                         : "bg-red-100 text-red-700 border-red-200"
                     }`}
                   >
-                    {vendor.status.charAt(0).toUpperCase() +
-                      vendor.status.slice(1)}
+                    {vendor.status === "on_hold"
+                      ? "On Hold"
+                      : vendor.status.charAt(0).toUpperCase() +
+                        vendor.status.slice(1)}
                   </span>
                 </Link>
               ))}

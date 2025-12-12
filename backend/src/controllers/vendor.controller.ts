@@ -225,10 +225,7 @@ export const getVendorStatistics = async (req: AuthRequest, res: Response) => {
       {
         $facet: {
           totalCount: [{ $count: "count" }],
-          byStatus: [
-            { $group: { _id: "$status", count: { $sum: 1 } } },
-            { $sort: { count: -1 } },
-          ],
+          byStatus: [{ $group: { _id: "$status", count: { $sum: 1 } } }],
           byBusinessType: [
             {
               $group: {
@@ -248,25 +245,52 @@ export const getVendorStatistics = async (req: AuthRequest, res: Response) => {
             { $sort: { count: -1 } },
             { $limit: 10 },
           ],
-          recentSubmissions: [
-            { $sort: { submitted_at: -1 } },
-            { $limit: 5 },
-            {
-              $project: {
-                _id: 1,
-                registered_company_name:
-                  "$company_information.registered_company_name",
-                status: 1,
-                submitted_at: 1,
-              },
-            },
-          ],
         },
       },
     ]);
 
+    const rawStats = stats[0];
+
+    // Transform to frontend expected format
+    const total = rawStats.totalCount[0]?.count || 0;
+
+    // Transform byStatus array to object with snake_case keys
+    const by_status: Record<string, number> = {
+      pending: 0,
+      approved: 0,
+      rejected: 0,
+      on_hold: 0,
+      suspended: 0,
+    };
+    rawStats.byStatus.forEach((item: { _id: string; count: number }) => {
+      if (item._id) {
+        by_status[item._id] = item.count;
+      }
+    });
+
+    // Transform byBusinessType array to object
+    const by_business_type: Record<string, number> = {};
+    rawStats.byBusinessType.forEach((item: { _id: string; count: number }) => {
+      if (item._id) {
+        by_business_type[item._id] = item.count;
+      }
+    });
+
+    // Transform byCountry array to object
+    const by_country: Record<string, number> = {};
+    rawStats.byCountry.forEach((item: { _id: string; count: number }) => {
+      if (item._id) {
+        by_country[item._id] = item.count;
+      }
+    });
+
     return sendSuccess(res, {
-      statistics: stats[0],
+      statistics: {
+        total,
+        by_status,
+        by_business_type,
+        by_country,
+      },
     });
   } catch (error) {
     return sendError(res, error);

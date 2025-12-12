@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import type {
-  ReferencesPastPerformance,
+  References,
   MajorClient,
   VendorDocument,
 } from "../../types/vendor.types";
+import {
+  referencesSchema,
+  type ReferencesFormValues,
+} from "../../validations/vendor.schema";
 import { YES_NO_OPTIONS } from "../../lib/constants";
 import {
   PlusIcon,
@@ -29,10 +34,10 @@ export default function ReferencesStep({
   onBack,
 }: ReferencesStepProps) {
   const [referenceLetters, setReferenceLetters] = useState<VendorDocument[]>(
-    data.references?.referenceLetters || []
+    data.references?.reference_letters || []
   );
   const [caseStudies, setCaseStudies] = useState<VendorDocument[]>(
-    data.references?.caseStudies || []
+    data.references?.case_studies || []
   );
 
   const {
@@ -41,18 +46,19 @@ export default function ReferencesStep({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<ReferencesPastPerformance>({
+  } = useForm<ReferencesFormValues>({
+    resolver: zodResolver(referencesSchema),
     defaultValues: data.references || {
-      majorClientsList: [{}],
+      major_clients_list: [{}],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "majorClientsList",
+    name: "major_clients_list",
   });
 
-  const internationalExperience = watch("internationalSupplyExperience");
+  const internationalExperience = watch("international_supply_experience");
 
   const handleFileUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -68,7 +74,7 @@ export default function ReferencesStep({
         category: "reference",
         file: file,
         required: false,
-        uploadedAt: new Date(),
+        uploaded_at: new Date(),
       };
       setter((prev) => [...prev, newDoc]);
     }
@@ -81,12 +87,12 @@ export default function ReferencesStep({
     setter((prev) => prev.filter((doc) => doc.id !== id));
   };
 
-  const onSubmit = (formData: ReferencesPastPerformance) => {
+  const onSubmit = (formData: ReferencesFormValues) => {
     onNext({
       references: {
         ...formData,
-        referenceLetters,
-        caseStudies,
+        reference_letters: referenceLetters,
+        case_studies: caseStudies,
       },
     });
   };
@@ -155,7 +161,7 @@ export default function ReferencesStep({
                       Client Name *
                     </label>
                     <input
-                      {...register(`majorClientsList.${index}.clientName`, {
+                      {...register(`major_clients_list.${index}.client_name`, {
                         required: "Client name is required",
                       })}
                       type="text"
@@ -169,7 +175,7 @@ export default function ReferencesStep({
                       Country *
                     </label>
                     <input
-                      {...register(`majorClientsList.${index}.country`, {
+                      {...register(`major_clients_list.${index}.country`, {
                         required: "Country is required",
                       })}
                       type="text"
@@ -184,7 +190,7 @@ export default function ReferencesStep({
                     </label>
                     <input
                       {...register(
-                        `majorClientsList.${index}.productsSupplied`,
+                        `major_clients_list.${index}.products_supplied`,
                         {
                           required: "Products supplied is required",
                         }
@@ -201,7 +207,7 @@ export default function ReferencesStep({
                     </label>
                     <input
                       {...register(
-                        `majorClientsList.${index}.durationOfRelationship`,
+                        `major_clients_list.${index}.duration_of_relationship`,
                         {
                           required: "Duration is required",
                         }
@@ -217,7 +223,7 @@ export default function ReferencesStep({
                       Annual Volume (Optional)
                     </label>
                     <input
-                      {...register(`majorClientsList.${index}.annualVolume`)}
+                      {...register(`major_clients_list.${index}.annual_volume`)}
                       type="text"
                       placeholder="$500,000"
                       className="block w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -229,7 +235,9 @@ export default function ReferencesStep({
                       Contact Person (Optional)
                     </label>
                     <input
-                      {...register(`majorClientsList.${index}.contactPerson`)}
+                      {...register(
+                        `major_clients_list.${index}.contact_person`
+                      )}
                       type="text"
                       placeholder="John Doe"
                       className="block w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -241,7 +249,7 @@ export default function ReferencesStep({
                       Contact Email (Optional)
                     </label>
                     <input
-                      {...register(`majorClientsList.${index}.contactEmail`)}
+                      {...register(`major_clients_list.${index}.contact_email`)}
                       type="email"
                       placeholder="john@abc.com"
                       className="block w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -253,7 +261,7 @@ export default function ReferencesStep({
                       Contact Phone (Optional)
                     </label>
                     <input
-                      {...register(`majorClientsList.${index}.contactPhone`)}
+                      {...register(`major_clients_list.${index}.contact_phone`)}
                       type="tel"
                       placeholder="+250788123456"
                       className="block w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -308,7 +316,12 @@ export default function ReferencesStep({
                         {doc.name}
                       </p>
                       <p className="text-xs text-slate-500">
-                        Uploaded {doc.uploadedAt?.toLocaleDateString()}
+                        Uploaded{" "}
+                        {doc.uploaded_at
+                          ? new Date(
+                              doc.uploaded_at as string | Date
+                            ).toLocaleDateString()
+                          : ""}
                       </p>
                     </div>
                   </div>
@@ -333,11 +346,11 @@ export default function ReferencesStep({
                 International Supply Experience? *
               </label>
               <select
-                {...register("internationalSupplyExperience", {
+                {...register("international_supply_experience", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.internationalSupplyExperience
+                  errors.international_supply_experience
                     ? "border-red-300"
                     : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white`}
@@ -349,9 +362,9 @@ export default function ReferencesStep({
                   </option>
                 ))}
               </select>
-              {errors.internationalSupplyExperience && (
+              {errors.international_supply_experience && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.internationalSupplyExperience.message}
+                  {errors.international_supply_experience.message}
                 </p>
               )}
             </div>
@@ -362,7 +375,7 @@ export default function ReferencesStep({
                   International Experience Details
                 </label>
                 <input
-                  {...register("internationalExperienceDetails")}
+                  {...register("international_experience_details")}
                   type="text"
                   placeholder="Countries/regions, types of projects"
                   className="block w-full px-3 py-3.5 border border-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
@@ -414,7 +427,12 @@ export default function ReferencesStep({
                         {doc.name}
                       </p>
                       <p className="text-xs text-slate-500">
-                        Uploaded {doc.uploadedAt?.toLocaleDateString()}
+                        Uploaded{" "}
+                        {doc.uploaded_at
+                          ? new Date(
+                              doc.uploaded_at as string | Date
+                            ).toLocaleDateString()
+                          : ""}
                       </p>
                     </div>
                   </div>

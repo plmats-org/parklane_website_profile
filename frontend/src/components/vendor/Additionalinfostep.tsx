@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import type {
-  AdditionalInformation,
-  VendorDocument,
-} from "../../types/vendor.types";
+import type { Additional, VendorDocument } from "../../types/vendor.types";
+import {
+  additionalSchema,
+  type AdditionalFormValues,
+} from "../../validations/vendor.schema";
 import { YES_NO_OPTIONS } from "../../lib/constants";
 import {
   CloudArrowUpIcon,
@@ -27,20 +29,21 @@ export default function AdditionalInfoStep({
 }: AdditionalInfoStepProps) {
   const [additionalDocuments, setAdditionalDocuments] = useState<
     VendorDocument[]
-  >(data.additional?.additionalDocuments || []);
+  >(data.additional?.additional_documents || []);
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<AdditionalInformation>({
+  } = useForm<AdditionalFormValues>({
+    resolver: zodResolver(additionalSchema),
     defaultValues: data.additional || {},
   });
 
-  const exclusivePartnerships = watch("exclusivePartnershipsInterest");
-  const jvCollaboration = watch("jvDistributionCollaborationInterest");
-  const preferredSupplier = watch("preferredSupplierProgramInterest");
+  const exclusivePartnerships = watch("exclusive_partnerships_interest");
+  const jvCollaboration = watch("jv_distribution_collaboration_interest");
+  const preferredSupplier = watch("preferred_supplier_program_interest");
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -52,7 +55,7 @@ export default function AdditionalInfoStep({
         category: "other",
         file: file,
         required: false,
-        uploadedAt: new Date(),
+        uploaded_at: new Date(),
       };
       setAdditionalDocuments((prev) => [...prev, newDoc]);
     }
@@ -62,11 +65,11 @@ export default function AdditionalInfoStep({
     setAdditionalDocuments((prev) => prev.filter((doc) => doc.id !== id));
   };
 
-  const onSubmit = (formData: AdditionalInformation) => {
+  const onSubmit = (formData: AdditionalFormValues) => {
     onNext({
       additional: {
         ...formData,
-        additionalDocuments,
+        additional_documents: additionalDocuments,
       },
     });
   };
@@ -96,11 +99,11 @@ export default function AdditionalInfoStep({
                 Interested in Exclusive Partnerships? *
               </label>
               <select
-                {...register("exclusivePartnershipsInterest", {
+                {...register("exclusive_partnerships_interest", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.exclusivePartnershipsInterest
+                  errors.exclusive_partnerships_interest
                     ? "border-red-300"
                     : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white`}
@@ -112,9 +115,9 @@ export default function AdditionalInfoStep({
                   </option>
                 ))}
               </select>
-              {errors.exclusivePartnershipsInterest && (
+              {errors.exclusive_partnerships_interest && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.exclusivePartnershipsInterest.message}
+                  {errors.exclusive_partnerships_interest.message}
                 </p>
               )}
             </div>
@@ -125,7 +128,7 @@ export default function AdditionalInfoStep({
                   Exclusive Partnership Details
                 </label>
                 <textarea
-                  {...register("exclusivePartnershipsDetails")}
+                  {...register("exclusive_partnerships_details")}
                   rows={3}
                   placeholder="Describe the type of exclusive partnerships you're interested in..."
                   className="block w-full px-3 py-3.5 border border-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white resize-none"
@@ -157,11 +160,11 @@ export default function AdditionalInfoStep({
                 Interested in JV or Distribution Collaboration? *
               </label>
               <select
-                {...register("jvDistributionCollaborationInterest", {
+                {...register("jv_distribution_collaboration_interest", {
                   required: "Please select an option",
                 })}
                 className={`block w-full px-3 py-3.5 border ${
-                  errors.jvDistributionCollaborationInterest
+                  errors.jv_distribution_collaboration_interest
                     ? "border-red-300"
                     : "border-white"
                 } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white`}
@@ -173,9 +176,9 @@ export default function AdditionalInfoStep({
                   </option>
                 ))}
               </select>
-              {errors.jvDistributionCollaborationInterest && (
+              {errors.jv_distribution_collaboration_interest && (
                 <p className="mt-1.5 text-sm text-red-600">
-                  {errors.jvDistributionCollaborationInterest.message}
+                  {errors.jv_distribution_collaboration_interest.message}
                 </p>
               )}
             </div>
@@ -186,7 +189,7 @@ export default function AdditionalInfoStep({
                   JV/Distribution Details
                 </label>
                 <textarea
-                  {...register("jvCollaborationDetails")}
+                  {...register("jv_collaboration_details")}
                   rows={3}
                   placeholder="Describe your vision for joint ventures or distribution partnerships..."
                   className="block w-full px-3 py-3.5 border border-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
@@ -216,11 +219,11 @@ export default function AdditionalInfoStep({
             Interested in our Preferred Supplier Program? *
           </label>
           <select
-            {...register("preferredSupplierProgramInterest", {
+            {...register("preferred_supplier_program_interest", {
               required: "Please select an option",
             })}
             className={`block w-full px-3 py-3.5 border ${
-              errors.preferredSupplierProgramInterest
+              errors.preferred_supplier_program_interest
                 ? "border-red-300"
                 : "border-white"
             } rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all bg-white`}
@@ -232,9 +235,9 @@ export default function AdditionalInfoStep({
               </option>
             ))}
           </select>
-          {errors.preferredSupplierProgramInterest && (
+          {errors.preferred_supplier_program_interest && (
             <p className="mt-1.5 text-sm text-red-600">
-              {errors.preferredSupplierProgramInterest.message}
+              {errors.preferred_supplier_program_interest.message}
             </p>
           )}
 
@@ -283,7 +286,7 @@ export default function AdditionalInfoStep({
             Additional Comments or Information
           </label>
           <textarea
-            {...register("additionalComments")}
+            {...register("additional_comments")}
             rows={5}
             placeholder="Include any other relevant information about your company, capabilities, unique value propositions, or special services you'd like us to know about..."
             className="block w-full px-3 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
@@ -331,7 +334,12 @@ export default function AdditionalInfoStep({
                         {doc.name}
                       </p>
                       <p className="text-xs text-slate-500">
-                        Uploaded {doc.uploadedAt?.toLocaleDateString()}
+                        Uploaded{" "}
+                        {doc.uploaded_at
+                          ? new Date(
+                              doc.uploaded_at as string | Date
+                            ).toLocaleDateString()
+                          : ""}
                       </p>
                     </div>
                   </div>

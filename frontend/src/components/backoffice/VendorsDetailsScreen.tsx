@@ -1,46 +1,53 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { authService } from "../../services/api.service";
 import {
+  useAuth,
+  useRequireAuth,
+  useLogout,
   useVendor,
   useUpdateVendorStatus,
-  useLogout,
-} from "../hooks/useVendor";
+} from "@/hooks";
 import VendorDetails from "./Vendordetails";
+import type { VendorStatus } from "@/types/vendor.types";
 
 export default function VendorDetailsScreen() {
-  const router = useRouter();
   const params = useParams();
+  const { user, isHydrated } = useAuth();
+  const { isLoading: authLoading } = useRequireAuth("/backoffice/login");
   const logoutMutation = useLogout();
   const vendorId = params.id as string;
 
-  useEffect(() => {
-    if (!authService.isAuthenticated()) {
-      router.push("/backoffice/login");
-    }
-  }, [router]);
-
-  const { data: vendorResponse, isLoading } = useVendor(vendorId);
+  const { data: vendor, isLoading } = useVendor(vendorId);
   const updateStatusMutation = useUpdateVendorStatus();
 
-  const currentUser = authService.getCurrentUser();
-
   const handleStatusUpdate = async (
-    status: "approved" | "rejected" | "suspended",
-    notes?: string
+    status: VendorStatus,
+    admin_notes?: string
   ) => {
-    await updateStatusMutation.mutateAsync({ id: vendorId, status, notes });
+    await updateStatusMutation.mutateAsync({
+      id: vendorId,
+      status,
+      admin_notes,
+    });
   };
 
   const handleLogout = () => {
     logoutMutation.mutate();
   };
 
-  if (!currentUser) {
+  // Show loading state during hydration
+  if (!isHydrated || authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
     return null;
   }
 
@@ -79,14 +86,17 @@ export default function VendorDetailsScreen() {
             </div>
             <div className="flex items-center gap-4">
               <div className="text-sm text-right hidden sm:block">
-                <p className="font-medium text-slate-900">{currentUser.name}</p>
-                <p className="text-slate-500">{currentUser.email}</p>
+                <p className="font-medium text-slate-900">
+                  {user.fullName || `${user.first_name} ${user.last_name}`}
+                </p>
+                <p className="text-slate-500">{user.email}</p>
               </div>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                disabled={logoutMutation.isPending}
+                className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50"
               >
-                Logout
+                {logoutMutation.isPending ? "Logging out..." : "Logout"}
               </button>
             </div>
           </div>
@@ -128,14 +138,14 @@ export default function VendorDetailsScreen() {
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
           </div>
-        ) : vendorResponse?.success && vendorResponse.data ? (
+        ) : vendor ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             <VendorDetails
-              vendor={vendorResponse.data}
+              vendor={vendor}
               onStatusUpdate={handleStatusUpdate}
               isUpdating={updateStatusMutation.isPending}
             />

@@ -1,6 +1,6 @@
 "use client";
 
-import VendorDetailsScreen from "@/src/components/backoffice/VendorsDetailsScreen";
+import VendorDetailsScreen from "@/components/backoffice/VendorsDetailsScreen";
 
 export default function Login() {
   return (

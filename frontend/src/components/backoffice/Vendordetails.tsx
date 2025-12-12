@@ -2,14 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import type { Vendor } from "../../types/vendor.types";
+import type { Vendor, VendorStatus } from "@/types/vendor.types";
 
 interface VendorDetailsProps {
   vendor: Vendor;
-  onStatusUpdate?: (
-    status: "approved" | "rejected" | "suspended",
-    notes?: string
-  ) => void;
+  onStatusUpdate?: (status: VendorStatus, admin_notes?: string) => void;
   isUpdating?: boolean;
 }
 
@@ -20,9 +17,9 @@ export default function VendorDetails({
 }: VendorDetailsProps) {
   const [notes, setNotes] = useState("");
   const [showStatusModal, setShowStatusModal] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<
-    "approved" | "rejected" | "suspended" | null
-  >(null);
+  const [selectedStatus, setSelectedStatus] = useState<VendorStatus | null>(
+    null
+  );
 
   const handleStatusChange = () => {
     if (selectedStatus && onStatusUpdate) {
@@ -38,11 +35,25 @@ export default function VendorDetails({
       pending: "bg-amber-100 text-amber-700 border-amber-200",
       approved: "bg-emerald-100 text-emerald-700 border-emerald-200",
       rejected: "bg-red-100 text-red-700 border-red-200",
-      suspended: "bg-slate-100 text-slate-700 border-slate-200",
+      on_hold: "bg-blue-100 text-blue-700 border-blue-200",
+      suspended: "bg-purple-100 text-purple-700 border-purple-200",
     };
     return (
       colors[status as keyof typeof colors] || "bg-slate-100 text-slate-700"
     );
+  };
+
+  const formatStatusLabel = (status: string) => {
+    if (status === "on_hold") return "On Hold";
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  };
+
+  const formatFieldLabel = (key: string) => {
+    return key
+      .replace(/_/g, " ")
+      .replace(/([A-Z])/g, " $1")
+      .trim()
+      .replace(/^./, (str) => str.toUpperCase());
   };
 
   const renderSection = (title: string, content: any) => {
@@ -57,8 +68,8 @@ export default function VendorDetails({
           {Object.entries(content).map(([key, value]: [string, any]) => {
             if (
               !value ||
-              key.includes("Document") ||
               key.includes("document") ||
+              key.includes("Document") ||
               (Array.isArray(value) && value.length === 0)
             )
               return null;
@@ -66,10 +77,7 @@ export default function VendorDetails({
             return (
               <div key={key}>
                 <dt className="text-sm font-medium text-slate-600 mb-1">
-                  {key
-                    .replace(/([A-Z])/g, " $1")
-                    .trim()
-                    .replace(/^./, (str) => str.toUpperCase())}
+                  {formatFieldLabel(key)}
                 </dt>
                 <dd className="text-sm text-slate-900">
                   {Array.isArray(value)
@@ -97,13 +105,17 @@ export default function VendorDetails({
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">
-              {vendor.companyInformation.registeredCompanyName}
+              {vendor.company_information?.registered_company_name ||
+                "Unknown Company"}
             </h2>
             <div className="flex items-center gap-3 text-sm text-slate-600">
-              <span className="font-mono">{vendor.id}</span>
+              <span className="font-mono">{vendor._id || vendor.id}</span>
               <span>•</span>
               <span>
-                Submitted: {new Date(vendor.submittedAt).toLocaleDateString()}
+                Submitted:{" "}
+                {new Date(
+                  vendor.created_at || vendor.submitted_at
+                ).toLocaleDateString()}
               </span>
             </div>
           </div>
@@ -113,14 +125,14 @@ export default function VendorDetails({
                 vendor.status
               )}`}
             >
-              {vendor.status.charAt(0).toUpperCase() + vendor.status.slice(1)}
+              {formatStatusLabel(vendor.status)}
             </span>
           </div>
         </div>
       </div>
 
       {/* Status Actions */}
-      {vendor.status === "pending" && onStatusUpdate && (
+      {onStatusUpdate && (
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           <h3 className="font-semibold text-slate-900 mb-4">Update Status</h3>
           <div className="flex flex-wrap gap-3">
@@ -129,7 +141,8 @@ export default function VendorDetails({
                 setSelectedStatus("approved");
                 setShowStatusModal(true);
               }}
-              className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
+              disabled={vendor.status === "approved"}
+              className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Approve
             </button>
@@ -138,16 +151,28 @@ export default function VendorDetails({
                 setSelectedStatus("rejected");
                 setShowStatusModal(true);
               }}
-              className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+              disabled={vendor.status === "rejected"}
+              className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Reject
+            </button>
+            <button
+              onClick={() => {
+                setSelectedStatus("on_hold");
+                setShowStatusModal(true);
+              }}
+              disabled={vendor.status === "on_hold"}
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              On Hold
             </button>
             <button
               onClick={() => {
                 setSelectedStatus("suspended");
                 setShowStatusModal(true);
               }}
-              className="px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg transition-colors"
+              disabled={vendor.status === "suspended"}
+              className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Suspend
             </button>
@@ -156,38 +181,38 @@ export default function VendorDetails({
       )}
 
       {/* Vendor Information Sections */}
-      {renderSection("Company Information", vendor.companyInformation)}
-      {renderSection("Company Profile", vendor.companyProfile)}
+      {renderSection("Company Information", vendor.company_information)}
+      {renderSection("Company Profile", vendor.company_profile)}
       {renderSection("Certifications", vendor.certifications)}
-      {renderSection("Product & Technical", vendor.productTechnical)}
-      {renderSection("Commercial & Financial", vendor.commercialFinancial)}
+      {renderSection("Product & Technical", vendor.product_technical)}
+      {renderSection("Commercial & Financial", vendor.commercial_financial)}
       {renderSection("Logistics", vendor.logistics)}
-      {renderSection("Legal & Risk", vendor.legalRisk)}
+      {renderSection("Legal & Risk", vendor.legal_risk)}
       {renderSection("Sustainability", vendor.sustainability)}
       {renderSection("Additional Information", vendor.additional)}
 
       {/* References */}
-      {vendor.references?.majorClientsList &&
-        vendor.references.majorClientsList.length > 0 && (
+      {vendor.references?.major_clients_list &&
+        vendor.references.major_clients_list.length > 0 && (
           <div className="bg-white border border-slate-200 rounded-xl p-6">
             <h3 className="font-semibold text-lg text-slate-900 mb-4 pb-3 border-b border-slate-200">
               References
             </h3>
             <div className="space-y-3">
-              {vendor.references.majorClientsList
-                .filter((client: any) => client.clientName)
+              {vendor.references.major_clients_list
+                .filter((client: any) => client.client_name)
                 .map((client: any, index: number) => (
                   <div key={index} className="bg-slate-50 p-4 rounded-lg">
                     <p className="font-medium text-slate-900">
-                      {client.clientName}
+                      {client.client_name}
                     </p>
                     <p className="text-sm text-slate-600 mt-1">
-                      {client.country} • {client.durationOfRelationship}
+                      {client.country} • {client.duration_of_relationship}
                     </p>
-                    {client.contactPerson && (
+                    {client.contact_person && (
                       <p className="text-sm text-slate-600 mt-1">
-                        Contact: {client.contactPerson}
-                        {client.contactEmail && ` (${client.contactEmail})`}
+                        Contact: {client.contact_person}
+                        {client.contact_email && ` (${client.contact_email})`}
                       </p>
                     )}
                   </div>
@@ -197,7 +222,7 @@ export default function VendorDetails({
         )}
 
       {/* Review History */}
-      {vendor.reviewedBy && (
+      {vendor.reviewed_by && (
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           <h3 className="font-semibold text-lg text-slate-900 mb-4 pb-3 border-b border-slate-200">
             Review History
@@ -205,19 +230,37 @@ export default function VendorDetails({
           <div className="space-y-2">
             <p className="text-sm text-slate-600">
               <span className="font-medium">Reviewed by:</span>{" "}
-              {vendor.reviewedBy}
+              {typeof vendor.reviewed_by === "string"
+                ? vendor.reviewed_by
+                : vendor.reviewed_by}
             </p>
-            {vendor.reviewedAt && (
+            {vendor.reviewed_at && (
               <p className="text-sm text-slate-600">
                 <span className="font-medium">Reviewed on:</span>{" "}
-                {new Date(vendor.reviewedAt).toLocaleString()}
+                {new Date(vendor.reviewed_at).toLocaleString()}
               </p>
             )}
-            {vendor.reviewNotes && (
-              <div className="mt-3 bg-slate-50 p-3 rounded-lg">
-                <p className="text-sm text-slate-700">{vendor.reviewNotes}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Notes History */}
+      {vendor.admin_notes && vendor.admin_notes.length > 0 && (
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
+          <h3 className="font-semibold text-lg text-slate-900 mb-4 pb-3 border-b border-slate-200">
+            Admin Notes
+          </h3>
+          <div className="space-y-3">
+            {vendor.admin_notes.map((note, index) => (
+              <div key={index} className="bg-slate-50 p-4 rounded-lg">
+                <p className="text-sm text-slate-700">{note.note}</p>
+                <div className="mt-2 text-xs text-slate-500">
+                  Added by{" "}
+                  {note.added_by?.name || note.added_by?.email || "Unknown"} on{" "}
+                  {new Date(note.added_at).toLocaleString()}
+                </div>
               </div>
-            )}
+            ))}
           </div>
         </div>
       )}
@@ -235,11 +278,17 @@ export default function VendorDetails({
                 ? "Approve"
                 : selectedStatus === "rejected"
                 ? "Reject"
+                : selectedStatus === "on_hold"
+                ? "Put On Hold"
                 : "Suspend"}{" "}
               Vendor
             </h3>
             <p className="text-slate-600 mb-4">
-              Are you sure you want to {selectedStatus} this vendor?
+              Are you sure you want to{" "}
+              {selectedStatus === "on_hold"
+                ? "put this vendor on hold"
+                : selectedStatus + " this vendor"}
+              ?
             </p>
             <div className="mb-4">
               <label className="block text-sm font-medium text-slate-700 mb-2">
