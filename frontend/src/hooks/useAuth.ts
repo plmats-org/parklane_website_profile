@@ -30,7 +30,8 @@ export function useLogin() {
     onSuccess: (data) => {
       queryClient.setQueryData([QUERY_KEYS.USER], data.user);
       toast.success("Login successful");
-      router.push("/backoffice/dashboard");
+      // Use window.location for a full page navigation to ensure auth state is refreshed
+      window.location.href = "/backoffice/dashboard";
     },
     onError: (error: Error) => {
       toast.error(error.message || "Login failed");
@@ -42,7 +43,6 @@ export function useLogin() {
  * Hook for logout mutation
  */
 export function useLogout() {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -52,13 +52,13 @@ export function useLogout() {
     onSuccess: () => {
       queryClient.clear();
       toast.success("Logged out successfully");
-      router.push("/backoffice/login");
+      window.location.href = "/";
     },
     onError: (error: Error) => {
       // Still clear state even on error
       queryClient.clear();
       authService.logout();
-      router.push("/backoffice/login");
+      window.location.href = "/";
       console.error("Logout error:", error);
     },
   });
