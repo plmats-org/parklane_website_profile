@@ -5,7 +5,6 @@ export const config = {
 };
 
 export const API_ENDPOINTS = {
-  // Auth
   LOGIN: "/auth/login",
   LOGOUT: "/auth/logout",
   ME: "/auth/me",
