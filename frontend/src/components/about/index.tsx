@@ -58,7 +58,7 @@ const About = () => {
               fill="#a68b56"
               fillOpacity="0.5"
             />
-            
+
             {/* Europe */}
             <motion.path
               initial={{ pathLength: 0, opacity: 0 }}
@@ -66,7 +66,7 @@ const About = () => {
               transition={{ duration: 2, delay: 0.5, ease: 'easeInOut' }}
               d="M580 230 L600 225 L620 230 L635 240 L645 250 L640 265 L625 270 L610 268 L595 260 L585 245 Z"
             />
-            
+
             {/* Asia */}
             <motion.path
               initial={{ pathLength: 0, opacity: 0 }}
@@ -74,7 +74,7 @@ const About = () => {
               transition={{ duration: 2, delay: 0.7, ease: 'easeInOut' }}
               d="M650 240 L700 235 L750 245 L780 260 L790 280 L785 300 L770 315 L750 325 L720 330 L690 325 L670 310 L660 290 L655 270 Z"
             />
-            
+
             {/* North America */}
             <motion.path
               initial={{ pathLength: 0, opacity: 0 }}
@@ -82,7 +82,7 @@ const About = () => {
               transition={{ duration: 2, delay: 0.4, ease: 'easeInOut' }}
               d="M250 220 L300 210 L340 220 L360 240 L365 265 L355 285 L335 295 L310 298 L285 290 L265 275 L255 255 Z"
             />
-            
+
             {/* South America */}
             <motion.path
               initial={{ pathLength: 0, opacity: 0 }}
@@ -90,7 +90,7 @@ const About = () => {
               transition={{ duration: 2, delay: 0.6, ease: 'easeInOut' }}
               d="M340 310 L360 305 L375 315 L380 335 L375 360 L365 385 L350 405 L335 410 L325 400 L320 380 L318 355 L325 330 Z"
             />
-            
+
             {/* Australia */}
             <motion.path
               initial={{ pathLength: 0, opacity: 0 }}
@@ -170,24 +170,32 @@ const About = () => {
           {/* Grid Layout - Title Left, Description Right */}
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-16">
             {/* Left - Main Title */}
-            <motion.h2
-              variants={fadeInUp}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.15]"
-            >
-              Global Procurement,{' '}
-              <span className="text-primary-500">African Excellence</span>
-            </motion.h2>
+            <motion.div variants={fadeInUp}>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.15] mb-4">
+                Built in Africa.{' '}
+                <span className="text-primary-500">Connected to the World.</span>
+              </h2>
+              <p className="text-xl font-semibold text-slate-700">
+                Africa-First. Rwanda-Led. Globally Connected.
+              </p>
+            </motion.div>
 
             {/* Right - Company Description */}
             <motion.div variants={fadeInUp} className="space-y-4">
               <p className="text-lg text-slate-600 leading-relaxed">
-                PLM delivers high-quality products, equipment, and logistics
-                solutions across Africa and globally.
+                Parklane Materials (PLM) is uniquely positioned as a procurement
+                and services platform operating out of Africa, starting with Rwanda—one
+                of the continent's most stable, reform-driven, and investment-friendly markets.
               </p>
               <p className="text-base text-slate-500 leading-relaxed">
-                With a strong network of manufacturers and logistics partners,
-                we provide end-to-end procurement services to governments,
-                companies, NGOs, and major infrastructure contractors.
+                PLM unlocks opportunity on both sides of the value chain:
+                <strong className="text-slate-700"> empowering local manufacturers and suppliers</strong>,
+                while giving clients access to <strong className="text-slate-700">depth, choice, speed, and certainty</strong>.
+              </p>
+              <p className="text-base text-slate-500 leading-relaxed">
+                With a strong network of manufacturers, international suppliers, and logistics partners,
+                we provide end-to-end procurement services to governments, companies, NGOs,
+                and major infrastructure contractors across Africa and globally.
               </p>
             </motion.div>
           </div>
@@ -198,9 +206,9 @@ const About = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl"
           >
             {[
-              { label: 'Global Reach', value: 'Worldwide' },
-              { label: 'Focus', value: 'Africa' },
-              { label: 'Delivery', value: 'On-Time' },
+              { label: 'Starting Point', value: 'Rwanda' },
+              { label: 'Regional Reach', value: 'Africa' },
+              { label: 'Global Network', value: 'Worldwide' },
               { label: 'Quality', value: 'Assured' },
             ].map((stat, index) => (
               <motion.div

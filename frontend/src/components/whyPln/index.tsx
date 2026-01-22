@@ -10,28 +10,28 @@ const WhyPLM = () => {
 
   const reasons = [
     {
-      title: 'Who we are',
-      description: 'PLM is a leading general procurement and supply company delivering high-quality products, equipment, and logistics solutions across Africa and globally. With a strong network of manufacturers, international suppliers, and logistics partners, PLM provides end-to-end, reliable, and cost-effective procurement services to governments, companies, NGOs, and major infrastructure contractors.',
+      title: 'Who We Are',
+      description: 'PLM is a leading procurement and supply company headquartered in Rwanda, delivering high-quality products, equipment, and logistics solutions across Africa and globally. With deep roots in one of Africa\'s most stable and investment-friendly markets, we are uniquely positioned to serve both local and international clients.',
     },
     {
       title: 'Our Mission',
-      description: 'To simplify global sourcing by providing reliable procurement, world-class logistics, and consistent quality across all sectors — from medical to construction, energy, and general supplies.',
+      description: 'To simplify global sourcing by providing reliable procurement, world-class logistics, and consistent quality across all sectors—while prioritizing African suppliers and building local capacity.',
     },
     {
       title: 'Our Vision',
-      description: 'To be one of Africa’s most trusted integrated procurement and supply companies, known for transparency, speed, and ability to deliver even the most complex supply requirements.',
+      description: 'To be Africa\'s most trusted integrated procurement platform, known for transparency, speed, supplier network depth, and the ability to deliver even the most complex supply requirements.',
     },
     {
-      title: 'Our Strengths',
-      description: 'Global supplier partnerships - Strong presence in Africa - Deep understanding of government and corporate procurement - Ability to deliver at speed, anywhere - Full logistics ecosystem (sea, land, air & special charter) - Multi-sector procurement expertise - Flexible and scalable supply programs',
+      title: 'Network Strength',
+      description: 'Unlike traditional procurement models, PLM maintains a living supplier network with pre-qualified alternatives at every tier—local, regional, and global—ensuring zero downtime and continuous project execution.',
     },
     {
-      title: 'Reliable Delivery',
-      description: 'Comprehensive logistics management via air, land, and sea ensures your materials arrive on time, every time, anywhere in the world.',
+      title: 'Risk Mitigation',
+      description: 'PLM acts as the risk manager in the middle. If one supplier delays or fails, we immediately activate alternatives. Contracts adjust, logistics adapt, and clients experience minimal to zero disruption.',
     },
     {
-      title: 'Dedicated Support',
-      description: 'Expert procurement specialists and responsive customer service provide personalized solutions tailored to your project requirements.',
+      title: 'Financing Support',
+      description: 'We remove capital bottlenecks through in-house pre-financing, bank-supported trade finance, and supplier-backed structured payments—ensuring projects start on time and suppliers are protected.',
     },
   ];
 
@@ -58,9 +58,9 @@ const WhyPLM = () => {
   };
 
   return (
-    <section 
-      id="why-plm" 
-      ref={ref} 
+    <section
+      id="why-plm"
+      ref={ref}
       className="relative py-20 lg:py-32 bg-black overflow-hidden"
     >
       {/* PLM Background Text */}
@@ -86,12 +86,12 @@ const WhyPLM = () => {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="mb-16 lg:mb-20">
-               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-0.5 bg-gradient-to-r from-primary-500 to-primary-600"></div>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600 font-semibold tracking-wider uppercase text-sm">
-                  Mission & Vision
-                </span>
-              </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-0.5 bg-gradient-to-r from-primary-500 to-primary-600"></div>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600 font-semibold tracking-wider uppercase text-sm">
+                Mission & Vision
+              </span>
+            </div>
             <h2 className="text-4xl sm:text-5xl cursor-pointer lg:text-6xl font-bold text-white mb-6">
               Why choose{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 via-primary-500 to-primary-500">
@@ -114,7 +114,7 @@ const WhyPLM = () => {
               >
                 {/* Gradient Glow on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/0 via-yellow-500/0 to-amber-600/0 group-hover:from-amber-500/5 group-hover:via-yellow-500/5 group-hover:to-amber-600/5 rounded-2xl transition-all duration-500" />
-                
+
                 <div className="relative z-10">
                   {/* Number Badge */}
                   {/* <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-amber-500 to-yellow-600 text-white font-bold text-sm mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -124,7 +124,7 @@ const WhyPLM = () => {
                   <h3 className="text-xl font-semibold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-amber-400 group-hover:to-yellow-500 transition-all duration-300">
                     {reason.title}
                   </h3>
-                  
+
                   <p className="text-slate-400 leading-relaxed text-sm">
                     {reason.description}
                   </p>

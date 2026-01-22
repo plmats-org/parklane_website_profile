@@ -19,139 +19,271 @@ const Services = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   const services: Service[] = [
+    // 1. HEALTHCARE & MEDICAL SOLUTIONS
     {
-      title: 'General Procurement Services',
-      shortDescription: 'End-to-end corporate and government procurement solutions',
-      fullDescription: 'Comprehensive procurement services including vendor qualification, international sourcing, and bulk purchasing. We handle everything from complex government contracts to corporate supply agreements.',
-      image: `gen.jpeg`,
-      details: [
-        'Corporate procurement & sourcing',
-        'Government procurement support',
-        'Vendor identification & qualification',
-        'International sourcing & supply negotiations',
-        'Framework supply agreements',
-        'Bulk purchasing and consolidation',
-        'Custom procurement for hard-to-find items',
-      ],
-    },
-    {
-      title: 'Medical & Health Sector',
-      shortDescription: 'Complete medical equipment and supplies',
-      fullDescription: 'Turnkey medical supply chain management from PPE to hospital equipment. We provide everything needed to equip and maintain healthcare facilities of any size.',
+      title: 'Healthcare & Medical Solutions',
+      shortDescription: 'Comprehensive hospital supplies, medical equipment, and pharmaceutical solutions',
+      fullDescription: 'End-to-end healthcare procurement covering hospital consumables, advanced medical equipment, laboratory diagnostics, pharmaceutical supplies, and maternal health products. We equip healthcare facilities of any scale with quality-assured medical solutions.',
       image: `hospital.jpeg`,
       details: [
-        'Personal protective equipment (PPE)',
-        'Hospital equipment & consumables',
-        'Diagnostic tools & testing kits',
-        'Emergency response supplies',
-        'Pharmaceuticals (non-controlled)',
-        'Laboratory equipment & reagents',
-        'Medical furniture & facility outfitting',
-        'Turnkey medical supply chain management',
+        // Hospital & Clinical Supplies
+        'Consumables (gloves, syringes, masks, gowns)',
+        'IV fluids & accessories',
+        'Catheters & tubing',
+        'Diagnostic disposables',
+        'Sterilization & infection control products',
+        // Medical Equipment
+        'Patient monitors & ventilators',
+        'Ultrasound, X-ray & imaging equipment',
+        'ECG machines & dialysis equipment',
+        'Laboratory analyzers & microscopes',
+        // Medical Furniture
+        'Hospital beds (manual & electric)',
+        'Operating tables & examination tables',
+        'Stretchers, wheelchairs & trolleys',
+        // Maternal Health
+        'Maternity kits & pregnancy test kits',
+        'Gynecological equipment',
+        // Pharmaceuticals
+        'Essential medicines & vaccines',
+        'OTC products & medical gases',
       ],
     },
+    // 2. ENERGY & POWER SOLUTIONS
     {
-      title: 'Construction Supplies',
-      shortDescription: 'Premium building materials and site consumables',
-      fullDescription: 'Complete range of construction materials from cement and steel to finishing materials. Quality-assured supplies for projects of any scale.',
-      image: `clinker.jpeg`,
+      title: 'Energy & Power Solutions',
+      shortDescription: 'Power generation, renewable energy, and oil & gas equipment',
+      fullDescription: 'Complete energy solutions from power generation equipment to renewable systems and oil & gas infrastructure. We provide generators, solar systems, transformers, and comprehensive fuel supply services for industrial and commercial operations.',
+      image: `diesel-supply.jpeg`,
       details: [
-        'Clinker',
-        'Cement, aggregates, sand & binding materials',
-        'Rebar, steel, plates, beams, channels',
-        'Plumbing and electrical materials',
-        'Roofing materials',
-        'Prefabricated building components',
-        'Paints, coatings, waterproofing',
-        'Insulation materials',
-        'Safety equipment & site consumables',
+        // Power Generation
+        'Gas & diesel generators',
+        'Solar power systems & wind power components',
+        'Turbines & hybrid power solutions',
+        // Energy Infrastructure
+        'Transformers & switchgear',
+        'Substations & transmission lines',
+        'Cables, conductors & energy meters',
+        // Oil & Gas Equipment
+        'Drilling & gas processing equipment',
+        'Pipelines, valves & compressors',
+        'Storage tanks & safety systems',
+        // Renewable Energy
+        'Solar panels & inverters',
+        'Battery storage systems',
+        'EV charging stations & mini-grid systems',
+        // Fuel Supply
+        'Diesel, gasoline & gas supply (LPG, CNG)',
+        'Energy logistics & fuel storage solutions',
+        'Energy consulting services',
       ],
     },
+    // 3. INDUSTRIAL, HEAVY & LIGHT EQUIPMENT
     {
-      title: 'Construction Equipment Rental',
-      shortDescription: 'Heavy machinery and specialized equipment',
-      fullDescription: 'Full fleet of construction equipment available for rent. From earthmoving to lifting equipment, we have everything needed for your construction site.',
+      title: 'Industrial & Heavy Equipment',
+      shortDescription: 'Construction, mining, manufacturing machinery and material handling',
+      fullDescription: 'Comprehensive industrial equipment solutions covering construction machinery, manufacturing systems, material handling equipment, mining gear, and agricultural equipment. We source and deliver specialized heavy-duty equipment globally.',
       image: `cst.png`,
       details: [
-        'Earthmoving: excavators, graders, loaders',
-        'Lifting equipment: cranes, forklifts, boom lifts',
-        'Road construction: rollers, pavers',
-        'Power solutions: generators, transformers',
-        'Concrete equipment: mixers, pumps',
-        'Site offices, mobile cabins',
-        'Specialized equipment on request',
+        // Construction Equipment
+        'Excavators, bulldozers & cranes',
+        'Loaders, compactors & concrete mixers',
+        // Industrial Machinery
+        'Manufacturing & processing equipment',
+        'Packaging machinery & CNC machines',
+        'Factory automation systems',
+        // Material Handling
+        'Forklifts & pallet trucks',
+        'Conveyors, hoists & warehouse racking',
+        // Mining & Quarry
+        'Drilling rigs & crushers',
+        'Screens & haul trucks',
+        'Processing plants',
+        // Agricultural Equipment
+        'Tractors & harvesters',
+        'Irrigation systems',
+        'Agro-processing equipment & storage silos',
       ],
     },
+    // 4. CONSTRUCTION MATERIALS & BUILDING SOLUTIONS
     {
-      title: 'Industrial Procurement',
-      shortDescription: 'Heavy-duty supplies for industrial operations',
-      fullDescription: 'Comprehensive industrial procurement services for mining, manufacturing, and oil & gas sectors. We source specialized equipment and supplies globally.',
-      image: `ind.png`,
+      title: 'Construction Materials & Building Solutions',
+      shortDescription: 'Structural, finishing, roofing, and infrastructure materials',
+      fullDescription: 'Quality-assured construction materials from structural components to finishing touches. We supply cement, steel, tiles, electrical systems, plumbing materials, and road infrastructure products for projects of any scale.',
+      image: `clinker.jpeg`,
       details: [
-        'Mining equipment & supplies',
-        'Industrial machines (cutting, welding, fabrication)',
-        'Heavy-duty electrical & mechanical components',
-        'Oil & gas field supplies',
-        'Safety gear and industrial PPE',
-        'Bearings, hydraulics & automation parts',
+        // Structural Materials
+        'Cement, clinker & structural steel',
+        'Steel rebar & precast concrete',
+        'Blocks & bricks',
+        // Finishing Materials
+        'Tiles, marble & paints',
+        'Gypsum boards & flooring systems',
+        'Doors & windows',
+        // Roofing & Exterior
+        'Roofing sheets & insulation materials',
+        'Facade systems & cladding',
+        'Waterproofing materials',
+        // Electrical & Plumbing
+        'Electrical cables, switches & sockets',
+        'Lighting systems',
+        'Pipes, fittings & water tanks',
+        'Pumps',
+        // Roads & Infrastructure
+        'Asphalt, bitumen & aggregates',
+        'Drainage systems & road signage',
       ],
     },
+    // 5. ICT, DIGITAL & SMART INFRASTRUCTURE
     {
-      title: 'Logistics & Supply Chain',
-      shortDescription: 'Complete freight and transportation solutions',
-      fullDescription: 'Integrated logistics solutions covering sea, land, air freight, and special charter services. We handle everything from bulk shipping to express delivery.',
+      title: 'ICT & Digital Solutions',
+      shortDescription: 'Hardware, software, telecom infrastructure and smart city platforms',
+      fullDescription: 'Complete ICT solutions from enterprise hardware to digital platforms. We provide servers, networking equipment, ERP systems, cybersecurity solutions, and telecommunications infrastructure for modern digital operations.',
+      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop',
+      details: [
+        // Hardware & Devices
+        'Servers & data centers',
+        'Computers, laptops & networking equipment',
+        'Storage systems',
+        // Software & Digital
+        'ERP systems & cloud services',
+        'Cybersecurity solutions',
+        'Government IT solutions',
+        'Smart city platforms',
+        // Telecom & Connectivity
+        'Fiber optic cables',
+        'Towers & base stations',
+        'Routers, switches & satellite communication',
+      ],
+    },
+    // 6. LOGISTICS, TRANSPORT & SUPPORT SERVICES
+    {
+      title: 'Logistics & Transport Services',
+      shortDescription: 'Freight forwarding, fleet management, and supply chain solutions',
+      fullDescription: 'Integrated logistics covering shipping, customs clearance, warehousing, and last-mile delivery. We manage complete supply chains with specialized vehicles, cold-chain logistics, and distribution services across Africa and globally.',
       image: 'https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?q=80&w=2065&auto=format&fit=crop',
       details: [
-        'Sea Freight: FCL/LCL, bulk commodity shipping',
-        'Land Transport: heavy cargo, cross-border haulage',
-        'Air Freight: express shipments, temperature-controlled',
-        'Special Charter: aircraft & vessel charter',
-        'Port-to-port & door-to-door delivery',
+        // Logistics & Freight
+        'Shipping & freight forwarding',
+        'Customs clearance',
+        'Warehousing & cold-chain logistics',
+        // Fleet & Transportation
+        'Trucks, buses & specialized vehicles',
+        'Ambulances & heavy-duty transporters',
+        // Supply Chain Management
+        'Inventory management',
+        'Distribution services',
         'Last-mile delivery solutions',
-        'Oversized cargo handling',
       ],
     },
+    // 7. MANPOWER, PROFESSIONAL & TECHNICAL SERVICES
     {
-      title: 'Energy & Infrastructure',
-      shortDescription: 'Specialized supplies for major projects',
-      fullDescription: 'Specialized procurement for energy, mining, and infrastructure projects. We supply everything from pipeline materials to road construction consumables.',
-      image: `coal-truc.jpeg`,
+      title: 'Manpower & Professional Services',
+      shortDescription: 'Engineering, construction, design, legal, and skilled workforce solutions',
+      fullDescription: 'Complete professional services from engineering consultants to skilled technicians. We provide project managers, architects, legal advisors, and specialized workforce for construction, energy, and infrastructure projects.',
+      image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=2187&auto=format&fit=crop',
       details: [
-        'Coal',
-        'Pipeline materials & fuel handling equipment',
-        'Mining: blast materials, drilling supplies',
-        'Road construction / consumables',
-        'Bridge components',
-        'Water & sanitation materials',
-        'Street lighting & electrification hardware',
-        'Camp equipment & heavy gear',
+        // Engineering & Technical
+        'Civil, mechanical & electrical engineers',
+        'Energy specialists',
+        // Construction & Project Services
+        'Project managers & site supervisors',
+        'Quantity surveyors & construction consultants',
+        // Design & Architecture
+        'Architects & urban planners',
+        'Interior & landscape designers',
+        // Legal, Financial & Advisory
+        'Lawyers & financial advisors',
+        'Auditors, tax consultants & PPP advisors',
+        // Skilled Manpower
+        'Technicians & welders',
+        'Electricians, plumbers & equipment operators',
       ],
     },
+    // 8. AGRICULTURE & FOOD SUPPLY
     {
-      title: 'Facility Management',
-      shortDescription: 'Operational supplies and maintenance equipment',
-      fullDescription: 'Complete facility management supplies from cleaning equipment to maintenance tools. Everything needed to keep your operations running smoothly.',
-      image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070&auto=format&fit=crop',
+      title: 'Agriculture & Food Supply',
+      shortDescription: 'Agricultural inputs, processing equipment, and food commodities',
+      fullDescription: 'Comprehensive agricultural solutions from farm inputs to food processing. We supply seeds, fertilizers, irrigation systems, processing machinery, cold storage, and food commodities for agricultural operations and food supply chains.',
+      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop',
       details: [
-        'Cleaning equipment & industrial detergents',
-        'Office and stationery supplies',
-        'Tools, hardware & spare parts',
-        'Maintenance supplies',
-        'Groundskeeping & landscape tools',
+        // Inputs & Equipment
+        'Seeds, fertilizers & pesticides',
+        'Irrigation systems',
+        // Processing & Storage
+        'Food processing machinery',
+        'Cold storage solutions',
+        'Packaging solutions',
+        // Food & Commodity Supply
+        'Grains & processed food',
+        'Livestock feed',
       ],
     },
+    // 9. SECURITY, SAFETY & COMPLIANCE
     {
-      title: 'Turnkey Project Packages',
-      shortDescription: 'Fully integrated supply solutions',
-      fullDescription: 'Complete project supply packages tailored to your specific needs. From hospital setups to mining camps, we deliver everything in one integrated solution.',
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop',
+      title: 'Security, Safety & Compliance',
+      shortDescription: 'Safety equipment, security systems, and quality certification services',
+      fullDescription: 'Complete safety and security solutions including PPE, fire systems, surveillance equipment, and compliance services. We provide quality assurance, inspection, testing, and certification support for regulatory adherence.',
+      image: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=2096&auto=format&fit=crop',
       details: [
-        'Hospital or clinic supply package',
-        'School construction supply package',
-        'Emergency disaster response kits',
-        'Mining camp setup',
-        'Road construction materials package',
-        'Security & surveillance equipment package',
+        // Safety Equipment
+        'Personal Protective Equipment (PPE)',
+        'Fire safety systems',
+        'Emergency response equipment',
+        // Security Systems
+        'Surveillance systems (CCTV)',
+        'Access control systems',
+        'Alarm systems',
+        // Compliance & Certification
+        'Quality assurance services',
+        'Inspection & testing',
+        'Certification support',
+      ],
+    },
+    // 10. FINANCING, TRADE & SUPPORT SERVICES
+    {
+      title: 'Financing & Trade Services',
+      shortDescription: 'Procurement financing, trade finance, and banking partnerships',
+      fullDescription: 'Financial solutions to support procurement and trade operations. We provide pre-financing, supplier credit structures, letters of credit, guarantees, and project financing coordination through strategic banking partnerships.',
+      image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011&auto=format&fit=crop',
+      details: [
+        // Procurement Financing
+        'Pre-financing solutions',
+        'Supplier credit structures',
+        'Trade finance',
+        // Banking & Financial Partnerships
+        'Letters of credit',
+        'Guarantees',
+        'Project financing coordination',
+      ],
+    },
+    // 11. LOCAL CONTENT & REGIONAL DEVELOPMENT SERVICES
+    {
+      title: 'Local Content & Regional Development',
+      shortDescription: 'Local supplier development, capacity building, and regional sourcing',
+      fullDescription: 'Supporting local economic development through supplier identification, capacity building programs, and regional sourcing coordination. We help businesses meet government local content requirements while developing sustainable local supply chains.',
+      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop',
+      details: [
+        'Local supplier identification',
+        'Capacity building programs',
+        'Supplier development programs',
+        'Government compliance advisory',
+        'Regional sourcing coordination',
+      ],
+    },
+    // 12. CUSTOM & SPECIALIZED REQUESTS
+    {
+      title: 'Custom & Specialized Requests',
+      shortDescription: 'Bespoke procurement, government tenders, and emergency sourcing',
+      fullDescription: 'Tailored procurement solutions for unique requirements. We handle bespoke procurement, government tenders, large-scale infrastructure sourcing, and emergency procurement with rapid response capabilities across Africa and global markets.',
+      image: `gen.jpeg`,
+      details: [
+        'Bespoke procurement solutions',
+        'Government tender support',
+        'Large-scale infrastructure sourcing',
+        'Emergency procurement',
+        'Hard-to-find item sourcing',
+        'Specialized equipment procurement',
       ],
     },
   ];
@@ -298,7 +430,7 @@ const Services = () => {
                     style={{ backgroundImage: `url('${selectedService.image}')` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                  
+
                   {/* Close Button */}
                   <button
                     onClick={() => setSelectedService(null)}
