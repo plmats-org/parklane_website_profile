@@ -140,7 +140,6 @@ const Advantages = () => {
                         </p>
                     </motion.div>
 
-                    {/* Core Advantages Grid */}
                     <motion.div
                         variants={containerVariants}
                         className="grid md:grid-cols-2 gap-6 lg:gap-8 mb-16"
