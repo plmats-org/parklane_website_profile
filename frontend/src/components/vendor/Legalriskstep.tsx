@@ -359,7 +359,7 @@ export default function LegalRiskStep({
                 Non-Disclosure Agreement (NDA) *
               </label>
               <p className="text-sm text-slate-600 mt-1">
-                I agree to sign and comply with Parklane Materials'
+                I agree to sign and comply with PLM'
                 Non-Disclosure Agreement to protect confidential business
                 information shared during the procurement process.
               </p>
@@ -388,7 +388,7 @@ export default function LegalRiskStep({
               </label>
               <p className="text-sm text-slate-600 mt-1">
                 I acknowledge that I have read, understood, and agree to comply
-                with Parklane Materials' Supplier Code of Conduct, including
+                with PLM' Supplier Code of Conduct, including
                 ethical business practices, labor standards, environmental
                 responsibility, and quality requirements.
               </p>

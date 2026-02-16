@@ -347,7 +347,7 @@ export default function SustainabilityStep({
           <SparklesIcon className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
           <div>
             <p className="text-sm text-emerald-800">
-              <strong>Why ESG Matters:</strong> Parklane Materials is committed
+              <strong>Why ESG Matters:</strong> PLM is committed
               to sustainable and ethical business practices. Strong ESG
               performance can open doors to more procurement opportunities and
               long-term partnerships.

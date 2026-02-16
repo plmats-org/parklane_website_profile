@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
               </div>
               <div>
                 <div className="font-bold text-xl text-slate-900">
-                  Parklane Materials
+                  PLM
                 </div>
               </div>
             </Link>

@@ -183,7 +183,7 @@ const About = () => {
             {/* Right - Company Description */}
             <motion.div variants={fadeInUp} className="space-y-4">
               <p className="text-lg text-slate-600 leading-relaxed">
-                Parklane Materials (PLM) is uniquely positioned as a procurement
+                PLM is uniquely positioned as a procurement
                 and services platform operating out of Africa, starting with Rwanda—one
                 of the continent's most stable, reform-driven, and investment-friendly markets.
               </p>
@@ -206,7 +206,7 @@ const About = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl"
           >
             {[
-              { label: 'Starting Point', value: 'Rwanda' },
+              // { label: 'Starting Point', value: 'Rwanda' },
               { label: 'Regional Reach', value: 'Africa' },
               { label: 'Global Network', value: 'Worldwide' },
               { label: 'Quality', value: 'Assured' },

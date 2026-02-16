@@ -1,6 +1,6 @@
-# Parklane Materials Ltd - Website
+# PLM Ltd - Website
 
-A professional, fully responsive website for Parklane Materials Ltd, showcasing their global sourcing and procurement services with beautiful animations and modern design.
+A professional, fully responsive website for PLM Ltd, showcasing their global sourcing and procurement services with beautiful animations and modern design.
 
 ## 🚀 Features
 
@@ -138,7 +138,7 @@ No environment variables required for basic setup. Add `.env.local` for:
 
 ## 📄 License
 
-© 2024 Parklane Materials Ltd. All rights reserved.
+© 2024 PLM Ltd. All rights reserved.
 
 ## 🤝 Support
 

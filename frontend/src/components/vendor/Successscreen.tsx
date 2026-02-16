@@ -94,7 +94,7 @@ export default function SuccessScreen({ onReturnHome }: SuccessScreenProps) {
           >
             <p className="text-lg text-slate-700 leading-relaxed">
               Thank you for your interest in partnering with{" "}
-              <strong className="text-primary-600">Parklane Materials</strong>.
+              <strong className="text-primary-600">PLM</strong>.
               Your vendor application has been successfully submitted and is now
               under review by our procurement team.
             </p>

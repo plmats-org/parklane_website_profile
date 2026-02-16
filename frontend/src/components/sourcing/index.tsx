@@ -13,9 +13,9 @@ const SourcingModel = () => {
         {
             tier: '1',
             title: 'Local First',
-            subtitle: 'Rwanda',
+            // subtitle: 'Rwanda',
             icon: MapPin,
-            description: 'PLM prioritizes Rwandan manufacturers, service providers, and local SMEs.',
+            description: 'PLM prioritizes local manufacturers, service providers, and SMEs.',
             benefits: [
                 'Full local content compliance',
                 'Faster delivery times',

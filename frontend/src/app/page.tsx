@@ -22,7 +22,7 @@ export default function Home() {
       <Advantages />
       <WhyPLM />
       <Logistics />
-      <Partners />
+      {/* <Partners /> */}
       <Contact />
       <Footer />
     </main>

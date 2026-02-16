@@ -1,6 +1,6 @@
 export const config = {
   apiUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api",
-  appName: "Parklane Materials",
+  appName: "PLM",
   appVersion: "1.0.0",
 };
 

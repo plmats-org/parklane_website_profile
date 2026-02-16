@@ -129,7 +129,7 @@ export default function Contact() {
                 Your Procurement?
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed">
-                Let's discuss how Parklane Materials can optimize your supply chain and deliver exceptional value to your projects worldwide.
+                Let's discuss how PLM can optimize your supply chain and deliver exceptional value to your projects worldwide.
               </p>
             </div>
           </motion.div>

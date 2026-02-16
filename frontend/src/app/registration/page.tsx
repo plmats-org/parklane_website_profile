@@ -133,7 +133,7 @@ export default function VendorRegistrationPage() {
             </h1>
             <p className=" text-slate-300 max-w-2xl">
               Join our network of trusted suppliers and partners. Complete the
-              registration process to start doing business with Parklane
+              registration process to start doing business with PLM
               Materials.
             </p>
           </motion.div>
@@ -191,11 +191,10 @@ export default function VendorRegistrationPage() {
                             isCompleted || isCurrent ? "#a68b56" : "#e2e8f0",
                         }}
                         transition={{ duration: 0.3 }}
-                        className={`w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-md z-10 ${
-                          isCompleted || isCurrent
+                        className={`w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-md z-10 ${isCompleted || isCurrent
                             ? "text-white"
                             : "text-slate-600"
-                        }`}
+                          }`}
                       >
                         {isCompleted ? (
                           <svg

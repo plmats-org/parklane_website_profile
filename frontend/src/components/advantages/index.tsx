@@ -224,7 +224,7 @@ const Advantages = () => {
                     </motion.div>
 
                     {/* Bottom CTA */}
-                    <motion.div
+                    {/* <motion.div
                         variants={itemVariants}
                         className="mt-16 text-center"
                     >
@@ -250,7 +250,7 @@ const Advantages = () => {
                                 />
                             </svg>
                         </a>
-                    </motion.div>
+                    </motion.div> */}
                 </motion.div>
             </div>
         </section>

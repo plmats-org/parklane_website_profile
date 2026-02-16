@@ -35,11 +35,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <Link href="#home" className="inline-flex items-center space-x-3 mb-6 group">
+            <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
               <Logo size={45} className="text-primary-400 group-hover:scale-110 transition-transform duration-300" />
               <div>
                 <div className="font-display text-xl font-bold">
-                  Parklane Materials
+                  PLM
                 </div>
                 <div className="text-sm text-white/70">
                   Global Sourcing Excellence
@@ -47,11 +47,11 @@ export default function Footer() {
               </div>
             </Link>
 
-            <p className="text-white/80 mb-6 leading-relaxed max-w-md">
-              A subsidiary of the Parklane Group, specializing in the
+            {/* <p className="text-white/80 mb-6 leading-relaxed max-w-md">
+              A subsidiary of the PLM, specializing in the
               procurement and supply of world-class construction materials and
               equipment.
-            </p>
+            </p> */}
 
             <div className="space-y-3">
               <a
@@ -134,7 +134,7 @@ export default function Footer() {
           {/* Bottom Section */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-white/60 text-sm text-center md:text-left">
-              © {currentYear} Parklane Materials Ltd. All rights reserved.
+              © {currentYear} PLM Ltd. All rights reserved.
             </div>
 
             <div className="flex flex-wrap justify-center gap-6 text-sm">

@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Parklane Materials Ltd - Global Sourcing Excellence",
+  title: "PLM Ltd - Global Sourcing Excellence",
   description:
     "Your trusted partner for world-class construction materials and equipment procurement. We deliver optimal value through strategic global sourcing, rigorous quality control, and seamless logistics.",
   keywords: [
@@ -26,18 +26,18 @@ export const metadata: Metadata = {
     "supply chain",
     "logistics",
     "Rwanda",
-    "Parklane Group",
+    "PLM",
   ],
-  authors: [{ name: "Parklane Materials Ltd" }],
+  authors: [{ name: "PLM Ltd" }],
   openGraph: {
-    title: "Parklane Materials Ltd - Streamline Global Business",
+    title: "PLM Ltd - Streamline Global Business",
     description:
-      "Leading global sourcing subsidiary of the Parklane Group, specializing in premium construction materials and equipment procurement.",
+      "Leading global sourcing subsidiary of the PLM, specializing in premium construction materials and equipment procurement.",
     type: "website",
     locale: "en_US",
-    siteName: "Parklane Materials Ltd",
+    siteName: "PLM Ltd",
   },
-   icons: {
+  icons: {
     icon: "/plm.png",
     shortcut: "/favicon.png",
   },

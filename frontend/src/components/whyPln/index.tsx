@@ -95,11 +95,11 @@ const WhyPLM = () => {
             <h2 className="text-4xl sm:text-5xl cursor-pointer lg:text-6xl font-bold text-white mb-6">
               Why choose{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 via-primary-500 to-primary-500">
-                Parklane
+                PLM
               </span>
             </h2>
             <p className=" text-slate-400 max-w-4xl leading-relaxed">
-              Parklane Materials combines elite global sourcing, rigorous quality control, and cutting-edge logistics expertise to deliver unmatched procurement solutions across construction and industrial sectors.
+              PLM combines elite global sourcing, rigorous quality control, and cutting-edge logistics expertise to deliver unmatched procurement solutions across construction and industrial sectors.
             </p>
           </motion.div>
 

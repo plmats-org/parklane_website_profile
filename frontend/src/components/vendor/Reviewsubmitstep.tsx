@@ -194,11 +194,11 @@ export default function ReviewSubmitStep({
                   in disqualification
                 </li>
                 <li>
-                  I agree to Parklane Materials' terms and conditions for vendor
+                  I agree to PLM' terms and conditions for vendor
                   registration
                 </li>
                 <li>
-                  I authorize Parklane Materials to verify the information and
+                  I authorize PLM to verify the information and
                   contact references
                 </li>
                 <li>

@@ -67,7 +67,7 @@ export default function LoginScreen() {
               </div>
               <div>
                 <div className="font-bold text-xl text-slate-900">
-                  Parklane Materials
+                  PLM
                 </div>
                 <div className="text-sm text-slate-600">
                   Global Sourcing Excellence

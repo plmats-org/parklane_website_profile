@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useLogout } from "@/hooks/useAuth";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
+  { name: "Home", href: "/" },
   { name: "About", href: "#about" },
   { name: "Services", href: "#services" },
   { name: "Why PLM", href: "#why-plm" },
@@ -241,7 +241,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link
-              href="#home"
+              href="/"
               className="inline-flex items-center space-x-3 group"
             >
               <Logo
@@ -250,7 +250,7 @@ export default function Navbar() {
               />
               <div>
                 <div className="font-display text-xl font-bold">
-                  Parklane Materials
+                  PLM
                 </div>
                 <div className="text-sm text-primary/30">
                   Global Sourcing Excellence

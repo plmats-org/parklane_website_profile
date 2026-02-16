@@ -64,7 +64,7 @@ export default function VendorDetailsScreen() {
                 </div>
                 <div>
                   <div className="font-bold text-lg text-slate-900">
-                    Parklane Materials
+                    PLM
                   </div>
                   <div className="text-xs text-slate-600">Back Office</div>
                 </div>
