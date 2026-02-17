@@ -24,7 +24,7 @@ const Services = () => {
       title: 'Healthcare & Medical Solutions',
       shortDescription: 'Comprehensive hospital supplies, medical equipment, and pharmaceutical solutions',
       fullDescription: 'End-to-end healthcare procurement covering hospital consumables, advanced medical equipment, laboratory diagnostics, pharmaceutical supplies, and maternal health products. We equip healthcare facilities of any scale with quality-assured medical solutions.',
-      image: `hospital.jpeg`,
+      image: `hospital.png`,
       details: [
         // Hospital & Clinical Supplies
         'Consumables (gloves, syringes, masks, gowns)',
@@ -54,7 +54,7 @@ const Services = () => {
       title: 'Energy & Power Solutions',
       shortDescription: 'Power generation, renewable energy, and oil & gas equipment',
       fullDescription: 'Complete energy solutions from power generation equipment to renewable systems and oil & gas infrastructure. We provide generators, solar systems, transformers, and comprehensive fuel supply services for industrial and commercial operations.',
-      image: `diesel-supply.jpeg`,
+      image: `diesel-supply.png`,
       details: [
         // Power Generation
         'Gas & diesel generators',
@@ -110,7 +110,7 @@ const Services = () => {
       title: 'Construction Materials & Building Solutions',
       shortDescription: 'Structural, finishing, roofing, and infrastructure materials',
       fullDescription: 'Quality-assured construction materials from structural components to finishing touches. We supply cement, steel, tiles, electrical systems, plumbing materials, and road infrastructure products for projects of any scale.',
-      image: `clinker.jpeg`,
+      image: `clinker.png`,
       details: [
         // Structural Materials
         'Cement, clinker & structural steel',
@@ -276,7 +276,7 @@ const Services = () => {
       title: 'Custom & Specialized Requests',
       shortDescription: 'Bespoke procurement, government tenders, and emergency sourcing',
       fullDescription: 'Tailored procurement solutions for unique requirements. We handle bespoke procurement, government tenders, large-scale infrastructure sourcing, and emergency procurement with rapid response capabilities across Africa and global markets.',
-      image: `gen.jpeg`,
+      image: `gen.png`,
       details: [
         'Bespoke procurement solutions',
         'Government tender support',
