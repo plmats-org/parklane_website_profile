@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "PLM Ltd - Global Sourcing Excellence",
+  title: "PLM - Global Sourcing Excellence",
   description:
     "Your trusted partner for world-class construction materials and equipment procurement. We deliver optimal value through strategic global sourcing, rigorous quality control, and seamless logistics.",
   keywords: [

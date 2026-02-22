@@ -38,9 +38,9 @@ export default function Footer() {
             <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
               <Logo size={45} className="text-primary-400 group-hover:scale-110 transition-transform duration-300" />
               <div>
-                <div className="font-display text-xl font-bold">
+                {/* <div className="font-display text-xl font-bold">
                   PLM
-                </div>
+                </div> */}
                 <div className="text-sm text-white/70">
                   Global Sourcing Excellence
                 </div>

@@ -172,30 +172,23 @@ const About = () => {
             {/* Left - Main Title */}
             <motion.div variants={fadeInUp}>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.15] mb-4">
-                Built in Africa.{' '}
-                <span className="text-primary-500">Connected to the World.</span>
+                Globally Connected. Reliability Delivered.
               </h2>
-              <p className="text-xl font-semibold text-slate-700">
+              {/* <p className="text-xl font-semibold text-slate-700">
                 Africa-First. Rwanda-Led. Globally Connected.
-              </p>
+              </p> */}
             </motion.div>
 
             {/* Right - Company Description */}
             <motion.div variants={fadeInUp} className="space-y-4">
               <p className="text-lg text-slate-600 leading-relaxed">
-                PLM is uniquely positioned as a procurement
-                and services platform operating out of Africa, starting with Rwanda—one
-                of the continent's most stable, reform-driven, and investment-friendly markets.
+                PLM is a modern procurement and services platform connecting clients to trusted suppliers, manufacturers, and logistics partners across global markets.
+                We bridge both sides of the value chain—supporting suppliers in reaching new markets while giving clients access to quality, choice, speed, and dependable delivery.
+
               </p>
               <p className="text-base text-slate-500 leading-relaxed">
-                PLM unlocks opportunity on both sides of the value chain:
-                <strong className="text-slate-700"> empowering local manufacturers and suppliers</strong>,
-                while giving clients access to <strong className="text-slate-700">depth, choice, speed, and certainty</strong>.
-              </p>
-              <p className="text-base text-slate-500 leading-relaxed">
-                With a strong network of manufacturers, international suppliers, and logistics partners,
-                we provide end-to-end procurement services to governments, companies, NGOs,
-                and major infrastructure contractors across Africa and globally.
+                Through a strong international network and deep market expertise, we deliver end-to-end procurement solutions for governments, corporations, NGOs, and large-scale projects worldwide.
+                Our approach is simple: create efficient, transparent, and reliable procurement experiences that help our partners operate with confidence and scale with ease.
               </p>
             </motion.div>
           </div>

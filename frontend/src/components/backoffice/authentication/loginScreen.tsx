@@ -66,9 +66,6 @@ export default function LoginScreen() {
                 <span className="text-white font-bold text-xl">PLM</span>
               </div>
               <div>
-                <div className="font-bold text-xl text-slate-900">
-                  PLM
-                </div>
                 <div className="text-sm text-slate-600">
                   Global Sourcing Excellence
                 </div>

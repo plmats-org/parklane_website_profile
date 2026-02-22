@@ -249,9 +249,9 @@ export default function Navbar() {
                 className="text-primary-400 group-hover:scale-110 transition-transform duration-300"
               />
               <div>
-                <div className="font-display text-xl font-bold">
+                {/* <div className="font-display text-xl font-bold">
                   PLM
-                </div>
+                </div> */}
                 <div className="text-sm text-primary/30">
                   Global Sourcing Excellence
                 </div>
