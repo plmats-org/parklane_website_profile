@@ -186,7 +186,7 @@ const About = () => {
                 We bridge both sides of the value chain—supporting suppliers in reaching new markets while giving clients access to quality, choice, speed, and dependable delivery.
 
               </p>
-              <p className="text-base text-slate-500 leading-relaxed">
+              <p className="text-lg text-slate-600 leading-relaxed">
                 Through a strong international network and deep market expertise, we deliver end-to-end procurement solutions for governments, corporations, NGOs, and large-scale projects worldwide.
                 Our approach is simple: create efficient, transparent, and reliable procurement experiences that help our partners operate with confidence and scale with ease.
               </p>
